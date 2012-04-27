@@ -1,0 +1,95 @@
+use strict;
+use warnings;
+use Test::More qw( no_plan );
+use Test::Exception;
+
+# synchronizes the {error,standard} output of this test.
+use IO::Handle;
+STDOUT->autoflush(1);
+STDERR->autoflush(1);
+
+our $class;
+BEGIN { $class = 'Net::Whois::Object'; use_ok $class; }
+
+my  @lines = <DATA>; 
+my $object = (Net::Whois::Object->new(@lines))[0];
+
+isa_ok $object, "Net::Whois::Object::PeeringSet";
+
+# Inherited method from Net::Whois::Object;
+can_ok $object,
+
+    # Constructor
+    qw( new ),
+
+    # OO Support
+    qw( filter filtered_attributes displayed_attributes );
+
+can_ok $object, qw( peering_set descr peering mp_peering remarks tech_c
+admin_c notify mnt_by mnt_lower changed source);
+
+ok( !$object->can('bogusmethod'), "No AUTOLOAD interference with Net::Whois::Object::PeeringSet tests" );
+
+is ($object->peering_set(),'PRNG-EXAMPLE','peering_set properly parsed');
+$object->peering_set('PRNG-EXAMPLE2');
+is ($object->peering_set(),'PRNG-EXAMPLE2','peering_set properly set');
+
+is_deeply ($object->descr(),[ 'Peering at EXAMPLE' ],'descr properly parsed');
+$object->descr('Added descr');
+is ($object->descr()->[1],'Added descr','descr properly added');
+
+is_deeply ($object->peering(),[ 'PRNG-OTHER', 'AS1 at 9.9.9.1' ],'peering properly parsed');
+$object->peering('PRNG-OTHER2');
+is ($object->peering()->[2],'PRNG-OTHER2','peering properly added');
+
+is_deeply ($object->mp_peering(),[ 'PRNG-OTHERV6'],'mp_peering properly parsed');
+$object->mp_peering('PRNG-ANjOTHERV6');
+is ($object->mp_peering()->[1],'PRNG-ANjOTHERV6','mp_peering properly added');
+
+is_deeply ($object->remarks(),[ 'No remarks' ],'remarks properly parsed');
+$object->remarks('Added remarks');
+is ($object->remarks()->[1],'Added remarks','remarks properly added');
+
+is_deeply ($object->tech_c(),[ 'TECH-CTCT' ],'tech_c properly parsed');
+$object->tech_c('TECH2-CTCT');
+is ($object->tech_c()->[1],'TECH2-CTCT','tech_c properly added');
+
+is_deeply ($object->admin_c(),[ 'ADM-CTCT' ],'admin_c properly parsed');
+$object->admin_c('ADM2-CTCT');
+is ($object->admin_c()->[1],'ADM2-CTCT','admin_c properly added');
+
+is_deeply ($object->notify(),[ 'watcher@somewhere.com' ],'notify properly parsed');
+$object->notify('watcher@elsewhere.com');
+is ($object->notify()->[1],'watcher@elsewhere.com','notify properly added');
+
+is_deeply ($object->mnt_by(),[ 'MAINT-EXAMPLECOM' ],'mnt_by properly parsed');
+$object->mnt_by('MAINT2-EXAMPLECOM');
+is ($object->mnt_by()->[1],'MAINT2-EXAMPLECOM','mnt_by properly added');
+
+is_deeply ($object->mnt_lower(),[ 'MAINT-EXAMPLECOM' ],'mnt_lower properly parsed');
+$object->mnt_lower('MAINT2-EXAMPLECOM');
+is ($object->mnt_lower()->[1],'MAINT2-EXAMPLECOM','mnt_lower properly added');
+
+is_deeply ($object->changed(),[ 'abc@somewhere.com 20120131' ],'changed properly parsed');
+$object->changed('abc@somewhere.com 20120228');
+is ($object->changed()->[1],'abc@somewhere.com 20120228','changed properly added');
+
+is ($object->source(),'RIPE','source properly parsed');
+$object->source('APNIC');
+is ($object->source(),'APNIC','source properly set');
+
+__DATA__
+peering-set:    PRNG-EXAMPLE
+descr:          Peering at EXAMPLE
+peering:        PRNG-OTHER
+peering:        AS1 at 9.9.9.1
+mp-peering:     PRNG-OTHERV6
+remarks:        No remarks
+tech-c:         TECH-CTCT
+admin-c:        ADM-CTCT
+notify:         watcher@somewhere.com
+mnt-by:         MAINT-EXAMPLECOM
+mnt-lower:      MAINT-EXAMPLECOM
+changed:        abc@somewhere.com 20120131
+source:         RIPE
+

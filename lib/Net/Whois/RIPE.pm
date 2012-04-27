@@ -29,11 +29,11 @@ Net::Whois::RIPE - a pure-Perl implementation of the RIPE Database client.
 
 =head1 VERSION
 
-Version 2.00_009 - BETA
+Version 2.00_010 - BETA
 
 =cut
 
-our $VERSION = 2.00_009;
+our $VERSION = 2.00_010;
 
 =head1 SYNOPSIS
 
@@ -88,8 +88,9 @@ adopting an L<Iterator> wrapping the L<IO::Socket> used to return results.
 A production release of this module will be able to feed a L<RPSL::Parser> with
 RPSL objects extracted from the RIPE Database and return full-fledged objects
 containing a parsed version of the text (way more useful than a text blob, I
-believe). This is unimplemented at the moment, and will probably show up as an
-experimental addition soon.
+believe). 
+Net::Whois::Object (from release 2.00_010) is the first attempt toward this
+goal.
 
 =head1 METHODS
 

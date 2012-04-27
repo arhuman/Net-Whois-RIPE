@@ -22,4 +22,4 @@ requires:
   Iterator::Util: 0
   Test::More: 0
   perl: 5.006
-version: 2.00009
+version: 2.00_010

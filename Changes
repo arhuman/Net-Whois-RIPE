@@ -1,5 +1,25 @@
 Revision history for net-whois-ripe
 
-0.01    Fri, 22 Jan 2010 23:33:55 +0100
-        Initial release
+2.00010     20 Apr 2012
+            Net::Whois::Object addition (By Arnaud "Arhuman" Assad)
+
+2.00009     23 Nov 2011
+
+2.00008     26 Oct 2011
+
+2.00003     13 Feb 2011
+
+2.00002     28 Jan 2010
+
+1.31        23 Aug 2009
+
+1.30        10 Jul 2009
+
+1.23        17 Apr 2006
+
+1.22        09 May 2005
+
+1.20        07 Nov 2004
+
+1.19        23 Jul 2002
 
