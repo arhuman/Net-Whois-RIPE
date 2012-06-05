@@ -1,22 +1,21 @@
-package Net::Whois::Object::Route;
+package Net::Whois::Object::Route6;
 
 use base qw/Net::Whois::Object/;
 
 # From ripe-223 
-#
-# route:         [mandatory]  [single]     [primary/look-up key]
+
+# route6:        [mandatory]  [single]     [primary/look-up key]
 # descr:         [mandatory]  [multiple]   [ ]
 # origin:        [mandatory]  [single]     [primary/inverse key]
 # holes:         [optional]   [multiple]   [ ]
-# member-of:     [optional]   [multiple]   [inverse key]
+# org:           [optional]   [multiple]   [inverse key]
+# member-of:     [optional]   [multiple]   [ ]
 # inject:        [optional]   [multiple]   [ ]
 # aggr-mtd:      [optional]   [single]     [ ]
 # aggr-bndry:    [optional]   [single]     [ ]
 # export-comps:  [optional]   [single]     [ ]
 # components:    [optional]   [single]     [ ]
 # remarks:       [optional]   [multiple]   [ ]
-# cross-mnt:     [optional]   [multiple]   [inverse key]
-# cross-nfy:     [optional]   [multiple]   [inverse key]
 # notify:        [optional]   [multiple]   [inverse key]
 # mnt-lower:     [optional]   [multiple]   [inverse key]
 # mnt-routes:    [optional]   [multiple]   [inverse key]
@@ -24,29 +23,27 @@ use base qw/Net::Whois::Object/;
 # changed:       [mandatory]  [multiple]   [ ]
 # source:        [mandatory]  [single]     [ ]
 
-# From http://www.apnic.net/apnic-info/whois_search/using-whois/guide/route
+# From http://www.apnic.net/apnic-info/whois_search/using-whois/guide/route6
 # country:       [optional]   [single]     [ ]
 #
 
 =head1 NAME
 
-Net::Whois::Object::Route - an object representation of the RPSL Route block
+Net::Whois::Object::Route6 - an object representation of the RPSL Route6 block
 
 =head1 DESCRIPTION
 
-Route objects are used to help configure your network's routers. Route objects, 
+Route6 objects are used to help configure your network's routers. Route6 objects,
 in combination with the aut-num and other related objects, can be used to
-describe your IPv4 routing policy in a compact form. This can help your
+describe your IPv6 routing policy in a compact form. This can help your
 network identify routing policy errors and omissions more easily than by
 reading long configuration files.
-
-
 
 =head1 METHODS
 
 =head2 B<new( %options )>
 
-Constructor for the Net::Whois::Object::Route class
+Constructor for the Net::Whois::Object::Route6 class
 
 =cut
 
@@ -62,17 +59,17 @@ sub new {
     return $self;
 }
 
-=head2 B<route( [$route] )>
+=head2 B<route6( [$route6] )>
 
-Accessor to the route attribute.
-Accepts an optional route, always return the current route.
+Accessor to the route6 attribute.
+Accepts an optional route6, always return the current route.
 
 =cut
 
-sub route {
-    my ( $self, $route ) = @_;
-    $self->{route} = $route if defined $route;
-    return $self->{route};
+sub route6 {
+    my ( $self, $route6 ) = @_;
+    $self->{route6} = $route6 if defined $route6;
+    return $self->{route6};
 }
 
 =head2 B<descr( [$descr] )>
@@ -100,6 +97,20 @@ sub origin {
     my ( $self, $origin ) = @_;
     $self->{origin} = $origin if defined $origin;
     return $self->{origin};
+}
+
+=head2 B<org( [$org] )>
+
+Accessor to the org attribute.
+Accepts an optional org to be added to the org array,
+always return the current org array.
+
+=cut
+
+sub org {
+    my ( $self, $org ) = @_;
+    push @{ $self->{org} }, $org if defined $org;
+    return \@{ $self->{org} };
 }
 
 =head2 B<holes( [$hole] )>
@@ -212,34 +223,6 @@ sub remarks {
     my ( $self, $remark ) = @_;
     push @{ $self->{remarks} }, $remark if defined $remark;
     return \@{ $self->{remarks} };
-}
-
-=head2 B<cross_mnt( [$cross_mnt] )>
-
-Accessor to the cross_mnt attribute.
-Accepts an optional cross_mnt value to be added to the cross_mnt array,
-always return the current cross_mnt array.
-
-=cut
-
-sub cross_mnt {
-    my ( $self, $cross_mnt ) = @_;
-    push @{ $self->{cross_mnt} }, $cross_mnt if defined $cross_mnt;
-    return \@{ $self->{cross_mnt} };
-}
-
-=head2 B<cross_nfy( [$cross_nfy] )>
-
-Accessor to the cross_nfy attribute.
-Accepts an optional cross_nfy value to be added to the cross_nfy array,
-always return the current cross_nfy array.
-
-=cut
-
-sub cross_nfy {
-    my ( $self, $cross_nfy ) = @_;
-    push @{ $self->{cross_nfy} }, $cross_nfy if defined $cross_nfy;
-    return \@{ $self->{cross_nfy} };
 }
 
 =head2 B<notify( [$notify] )>

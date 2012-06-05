@@ -41,7 +41,6 @@ sub new {
     my ( $attribute, $value );
     for my $line (@lines) {
 
-
         if ( $line =~ /^(\S+):\s+(.*)/ ) {
 
             # Attribute line
@@ -157,33 +156,39 @@ sub _object_factory {
     my $type  = shift;
     my $value = shift;
 
-    my %class = ( aut_num      => 'AutNum',
-                  as_block     => 'AsBlock',
+    my %class = ( as_block     => 'AsBlock',
                   as_set       => 'AsSet',
+                  aut_num      => 'AutNum',
                   comment      => 'Information',
-                  person       => 'Person',
-                  role         => 'Role',
                   domain       => 'Domain',
-                  inetnum      => 'InetNum',
+                  filter_set   => 'FilterSet',
                   inet6num     => 'Inet6Num',
+                  inetnum      => 'InetNum',
                   inet_rtr     => 'InetRtr',
-                  rtr_set      => 'RtrSet',
-                  mntner       => 'Mntner',
+                  irt          => 'Irt',
                   key_cert     => 'KeyCert',
+                  limerick     => 'Limerick',
+                  mntner       => 'Mntner',
+                  organisation => 'Organisation',
+                  organisation => 'Organisation',
+                  peering_set  => 'PeeringSet',
+                  person       => 'Person',
+                  poem         => 'Poem',
+                  poetic_form  => 'PoeticForm',
+                  response     => 'Response',
+                  role         => 'Role',
+                  route6       => 'Route6',
                   route        => 'Route',
                   route_set    => 'RouteSet',
-                  peering_set  => 'PeeringSet',
-                  limerick     => 'Limerick',
-                  poem         => 'Poem',
-                  organisation => 'Organisation',
-                  response     => 'Response'
+                  rtr_set      => 'RtrSet',
     );
 
     die "Unrecognized Object ($type first attribute)" unless $class{$type};
 
     my $class = "Net::Whois::Object::" . $class{$type};
 
-    eval "require $class";
+    eval "require $class" or die "Can't require $class ($!)";
+
     return $class->new( $type => $value );
 
 }
@@ -201,4 +206,5 @@ Thanks to Luis Motta Campos for his trust when allowing me to publish this
 release.
 
 =cut
+
 1;

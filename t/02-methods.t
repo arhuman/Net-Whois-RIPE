@@ -116,8 +116,8 @@ can_ok $class,
         my @types;
         lives_ok { @types = $c->object_types }
         q{Client can retrieve available object types without dying.};
-        ok scalar @types == 22,
-          q{There are 22 known object types in the RIPE Database};
+        is $#types, 20,
+          q{There are 21 known object types in the RIPE Database};
     }
 
     # send()

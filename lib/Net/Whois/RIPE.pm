@@ -33,7 +33,7 @@ Version 2.00_010 - BETA
 
 =cut
 
-our $VERSION = 2.00_010;
+our $VERSION = 2.00_011;
 
 =head1 SYNOPSIS
 
@@ -503,6 +503,11 @@ sub __query {
 =head2 B<object_types()>
 
 Return a list of known object types from the RIPE Database.
+
+RIPE currently returns 21 types (Limerik have been removed):
+as-block as-set aut-num domain filter-set inet6num inetnum inet-rtr irt
+key-cert mntner organisation peering-set person poem poetic-form role route
+route6 route-set rtr-set
 
 Due to some strange mis-behaviour in the protocol (or documentation?) the RIPE
 Database server won't allow a keep-alive token with this query, meaning the

@@ -8,6 +8,7 @@ lib/Net/Whois/Object/FilterSet.pm
 lib/Net/Whois/Object/Inet6Num.pm
 lib/Net/Whois/Object/InetNum.pm
 lib/Net/Whois/Object/InetRtr.pm
+lib/Net/Whois/Object/Irt.pm
 lib/Net/Whois/Object/Information.pm
 lib/Net/Whois/Object/KeyCert.pm
 lib/Net/Whois/Object/Limerick.pm
@@ -19,6 +20,7 @@ lib/Net/Whois/Object/Poem.pm
 lib/Net/Whois/Object/Response.pm
 lib/Net/Whois/Object/Role.pm
 lib/Net/Whois/Object/Route.pm
+lib/Net/Whois/Object/Route6.pm
 lib/Net/Whois/Object/RouteSet.pm
 lib/Net/Whois/Object/RtrSet.pm
 lib/Net/Whois/RIPE.pm
@@ -44,6 +46,7 @@ t/150-RtrSet.t
 t/155-Mntner.t
 t/160-KeyCert.t
 t/165-Route.t
+t/167-Route6.t
 t/170-RouteSet.t
 t/175-PeeringSet.t
 t/180-Limerick.t
@@ -51,6 +54,7 @@ t/185-Poem.t
 t/190-Organisation.t
 t/195-Response.t
 t/200-Information.t
+t/205-Irt.t
 t/boilerplate.t
 t/pod-coverage.t
 t/pod.t

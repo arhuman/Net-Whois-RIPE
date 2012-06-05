@@ -1,5 +1,13 @@
 Revision history for net-whois-ripe
 
+2.00011     05 Jun 2012
+            Fix some tests
+                to skip when there's a Network issue
+                to adapt to the current type of objects managed 
+                (21 instead of 22, Limerick being removed)
+            Add Route6 and Irt objects
+            Fix the documentation
+
 2.00010     20 Apr 2012
             Net::Whois::Object addition (By Arnaud "Arhuman" Assad)
 
