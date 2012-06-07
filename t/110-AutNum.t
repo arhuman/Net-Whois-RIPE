@@ -23,9 +23,10 @@ can_ok $object,
     qw( new ),
 
     # OO Support
-    qw( filter filtered_attributes displayed_attributes );
+    qw( query_filter filtered_attributes displayed_attributes );
 
-can_ok $object, qw( aut_num as_name descr member_of import export default remarks admin_c tech_c cross_mnt cross_nfy notify mnt_lower mnt_routes mnt_by changed source);
+can_ok $object, qw( aut_num as_name descr member_of import mp_import export
+mp_export default mp_default remarks admin_c tech_c notify mnt_lower mnt_routes mnt_by changed source);
 
 can_ok $object, qw( mp_import mp_export );
 

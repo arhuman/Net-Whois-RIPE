@@ -2,8 +2,14 @@ package Net::Whois::Object::Route6;
 
 use base qw/Net::Whois::Object/;
 
+<<<<<<< HEAD
+# http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-24
+# http://www.apnic.net/apnic-info/whois_search/using-whois/guide/route6
+#
+=======
 # From ripe-223 
 
+>>>>>>> e4eb3dd... Add Irt and Route6 objects
 # route6:        [mandatory]  [single]     [primary/look-up key]
 # descr:         [mandatory]  [multiple]   [ ]
 # origin:        [mandatory]  [single]     [primary/inverse key]

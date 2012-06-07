@@ -14,7 +14,7 @@ BEGIN { $class = 'Net::Whois::Object'; use_ok $class; }
 my  @lines = <DATA>; 
 my $object = (Net::Whois::Object->new(@lines))[0];
 
-isa_ok $object, "Net::Whois::Object::PeeringSet";
+isa_ok $object, "Net::Whois::Object::FilterSet";
 
 # Inherited method from Net::Whois::Object;
 can_ok $object,
@@ -25,26 +25,26 @@ can_ok $object,
     # OO Support
     qw( query_filter filtered_attributes displayed_attributes );
 
-can_ok $object, qw( peering_set descr peering mp_peering remarks tech_c
+can_ok $object, qw( filter_set descr filter mp_filter remarks org tech_c
 admin_c notify mnt_by mnt_lower changed source);
 
-ok( !$object->can('bogusmethod'), "No AUTOLOAD interference with Net::Whois::Object::PeeringSet tests" );
+ok( !$object->can('bogusmethod'), "No AUTOLOAD interference with Net::Whois::Object::FilterSet tests" );
 
-is ($object->peering_set(),'PRNG-EXAMPLE','peering_set properly parsed');
-$object->peering_set('PRNG-EXAMPLE2');
-is ($object->peering_set(),'PRNG-EXAMPLE2','peering_set properly set');
+is ($object->filter_set(),'FLTR-EXAMPLE','filter_set properly parsed');
+$object->filter_set('FLTR-EXAMPLE2');
+is ($object->filter_set(),'FLTR-EXAMPLE2','filter_set properly set');
 
-is_deeply ($object->descr(),[ 'Peering at EXAMPLE' ],'descr properly parsed');
+is_deeply ($object->descr(),[ 'Filter local community routes' ],'descr properly parsed');
 $object->descr('Added descr');
 is ($object->descr()->[1],'Added descr','descr properly added');
 
-is_deeply ($object->peering(),[ 'PRNG-OTHER', 'AS1 at 9.9.9.1' ],'peering properly parsed');
-$object->peering('PRNG-OTHER2');
-is ($object->peering()->[2],'PRNG-OTHER2','peering properly added');
+is ($object->filter(), '(AS1 or fltr-foo) and <AS2>','filter properly parsed');
+$object->filter('other filter');
+is ($object->filter(),'other filter','filter properly modified');
 
-is_deeply ($object->mp_peering(),[ 'PRNG-OTHERV6'],'mp_peering properly parsed');
-$object->mp_peering('PRNG-ANjOTHERV6');
-is ($object->mp_peering()->[1],'PRNG-ANjOTHERV6','mp_peering properly added');
+is($object->mp_filter(), '{ 192.0.2.0/24, 2001:0DB8::/32 }','mp_filter properly parsed');
+$object->mp_filter('other filter v6');
+is ($object->mp_filter(), 'other filter v6','mp_filter properly added');
 
 is_deeply ($object->remarks(),[ 'No remarks' ],'remarks properly parsed');
 $object->remarks('Added remarks');
@@ -79,11 +79,10 @@ $object->source('APNIC');
 is ($object->source(),'APNIC','source properly set');
 
 __DATA__
-peering-set:    PRNG-EXAMPLE
-descr:          Peering at EXAMPLE
-peering:        PRNG-OTHER
-peering:        AS1 at 9.9.9.1
-mp-peering:     PRNG-OTHERV6
+filter-set:     FLTR-EXAMPLE
+descr:          Filter local community routes
+filter:         (AS1 or fltr-foo) and <AS2>
+mp-filter:      { 192.0.2.0/24, 2001:0DB8::/32 }
 remarks:        No remarks
 tech-c:         TECH-CTCT
 admin-c:        ADM-CTCT

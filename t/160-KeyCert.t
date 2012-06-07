@@ -23,10 +23,10 @@ can_ok $object,
     qw( new ),
 
     # OO Support
-    qw( filter filtered_attributes displayed_attributes );
+    qw( query_filter filtered_attributes displayed_attributes );
 
-can_ok $object, qw( key_cert method owner fingerpr remarks certif mnt_by changed
-source);
+can_ok $object, qw( key_cert method owner fingerpr remarks org certif notify
+admin_c tech_c mnt_by changed source);
 
 ok( !$object->can('bogusmethod'), "No AUTOLOAD interference with Net::Whois::Object::KeyCert tests" );
 

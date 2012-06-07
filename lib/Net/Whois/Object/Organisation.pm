@@ -2,7 +2,8 @@ package Net::Whois::Object::Organisation;
 
 use base qw/Net::Whois::Object/;
 
-# From http://www.ripe.net/data-tools/support/organisation-object-in-the-ripe-database
+# http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-18
+# APNIC ??
 #
 # organisation:  [mandatory]  [single]     [primary/look-up key]
 # org-name:      [mandatory]  [single]     [look-up key]

@@ -2,7 +2,8 @@ package Net::Whois::Object::RtrSet;
 
 use base qw/Net::Whois::Object/;
 
-# From ripe-223 
+# http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-27
+# http://www.apnic.net/apnic-info/whois_search/using-whois/guide/rtr-set
 #
 # rtr-set:       [mandatory]  [single]     [primary/look-up key]
 # descr:         [mandatory]  [multiple]   [ ]

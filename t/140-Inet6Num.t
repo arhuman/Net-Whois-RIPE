@@ -23,10 +23,10 @@ can_ok $object,
     qw( new ),
 
     # OO Support
-    qw( filter filtered_attributes displayed_attributes );
+    qw( query_filter filtered_attributes displayed_attributes );
 
-can_ok $object, qw( inet6num netname descr country admin_c tech_c rev_srv
-status remarks notify mnt_by mnt_lower mnt_routes changed source);
+can_ok $object, qw( inet6num netname descr country admin_c tech_c 
+status remarks notify mnt_by mnt_lower mnt_routes mnt_domains mnt_irt changed source);
 
 can_ok $object, qw( mnt_irt );
 
@@ -76,9 +76,13 @@ is_deeply ($object->mnt_routes(),[ 'MAINT-EXAMPLENET-AP' ],'mnt_routes properly 
 $object->mnt_routes('MAINT2-EXAMPLENET-AP');
 is ($object->mnt_routes()->[1],'MAINT2-EXAMPLENET-AP','mnt_routes properly added');
 
-is ($object->mnt_irt(), 'IRT-EXAMPLENET-AP' ,'mnt_irt properly parsed');
-$object->mnt_irt('AS1-AS2');
-is ($object->mnt_irt(),'AS1-AS2','mnt_irt properly set');
+is_deeply ($object->mnt_irt(),[ 'IRT-EXAMPLENET-AP' ],'mnt_irt properly parsed');
+$object->mnt_irt('MAINT2-EXAMPLENET-AP');
+is ($object->mnt_irt()->[1],'MAINT2-EXAMPLENET-AP','mnt_irt properly added');
+
+is_deeply ($object->mnt_domains(),[ 'MAINT-EXAMPLENET-AP' ],'mnt_domains properly parsed');
+$object->mnt_domains('MAINT2-EXAMPLENET-AP');
+is ($object->mnt_domains()->[1],'MAINT2-EXAMPLENET-AP','mnt_domains properly added');
 
 is_deeply ($object->changed(),[ 'abc@examplenet.com 20101231' ],'changed properly parsed');
 $object->changed('abc@examplenet.com 20121231');
@@ -101,6 +105,7 @@ notify:      abc@examplenet.com
 mnt-by:      MAINT-EXAMPLENET-AP
 mnt-lower:   MAINT-EXAMPLENET-AP
 mnt-routes:  MAINT-EXAMPLENET-AP
+mnt-domains: MAINT-EXAMPLENET-AP
 mnt-irt:     IRT-EXAMPLENET-AP
 changed:     abc@examplenet.com 20101231
 source:      APNIC

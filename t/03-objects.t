@@ -17,7 +17,7 @@ can_ok $class,
     qw( new ),
 
     # OO Support
-    qw( filter filtered_attributes displayed_attributes );
+    qw( query_filter filtered_attributes displayed_attributes );
 
 {
     my @lines = <DATA>;
@@ -35,7 +35,7 @@ can_ok $class,
 
     isa_ok $o[5], $class . "::AutNum";
     can_ok $o[5], qw( aut_num as_name org source ), qw( descr member_of import mp_import export mp_export
-        default remarks tech_c admin_c cross_mnt cross_nfy notify
+        default remarks tech_c admin_c notify
         mnt_lower mnt_by mnt_routes changed);
     ok( !$o[5]->can('bogusmethod'), "No AUTOLOAD interference with ${class}::AutNum tests" );
 }

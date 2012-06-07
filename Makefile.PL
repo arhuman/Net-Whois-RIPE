@@ -10,9 +10,15 @@ WriteMakefile(
     MIN_PERL_VERSION => 5.006,
     PL_FILES         => {},
     PREREQ_PM        => {
-        'Test::More'     => 0,
-        'Iterator'       => 0,
-        'Iterator::Util' => 0,
+                   'Test::More'     => 0,
+                   'Iterator'       => 0,
+                   'Iterator::Util' => 0,
+    },
+    META_MERGE => {
+        resources => { 
+                        repository => 'https://github.com/arhuman/Net-Whois-RIPE',
+                        bugtracker => 'https://github.com/arhuman/Net-Whois-RIPE/issues'
+        },
     },
     BUILD_REQUIRES => { 'Test::Exception' => 0, },
     dist           => { COMPRESS          => 'gzip -9f', SUFFIX => 'gz', },

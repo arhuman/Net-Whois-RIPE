@@ -23,7 +23,7 @@ can_ok $object,
     qw( new ),
 
     # OO Support
-    qw( filter filtered_attributes displayed_attributes );
+    qw( query_filter filtered_attributes displayed_attributes );
 
 can_ok $object, qw( mntner descr country admin_c tech_c upd_to mnt_nfy auth
 auth_override remarks notify abuse_mailbox mnt_by referral_by changed source);

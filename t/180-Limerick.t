@@ -23,7 +23,7 @@ can_ok $object,
     qw( new ),
 
     # OO Support
-    qw( filter filtered_attributes displayed_attributes );
+    qw( query_filter filtered_attributes displayed_attributes );
 
 can_ok $object, qw( limerick descr text admin_c author remarks notify mnt_by
 changed source );

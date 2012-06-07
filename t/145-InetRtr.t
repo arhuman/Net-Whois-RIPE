@@ -23,7 +23,7 @@ can_ok $object,
     qw( new ),
 
     # OO Support
-    qw( filter filtered_attributes displayed_attributes );
+    qw( query_filter filtered_attributes displayed_attributes );
 
 can_ok $object, qw( inet_rtr descr alias local_as ifaddr interface peer mp_peer
 member_of remarks admin_c tech_c  notify mnt_by changed source );

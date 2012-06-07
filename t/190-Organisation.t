@@ -23,7 +23,7 @@ can_ok $object,
     qw( new ),
 
     # OO Support
-    qw( filter filtered_attributes displayed_attributes );
+    qw( query_filter filtered_attributes displayed_attributes );
 
 can_ok $object, qw( organisation org_name org_type descr remarks address phone
 e_mail fax_no org admin_c tech_c ref_nfy mnt_ref notify mnt_by changed source);

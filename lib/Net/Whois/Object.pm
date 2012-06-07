@@ -2,7 +2,7 @@ package Net::Whois::Object;
 
 =head1 NAME
 
-Net/Whois/Object - Object encapsulating RPSL data returned by Whois queries
+Net::Whois::Object - Object encapsulating RPSL data returned by Whois queries
 
 =head1 SYNOPSIS
 
@@ -97,18 +97,18 @@ sub new {
     return @results;
 }
 
-=head2 B<filter( $filter )>
+=head2 B<query_filter( $query_filter )>
 
-Accessor to the filter attribute used to filter out objects.
-Accepts an optional filter to be added to the filter array,
-always return the current filter array.
+Accessor to the query_filter attribute used to query_filter out objects.
+Accepts an optional query_filter to be added to the query_filter array,
+always return the current query_filter array.
 
 =cut
 
-sub filter {
-    my ( $self, $filter ) = @_;
-    push @{ $self->{filter} }, $filter if defined $filter;
-    return @{ $self->{filter} };
+sub query_filter {
+    my ( $self, $query_filter ) = @_;
+    push @{ $self->{query_filter} }, $query_filter if defined $query_filter;
+    return @{ $self->{query_filter} };
 }
 
 =head2 B<hidden_attributes( $attribute )>

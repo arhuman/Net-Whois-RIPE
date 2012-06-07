@@ -2,7 +2,8 @@ package Net::Whois::Object::Role;
 
 use base qw/Net::Whois::Object/;
 
-# From ripe-223 
+# http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-23
+# http://www.apnic.net/apnic-info/whois_search/using-whois/guide/role
 #
 # role:          [mandatory]  [single]     [lookup key]
 # address:       [mandatory]  [multiple]   [ ]

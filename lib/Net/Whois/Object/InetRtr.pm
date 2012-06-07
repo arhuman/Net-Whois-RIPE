@@ -2,16 +2,20 @@ package Net::Whois::Object::InetRtr;
 
 use base qw/Net::Whois::Object/;
 
-# From ripe-223 
+# http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-14
+# http://www.apnic.net/apnic-info/whois_search/using-whois/guide/inet-rtr
 #
 # inet-rtr:      [mandatory]  [single]     [primary/look-up key]
 # descr:         [mandatory]  [multiple]   [ ]
 # alias:         [optional]   [multiple]   [ ]
 # local-as:      [mandatory]  [single]     [inverse key]
 # ifaddr:        [mandatory]  [multiple]   [lookup key]
+# interface:     [optional]   [multiple]   [lookup key]
 # peer:          [optional]   [multiple]   [ ]
+# mp-peer:       [optional]   [multiple]   [ ]
 # member-of:     [optional]   [multiple]   [inverse key]
 # remarks:       [optional]   [multiple]   [ ]
+# org:           [optional]   [multiple]   [inverse key]
 # admin-c:       [mandatory]  [multiple]   [inverse key]
 # tech-c:        [mandatory]  [multiple]   [inverse key]
 # notify:        [optional]   [multiple]   [inverse key]
@@ -19,22 +23,13 @@ use base qw/Net::Whois::Object/;
 # changed:       [mandatory]  [multiple]   [ ]
 # source:        [mandatory]  [single]     [ ]
 
-# http://www.apnic.net/apnic-info/whois_search/using-whois/guide/inet-rtr
-# mp-peer:        [optional]   [multiple]   [ ]
-# interface:      [optional]   [multiple]   [lookup key]
-
 =head1 NAME
 
 Net::Whois::Object::InetRtr - an object representation of a RPSL InetRtr block
 
 =head1 DESCRIPTION
 
-Routers are specified using the inet-rtr class.  The attributes of the
-inet-rtr class are shown in Figure 1.2.8.  The "inet-rtr:" attribute
-is a valid DNS name of the router described. Each "alias:" attribute,
-if present, is a canonical DNS name for the router.  The "local-as:"
-attribute specifies the AS number of the AS that owns/operates this
-router.
+The inet-rtr object specifies routers.
 
 =head1 METHODS
 
@@ -61,6 +56,9 @@ sub new {
 Accessor to the inet_rtr attribute.
 Accepts an optional inet_rtr, always return the current inet_rtr value.
 
+The inet_rtr attribute is a valid DNS name for a router without a trailing
+dot.
+
 =cut
 
 sub inet_rtr {
@@ -74,6 +72,8 @@ sub inet_rtr {
 Accessor to the descr attribute.
 Accepts an optional descr value to be added to the descr array,
 always return the current descr array.
+
+A short description related to the object's purpose.
 
 =cut
 
@@ -89,6 +89,9 @@ Accessor to the alias attribute.
 Accepts an optional alias to be added to the alias array,
 always return the current alias array.
 
+Each alias attribute, if present, is also standard DNS name for the
+specified router.
+
 =cut
 
 sub alias {
@@ -101,6 +104,9 @@ sub alias {
 
 Accessor to the local_as attribute.
 Accepts an optional local_as, always return the current local_as.
+
+The local_as attribute specifies the AS Number of the AS that owns or
+operates this router.
 
 =cut
 
@@ -116,6 +122,10 @@ Accessor to the ifaddr attribute.
 Accepts an optional ifaddr value to be added to the ifaddr array,
 always return the current ifaddr array.
 
+The ifaddr attribute specifies the interface address within an Internet
+router, as well as an optional action to set other parameters on this
+interface.
+
 =cut
 
 sub ifaddr {
@@ -129,6 +139,9 @@ sub ifaddr {
 Accessor to the peer attribute.
 Accepts an optional peer to be added to the peer array,
 always return the current peer array.
+
+The peer attribute specifies the details of any interior or exterior router
+peering.
 
 =cut
 
@@ -144,6 +157,10 @@ Accessor to the member_of attribute.
 Accepts an optional member_of value to be be added to the member_of array,
 always return the current member_of array.
 
+The member_of attribute value identifies a set object that this object
+wants to be a member of. This claim, however, should be acknowledged by a
+respective mbrs-by-ref attribute in the referenced object.
+
 =cut
 
 sub member_of {
@@ -157,6 +174,9 @@ sub member_of {
 Accessor to the remarks attribute.
 Accepts an optional remark to be added to the remarks array,
 always return the current remarks array.
+
+General remarks. May include a URL or instructions on where to send abuse
+complaints.
 
 =cut
 
@@ -172,6 +192,12 @@ Accessor to the admin_c attribute.
 Accepts an optional contact to be added to the admin_c array,
 always return the current admin_c array.
 
+The NIC-handle of an on-site contact Person object. As more than one person
+often fulfills a role function, there may be more than one admin_c listed.
+
+An administrative contact (admin_c) must be someone who is physically
+located at the site of the network.
+
 =cut
 
 sub admin_c {
@@ -185,6 +211,14 @@ sub admin_c {
 Accessor to the tech_c attribute.
 Accepts an optional contact to be added to the tech_c array,
 always return the current tech_c array.
+
+The NIC-handle of a technical contact Person or Role object.  As more than
+one person often fulfills a role function, there may be more than one tech_c
+listed.
+
+A technical contact (tech_c) must be a person responsible for the
+day-to-day operation of the network, but does not need to be
+physically located at the site of the network.
 
 =cut
 
@@ -200,6 +234,9 @@ Accessor to the notify attribute.
 Accepts an optional notify value to be added to the notify array,
 always return the current notify array.
 
+The email address to which notifications of changes to this object should
+be sent.
+
 =cut
 
 sub notify {
@@ -213,6 +250,9 @@ sub notify {
 Accessor to the mnt_by attribute.
 Accepts an optional mnt_by value to be added to the mnt_by array,
 always return the current mnt_by array.
+
+Lists a registered 'mntner' used to authorize and authenticate changes to this
+object.
 
 =cut
 
@@ -228,6 +268,15 @@ Accessor to the changed attribute.
 Accepts an optional changed value to be added to the changed array,
 always return the current changed array.
 
+The email address of who last updated the database object and the date it
+occurred.
+
+Every time a change is made to a database object, this attribute will show
+the email address of the person who made those changes.
+Please use the address format specified in RFC 822 - Standard for
+the Format of ARPA Internet Text Message and provide the date
+format using one of the following two formats: YYYYMMDD or YYMMDD.
+
 =cut
 
 sub changed {
@@ -240,6 +289,8 @@ sub changed {
 
 Accessor to the source attribute.
 Accepts an optional source, always return the current source.
+
+The database where the object is registered.
 
 =cut
 
@@ -255,9 +306,11 @@ Accessor to the mp_peer attribute.
 Accepts an optional peer to be added to the mp_peer array,
 always return the current mp_peer array.
 
-This attribute performs the same function as the 'peer' attribute above. The
+This attribute performs the same function as the peer attribute above. The
 difference is that mp-peer allows both IPv4 and IPv6 address families to be
 specified.
+
+The mp-peer attribute extends the peer attribute for IPv6 addresses.
 
 =cut
 
@@ -273,11 +326,8 @@ Accessor to the interface attribute.
 Accepts an optional interface to be added to the interface array,
 always return the current interface array.
 
-This attribute performs the same function as the 'ifaddr' attribute above. The
-difference is that interface allows both IPv4 and IPv6 address families to be
-specified.
-
-Describes all the inter-router serial port interfaces for all the line cards.
+The interface attribute specifies a multi-protocol interface address within
+an Internet router, optional action and tunnel definition.
 
 =cut
 

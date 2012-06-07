@@ -23,9 +23,9 @@ can_ok $object,
     qw( new ),
 
     # OO Support
-    qw( filter filtered_attributes displayed_attributes );
+    qw( query_filter filtered_attributes displayed_attributes );
 
-can_ok $object, qw( domain descr admin_c tech_c zone_c nserver sub_dom dom_net
+can_ok $object, qw( domain descr org admin_c tech_c zone_c nserver ds_rdata sub_dom dom_net
 remarks notify mnt_by mnt_lower refer changed source);
 
 ok( !$object->can('bogusmethod'), "No AUTOLOAD interference with Net::Whois::Object::Domain tests" );
@@ -37,6 +37,10 @@ is ($object->domain(),'somewhereelse.superdomain.com','domain properly set');
 is_deeply ($object->descr(),[ 'Domain\'s description' ],'descr properly parsed');
 $object->descr('Added descr');
 is ($object->descr()->[1],'Added descr','descr properly added');
+
+is_deeply ($object->org(),[ 'ORG-MISC01-RIPE' ],'org properly parsed');
+$object->org('ORG-MISC02-RIPE');
+is ($object->org()->[1],'ORG-MISC02-RIPE','org properly added');
 
 is_deeply ($object->admin_c(),[ 'CPNY-ADM01' ],'admin_c properly parsed');
 $object->admin_c('Added admin_c');
@@ -53,6 +57,10 @@ is ($object->zone_c()->[1],'Added zone_c','zone_c properly added');
 is_deeply ($object->nserver(),[ 'NS1.SUPERDOMAIN.COM', 'NS2.SUPERDOMAIN.COM' ],'nserver properly parsed');
 $object->nserver('Added nserver');
 is ($object->nserver()->[2],'Added nserver','nserver properly added');
+
+is_deeply ($object->ds_rdata(),[ '64431 5 1 278BF194C29A812B33935BB2517E17D1486210FA' ],'ds_rdata properly parsed');
+$object->ds_rdata('Added ds_rdata');
+is ($object->ds_rdata()->[1],'Added ds_rdata','ds_rdata properly added');
 
 is_deeply ($object->sub_dom(),[ 'SUBDOM1', 'SUBDOM2','PRIVATE.SUBDOM2' ],'sub_dom properly parsed');
 $object->sub_dom('Added sub_dom');
@@ -89,6 +97,7 @@ is ($object->source(),'APNIC','source properly set');
 __DATA__
 domain:     somewhere.superdomain.com
 descr:      Domain's description
+org:        ORG-MISC01-RIPE
 admin-c:    CPNY-ADM01
 tech-c:     CPNY-TECH01
 zone-c:     CPNY-ZONE
@@ -103,6 +112,7 @@ notify:     watcher@somewhere.net
 mnt-by:     DOM-MAINT
 mnt-lower:  DOM-LMAINT
 refer:      CLIENTADDRESS whois.server.dom.com 43
+ds-rdata:   64431 5 1 278BF194C29A812B33935BB2517E17D1486210FA
 changed:    someoneelese@somewere.net 20090429
 source:     RIPE # Filtered
 

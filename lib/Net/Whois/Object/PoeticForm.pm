@@ -1,35 +1,35 @@
-package Net::Whois::Object::Limerick;
+package Net::Whois::Object::PoeticForm;
 
 use base qw/Net::Whois::Object/;
 
-# RIPE : Deprecated
+# http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-22
+# APNIC ??
 #
+# 
+# poetic-form:  [mandatory]     [single]    [primary/look-up key]
+# descr:        [optional]      [multiple]  [ ]
+# admin-c:      [mandatory]     [multiple]  [inverse key]
+# remarks:      [optional]      [multiple]  [ ]
+# notify:       [optional]      [multiple]  [inverse key]
+# mnt-by:       [mandatory]     [multiple]  [inverse key]
+# changed:      [mandatory]     [multiple]  [ ]
+# source:       [mandatory]     [single]    [ ]
 #
-# limerick:      [mandatory]  [single]     [primary/look-up key]
-# descr:         [optional]   [multiple]   [ ]
-# text:          [mandatory]  [multiple]   [ ]
-# admin-c:       [mandatory]  [multiple]   [inverse key]
-# author:        [mandatory]  [multiple]   [inverse key]
-# remarks:       [optional]   [multiple]   [ ]
-# notify:        [optional]   [multiple]   [inverse key]
-# mnt-by:        [mandatory]  [multiple]   [inverse key]
-# changed:       [mandatory]  [multiple]   [ ]
-# source:        [mandatory]  [single]     [ ]
 
 =head1 NAME
 
-Net::Whois::Object::Limerick - an object representation of the RPSL Limerick block
+Net::Whois::Object::PoeticForm - an object representation of the RPSL PoeticForm block
 
 =head1 DESCRIPTION
 
-The limerick object represents a humorous poem that has five lines and
-the rhyme scheme "aabba".
+The poetic_form object contains a poetic_form that is submitted by a user. This object is
+included in the database to show that engineers do have a sense of humour.
 
 =head1 METHODS
 
 =head2 B<new( %options )>
 
-Constructor for the Net::Whois::Object::Limerick class
+Constructor for the Net::Whois::Object::PoeticForm class
 
 =cut
 
@@ -45,23 +45,10 @@ sub new {
     return $self;
 }
 
-=head2 B<limerick( [$limerick] )>
-
-Accessor to the limerick attribute.
-Accepts an optional value, always return the current limerick value.
-
-=cut
-
-sub limerick {
-    my ( $self, $limerick ) = @_;
-    $self->{limerick} = $limerick if defined $limerick;
-    return $self->{limerick};
-}
-
 =head2 B<descr( [$descr] )>
 
 Accessor to the descr attribute.
-Accepts an optional descr to be added to the descr array,
+Accepts an optional descr line to be added to the descr array,
 always return the current descr array.
 
 =cut
@@ -70,20 +57,6 @@ sub descr {
     my ( $self, $descr ) = @_;
     push @{ $self->{descr} }, $descr if defined $descr;
     return \@{ $self->{descr} };
-}
-
-=head2 B<text( [$text] )>
-
-Accessor to the text attribute.
-Accepts an optional text to be added to the text array,
-always return the current text array.
-
-=cut
-
-sub text {
-    my ( $self, $text ) = @_;
-    push @{ $self->{text} }, $text if defined $text;
-    return \@{ $self->{text} };
 }
 
 =head2 B<admin_c( [$contact] )>
@@ -95,23 +68,9 @@ always return the current admin_c array.
 =cut
 
 sub admin_c {
-    my ( $self, $contact ) = @_;
-    push @{ $self->{admin_c} }, $contact if defined $contact;
+    my ( $self, $admin_c ) = @_;
+    push @{ $self->{admin_c} }, $admin_c if defined $admin_c;
     return \@{ $self->{admin_c} };
-}
-
-=head2 B<author( [$author] )>
-
-Accessor to the author attribute.
-Accepts an optional author to be added to the author array,
-always return the current author array.
-
-=cut
-
-sub author {
-    my ( $self, $author ) = @_;
-    push @{ $self->{author} }, $author if defined $author;
-    return \@{ $self->{author} };
 }
 
 =head2 B<remarks( [$remark] )>

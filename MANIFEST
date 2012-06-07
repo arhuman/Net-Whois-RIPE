@@ -17,6 +17,7 @@ lib/Net/Whois/Object/Organisation.pm
 lib/Net/Whois/Object/PeeringSet.pm
 lib/Net/Whois/Object/Person.pm
 lib/Net/Whois/Object/Poem.pm
+lib/Net/Whois/Object/PoeticForm.pm
 lib/Net/Whois/Object/Response.pm
 lib/Net/Whois/Object/Role.pm
 lib/Net/Whois/Object/Route.pm
@@ -51,6 +52,7 @@ t/170-RouteSet.t
 t/175-PeeringSet.t
 t/180-Limerick.t
 t/185-Poem.t
+t/187-PoeticForm.t
 t/190-Organisation.t
 t/195-Response.t
 t/200-Information.t

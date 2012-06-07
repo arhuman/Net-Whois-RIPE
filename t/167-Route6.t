@@ -23,7 +23,11 @@ can_ok $object,
     qw( new ),
 
     # OO Support
+<<<<<<< HEAD
+    qw( query_filter filtered_attributes displayed_attributes );
+=======
     qw( filter filtered_attributes displayed_attributes );
+>>>>>>> e4eb3dd... Add Irt and Route6 objects
 
 can_ok $object, qw( route6 descr country origin org holes member_of inject aggr_mtd
 aggr_bndry export_comps components remarks notify mnt_lower mnt_routes mnt_by

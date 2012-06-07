@@ -2,7 +2,8 @@ package Net::Whois::Object::Poem;
 
 use base qw/Net::Whois::Object/;
 
-# From  http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-21
+# http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-21
+# APNIC ??
 #
 # poem:         [mandatory]     [single]    [primary/look-up key]
 # descr:        [optional]      [multiple]  [ ]

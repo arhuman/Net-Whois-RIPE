@@ -2,7 +2,8 @@ package Net::Whois::Object::Route;
 
 use base qw/Net::Whois::Object/;
 
-# From ripe-223 
+# http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-25
+# http://www.apnic.net/apnic-info/whois_search/using-whois/guide/route
 #
 # route:         [mandatory]  [single]     [primary/look-up key]
 # descr:         [mandatory]  [multiple]   [ ]

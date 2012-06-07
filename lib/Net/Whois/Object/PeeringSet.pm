@@ -2,7 +2,8 @@ package Net::Whois::Object::PeeringSet;
 
 use base qw/Net::Whois::Object/;
 
-# From ripe-223 
+# http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-19
+# http://www.apnic.net/apnic-info/whois_search/using-whois/guide/peering-set
 #
 # peering-set:   [mandatory]  [single]     [primary/look-up key]
 # descr:         [mandatory]  [multiple]   [ ]
