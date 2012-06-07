@@ -1,20 +1,19 @@
 Revision history for net-whois-ripe
 
-2.00011     05 Jun 2012
+2.00012     05 Jun 2012
+            Fix previous broken release (merge goof)
             Fix some tests
                 to skip when there's a Network issue
                 to adapt to the current type of objects managed 
                 (21 instead of 22, Limerick being removed)
-<<<<<<< HEAD
             Add Route6, PoeticForm and Irt objects
             Add various missing attribute to the RIPE objects.
             Renamed Net::Whois::Object filter attribute to query_filter
             (to fix name collision with FilterSet filter attribute)
             Enhance the documentation
-=======
-            Add Route6 and Irt objects
-            Fix the documentation
->>>>>>> e4eb3dd... Add Irt and Route6 objects
+
+2.00011     05 Jun 2012
+            Broken release on github.
 
 2.00010     20 Apr 2012
             Net::Whois::Object addition (By Arnaud "Arhuman" Assad)

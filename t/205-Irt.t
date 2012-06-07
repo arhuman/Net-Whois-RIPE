@@ -23,11 +23,7 @@ can_ok $object,
     qw( new ),
 
     # OO Support
-<<<<<<< HEAD
     qw( query_filter filtered_attributes displayed_attributes );
-=======
-    qw( filter filtered_attributes displayed_attributes );
->>>>>>> e4eb3dd... Add Irt and Route6 objects
 
 can_ok $object, qw( irt phone fax_no e_mail abuse_mailbox signature encryption admin_c tech_c auth remarks irt_nfy notify mnt_by changed);
 
@@ -57,13 +53,10 @@ is_deeply ($object->encryption(),[ 'PGPKEY-0F0F0F0F' ],'encryption properly pars
 $object->encryption('PGPKEY-0F0F0FFF');
 is ($object->encryption()->[1],'PGPKEY-0F0F0FFF','encryption properly added');
 
-<<<<<<< HEAD
 is_deeply ($object->org(),[ 'ORG-MISC01-RIPE' ],'org properly parsed');
 $object->org('someone@elsewhere.com');
 is ($object->org()->[1],'someone@elsewhere.com','org properly added');
 
-=======
->>>>>>> e4eb3dd... Add Irt and Route6 objects
 is_deeply ($object->remarks(),[ 'No remarks', '24/24 7/7',
         'https://www.demo.com' ],'remarks properly parsed');
 $object->remarks('Added remarks');
@@ -110,10 +103,7 @@ phone:          +33 102030405
 fax-no:         +33 102030405
 signature:      PGPKEY-F0F0F0F0
 encryption:     PGPKEY-0F0F0F0F
-<<<<<<< HEAD
 org:            ORG-MISC01-RIPE
-=======
->>>>>>> e4eb3dd... Add Irt and Route6 objects
 remarks:        No remarks
 irt-nfy:        notify@demo.com
 mnt-by:         MAINT-DEMO-COM

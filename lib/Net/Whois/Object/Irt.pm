@@ -2,12 +2,8 @@ package Net::Whois::Object::Irt;
 
 use base qw/Net::Whois::Object/;
 
-<<<<<<< HEAD
 # http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-15
 # http://www.apnic.net/apnic-info/whois_search/using-whois/guide/irt
-=======
-# From http://www.apnic.net/apnic-info/whois_search/using-whois/guide/irt
->>>>>>> e4eb3dd... Add Irt and Route6 objects
 #
 # irt:            [mandatory]  [single]     [primary/lookup key]
 # address:        [mandatory]  [multiple]   [ ]
@@ -17,10 +13,7 @@ use base qw/Net::Whois::Object/;
 # abuse-mailbox:  [mandatory]  [multiple]   [inverse key]
 # signature:      [optional]   [multiple]   [ ]
 # encryption:     [optional]   [multiple]   [ ]
-<<<<<<< HEAD
 # org:            [optional]   [multiple]   [inverse key]
-=======
->>>>>>> e4eb3dd... Add Irt and Route6 objects
 # admin-c:        [mandatory]  [multiple]   [inverse key]
 # tech-c:         [mandatory]  [multiple]   [inverse key]
 # auth:           [mandatory]  [multiple]   [inverse key]
@@ -31,10 +24,6 @@ use base qw/Net::Whois::Object/;
 # changed:        [mandatory]  [multiple]   [ ]
 # source:         [mandatory]  [single]     [ ]
 
-<<<<<<< HEAD
-=======
-
->>>>>>> e4eb3dd... Add Irt and Route6 objects
 =head1 NAME
 
 Net::Whois::Object::Irt - an object representation of the RPSL Irt block
@@ -73,21 +62,15 @@ sub new {
 Accessor to the irt attribute.
 Accepts an optional irt, always return the current irt.
 
-<<<<<<< HEAD
 The irt object name starts with "IRT-".
 
-=======
->>>>>>> e4eb3dd... Add Irt and Route6 objects
 =cut
 
 sub irt {
     my ( $self, $irt ) = @_;
-<<<<<<< HEAD
     if ( $irt and $irt !~ /^IRT-/i ) {
         warn "Irt name not valid ($irt) : Should start with 'IRT-'";
     }
-=======
->>>>>>> e4eb3dd... Add Irt and Route6 objects
     $self->{irt} = $irt if defined $irt;
     return $self->{irt};
 }
@@ -98,14 +81,11 @@ Accessor to the address attribute.
 Accepts an optional address to be added to the address array,
 always return the current address array.
 
-<<<<<<< HEAD
 Full postal address of a contact.
 
 You can use any combination of alphanumeric characters.
 More than one line can be used.
 
-=======
->>>>>>> e4eb3dd... Add Irt and Route6 objects
 =cut
 
 sub address {
@@ -120,7 +100,6 @@ Accessor to the phone attribute.
 Accepts an optional phone number to be added to the phone array,
 always return the current phone array.
 
-<<<<<<< HEAD
 A contact telephone number.
 
 + <international code> <area code> <phone #>
@@ -130,8 +109,6 @@ A contact telephone number.
  EXAMPLE
  phone: +681 368 0844 ext. 32
 
-=======
->>>>>>> e4eb3dd... Add Irt and Route6 objects
 =cut
 
 sub phone {
@@ -146,13 +123,10 @@ Accessor to the fax_no attribute.
 Accepts an optional fax_no to be added to the fax_no array,
 always return the current fax_no array.
 
-<<<<<<< HEAD
 A contact fax number.
 
 + <international code> <area code> <fax #>
 
-=======
->>>>>>> e4eb3dd... Add Irt and Route6 objects
 =cut
 
 sub fax_no {
@@ -167,11 +141,8 @@ Accessor to the e_mail attribute.
 Accepts an optional e_mail to be added to the e_mail array,
 always return the current e_mail array.
 
-<<<<<<< HEAD
 A contact email address for non-abuse/technical incidents.
 
-=======
->>>>>>> e4eb3dd... Add Irt and Route6 objects
 =cut
 
 sub e_mail {
@@ -186,11 +157,8 @@ Accessor to the abuse_mailbox attribute.
 Accepts an optional abuse_mailbox to be added to the abuse_mailbox array,
 always return the current abuse_mailbox array.
 
-<<<<<<< HEAD
 Specifies the email address to which abuse complaints should be sent.
 
-=======
->>>>>>> e4eb3dd... Add Irt and Route6 objects
 =cut
 
 sub abuse_mailbox {
@@ -205,12 +173,9 @@ Accessor to the signature attribute.
 Accepts an optional signature to be added to the signature array,
 always return the current signature array.
 
-<<<<<<< HEAD
 References a KeyCert object representing a CSIRT public key used by the
 team to sign their correspondence.
 
-=======
->>>>>>> e4eb3dd... Add Irt and Route6 objects
 =cut
 
 sub signature {
@@ -225,12 +190,9 @@ Accessor to the encryption attribute.
 Accepts an optional encryption to be added to the encryption array,
 always return the current encryption array.
 
-<<<<<<< HEAD
 References a KeyCert object representing a CSIRT public key used to encrypt
 correspondence sent to the CSIRT.
 
-=======
->>>>>>> e4eb3dd... Add Irt and Route6 objects
 =cut
 
 sub encryption {
@@ -239,7 +201,6 @@ sub encryption {
     return \@{ $self->{encryption} };
 }
 
-<<<<<<< HEAD
 =head2 B<org( [$org] )>
 
 Accessor to the org attribute.
@@ -256,20 +217,15 @@ sub org {
     return \@{ $self->{org} };
 }
 
-=======
->>>>>>> e4eb3dd... Add Irt and Route6 objects
 =head2 B<auth( [$auth] )>
 
 Accessor to the auth attribute.
 Accepts an optional auth to be added to the auth array,
 always return the current auth array.
 
-<<<<<<< HEAD
 The Auth defines an authentication scheme to be used. Any of the current
 authentication schemes used by the RIPE Database are allowed.
 
-=======
->>>>>>> e4eb3dd... Add Irt and Route6 objects
 =cut
 
 sub auth {
@@ -284,15 +240,12 @@ Accessor to the admin_c attribute.
 Accepts an optional contact to be added to the admin_c array,
 always return the current admin_c array.
 
-<<<<<<< HEAD
 The NIC-handle of an on-site administrative contact. As more than one person
 often fulfills a role function, there may be more than one admin_c listed.
 
 An administrative contact (admin_c) must be someone who is physically
 located at the site of the network.
 
-=======
->>>>>>> e4eb3dd... Add Irt and Route6 objects
 =cut
 
 sub admin_c {
@@ -307,7 +260,6 @@ Accessor to the tech_c attribute.
 Accepts an optional contact to be added to the tech_c array,
 always return the current tech_c array.
 
-<<<<<<< HEAD
 The NIC-handle of a technical contact. As more than one person often fulfills
 a role function, there may be more than one tech_c listed.
 
@@ -315,8 +267,6 @@ A technical contact (tech_c) must be a person responsible for the
 day-to-day operation of the network, but does not need to be
 physically located at the site of the network.
 
-=======
->>>>>>> e4eb3dd... Add Irt and Route6 objects
 =cut
 
 sub tech_c {
@@ -331,11 +281,8 @@ Accessor to the remarks attribute.
 Accepts an optional remark to be added to the remarks array,
 always return the current remarks array.
 
-<<<<<<< HEAD
 Information about the object that cannot be stated in other attributes.
 
-=======
->>>>>>> e4eb3dd... Add Irt and Route6 objects
 =cut
 
 sub remarks {
@@ -350,12 +297,9 @@ Accessor to the notify attribute.
 Accepts an optional notify value to be added to the notify array,
 always return the current notify array.
 
-<<<<<<< HEAD
 The email address to which notifications of changes to this object should
 be sent.
 
-=======
->>>>>>> e4eb3dd... Add Irt and Route6 objects
 =cut
 
 sub notify {
@@ -370,12 +314,9 @@ Accessor to the mnt_by attribute.
 Accepts an optional mnt_by value to be added to the mnt_by array,
 always return the current mnt_by array.
 
-<<<<<<< HEAD
 Lists a registered Mntner used to authorize and authenticate changes to
 this object.
 
-=======
->>>>>>> e4eb3dd... Add Irt and Route6 objects
 =cut
 
 sub mnt_by {
@@ -390,7 +331,6 @@ Accessor to the changed attribute.
 Accepts an optional changed value to be added to the changed array,
 always return the current changed array.
 
-<<<<<<< HEAD
 The email address of who last updated the database object and the date it
 occurred.
 
@@ -400,8 +340,6 @@ Please use the address format specified in RFC 822 - Standard for
 the Format of ARPA Internet Text Message and provide the date
 format using one of the following two formats: YYYYMMDD or YYMMDD.
 
-=======
->>>>>>> e4eb3dd... Add Irt and Route6 objects
 =cut
 
 sub changed {
@@ -415,11 +353,8 @@ sub changed {
 Accessor to the source attribute.
 Accepts an optional source, always return the current source.
 
-<<<<<<< HEAD
 The database where the object is registered.
 
-=======
->>>>>>> e4eb3dd... Add Irt and Route6 objects
 =cut
 
 sub source {
@@ -434,12 +369,9 @@ Accessor to the irt_nfy attribute.
 Accepts an optional irt_nfy value to be added to the irt_nfy array,
 always return the current irt_nfy array.
 
-<<<<<<< HEAD
 The irt_nfy attribute specifies the email address to be notified when a
 reference to the irt object is added or removed.
 
-=======
->>>>>>> e4eb3dd... Add Irt and Route6 objects
 =cut
 
 sub irt_nfy {
