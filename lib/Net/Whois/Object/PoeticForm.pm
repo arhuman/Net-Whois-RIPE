@@ -5,7 +5,7 @@ use base qw/Net::Whois::Object/;
 # http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-22
 # APNIC ??
 #
-# 
+#
 # poetic-form:  [mandatory]     [single]    [primary/look-up key]
 # descr:        [optional]      [multiple]  [ ]
 # admin-c:      [mandatory]     [multiple]  [inverse key]
@@ -42,11 +42,11 @@ sub new {
         $self->$key( $options{$key} );
     }
 
-    $self->attributes('primary',['poetic_form']);
-    $self->attributes('mandatory',['poetic_form', 'admin_c', 'mnt_by', 'changed', 'source']);
+    $self->attributes( 'primary', ['poetic_form'] );
+    $self->attributes( 'mandatory', [ 'poetic_form', 'admin_c', 'mnt_by', 'changed', 'source' ] );
     $self->attributes( 'optionnal', [ 'descr', 'remarks', 'notify' ] );
-    $self->attributes('single',['poetic_form', 'source']);
-    $self->attributes('multiple',['descr', 'admin_c', 'remarks', 'notify', 'mnt_by', 'changed' ] );
+    $self->attributes( 'single', [ 'poetic_form', 'source' ] );
+    $self->attributes( 'multiple', [ 'descr', 'admin_c', 'remarks', 'notify', 'mnt_by', 'changed' ] );
 
     return $self;
 }
@@ -61,7 +61,7 @@ Accepts an optional poetic_form, always return the current poetic_form.
 sub poetic_form {
     my ( $self, $poetic_form ) = @_;
 
-    return $self->_single_attribute_setget('poetic_form', $poetic_form);
+    return $self->_single_attribute_setget( 'poetic_form', $poetic_form );
 }
 
 =head2 B<descr( [$descr] )>
@@ -75,7 +75,7 @@ always return the current descr array.
 sub descr {
     my ( $self, $descr ) = @_;
 
-    return $self->_multiple_attribute_setget('descr', $descr);
+    return $self->_multiple_attribute_setget( 'descr', $descr );
 }
 
 =head2 B<admin_c( [$contact] )>
@@ -89,7 +89,7 @@ always return the current admin_c array.
 sub admin_c {
     my ( $self, $contact ) = @_;
 
-    return $self->_multiple_attribute_setget('admin_c', $contact);
+    return $self->_multiple_attribute_setget( 'admin_c', $contact );
 }
 
 =head2 B<remarks( [$remark] )>
@@ -103,7 +103,7 @@ always return the current remarks array.
 sub remarks {
     my ( $self, $remark ) = @_;
 
-    return $self->_multiple_attribute_setget('remarks', $remark);
+    return $self->_multiple_attribute_setget( 'remarks', $remark );
 }
 
 =head2 B<notify( [$notify] )>
@@ -117,7 +117,7 @@ always return the current notify array.
 sub notify {
     my ( $self, $notify ) = @_;
 
-    return $self->_multiple_attribute_setget('notify', $notify);
+    return $self->_multiple_attribute_setget( 'notify', $notify );
 }
 
 =head2 B<mnt_by( [$mnt_by] )>
@@ -131,7 +131,7 @@ always return the current mnt_by array.
 sub mnt_by {
     my ( $self, $mnt_by ) = @_;
 
-    return $self->_multiple_attribute_setget('mnt_by', $mnt_by);
+    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
 }
 
 =head2 B<changed( [$changed] )>
@@ -145,7 +145,7 @@ always return the current changed array.
 sub changed {
     my ( $self, $changed ) = @_;
 
-    return $self->_multiple_attribute_setget('changed', $changed);
+    return $self->_multiple_attribute_setget( 'changed', $changed );
 }
 
 =head2 B<source( [$source] )>
@@ -158,7 +158,7 @@ Accepts an optional source, always return the current source.
 sub source {
     my ( $self, $source ) = @_;
 
-    return $self->_single_attribute_setget('source', $source);
+    return $self->_single_attribute_setget( 'source', $source );
 }
 
 1;

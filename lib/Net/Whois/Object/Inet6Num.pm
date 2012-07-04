@@ -53,12 +53,11 @@ sub new {
         $self->$key( $options{$key} );
     }
 
-    $self->attributes('primary',['inet6num']);
-    $self->attributes('mandatory',['inet6num', 'netname', 'org', 'status', 'source']);
+    $self->attributes( 'primary',   ['inet6num'] );
+    $self->attributes( 'mandatory', [ 'inet6num', 'netname', 'status', 'source' ] );
     $self->attributes( 'optionnal', [ 'org', 'remarks', 'notify', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt' ] );
-    $self->attributes('single',['inet6num', 'netname', 'org', 'status', 'source']);
-    $self->attributes('multiple',['descr', 'country', 'tech_c', 'admin_c',
-            'remarks', 'notify', 'mnt_by', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt', 'changed']);
+    $self->attributes( 'single', [ 'inet6num', 'netname', 'org', 'status', 'source' ] );
+    $self->attributes( 'multiple', [ 'descr', 'country', 'tech_c', 'admin_c', 'remarks', 'notify', 'mnt_by', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt', 'changed' ] );
 
     return $self;
 }
@@ -78,7 +77,7 @@ Addresses can only be expressed in prefix notation
 sub inet6num {
     my ( $self, $inet6num ) = @_;
 
-    return $self->_single_attribute_setget('inet6num',$inet6num);
+    return $self->_single_attribute_setget( 'inet6num', $inet6num );
 }
 
 =head2 B<netname( [$netname] )>
@@ -95,7 +94,7 @@ used for a common purpose.
 sub netname {
     my ( $self, $netname ) = @_;
 
-    return $self->_single_attribute_setget('netname',$netname);
+    return $self->_single_attribute_setget( 'netname', $netname );
 }
 
 =head2 B<descr( [$descr] )>
@@ -112,7 +111,7 @@ in the inet6num.
 sub descr {
     my ( $self, $descr ) = @_;
 
-    return $self->_multiple_attribute_setget('descr',$descr);
+    return $self->_multiple_attribute_setget( 'descr', $descr );
 }
 
 =head2 B<country( [$country] )>
@@ -132,7 +131,7 @@ map IP addresses to countries.
 sub country {
     my ( $self, $country ) = @_;
 
-    return $self->_multiple_attribute_setget('country',$country);
+    return $self->_multiple_attribute_setget( 'country', $country );
 }
 
 =head2 B<org( [$org] )>
@@ -149,7 +148,7 @@ resource.
 sub org {
     my ( $self, $org ) = @_;
 
-    return $self->_single_attribute_setget('org',$org);
+    return $self->_single_attribute_setget( 'org', $org );
 }
 
 =head2 B<admin_c( [$contact] )>
@@ -169,7 +168,7 @@ located at the site of the network.
 sub admin_c {
     my ( $self, $contact ) = @_;
 
-    return $self->_multiple_attribute_setget('admin_c',$contact);
+    return $self->_multiple_attribute_setget( 'admin_c', $contact );
 }
 
 =head2 B<tech_c( [$contact] )>
@@ -190,7 +189,7 @@ day-to-day operation of the network, but does not need to be
 sub tech_c {
     my ( $self, $contact ) = @_;
 
-    return $self->_multiple_attribute_setget('tech_c',$contact);
+    return $self->_multiple_attribute_setget( 'tech_c', $contact );
 }
 
 =head2 B<status( [$status] )>
@@ -222,7 +221,7 @@ Status can have one of these values:
 sub status {
     my ( $self, $status ) = @_;
 
-    return $self->_single_attribute_setget('status',$status);
+    return $self->_single_attribute_setget( 'status', $status );
 }
 
 =head2 B<remarks( [$remark] )>
@@ -239,7 +238,7 @@ complaints.
 sub remarks {
     my ( $self, $remark ) = @_;
 
-    return $self->_multiple_attribute_setget('remarks',$remark);
+    return $self->_multiple_attribute_setget( 'remarks', $remark );
 }
 
 =head2 B<notify( [$notify] )>
@@ -256,7 +255,7 @@ sent.
 sub notify {
     my ( $self, $notify ) = @_;
 
-    return $self->_multiple_attribute_setget('notify',$notify);
+    return $self->_multiple_attribute_setget( 'notify', $notify );
 }
 
 =head2 B<mnt_by( [$mnt_by] )>
@@ -270,7 +269,7 @@ always return the current mnt_by array.
 sub mnt_by {
     my ( $self, $mnt_by ) = @_;
 
-    return $self->_multiple_attribute_setget('mnt_by',$mnt_by);
+    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
 }
 
 =head2 B<mnt_lower( [$mnt_lower] )>
@@ -287,7 +286,7 @@ used as well as 'mnt-by.'
 sub mnt_lower {
     my ( $self, $mnt_lower ) = @_;
 
-    return $self->_multiple_attribute_setget('mnt_lower',$mnt_lower);
+    return $self->_multiple_attribute_setget( 'mnt_lower', $mnt_lower );
 }
 
 =head2 B<mnt_routes( [$mnt_route] )>
@@ -305,7 +304,7 @@ object.
 sub mnt_routes {
     my ( $self, $mnt_route ) = @_;
 
-    return $self->_multiple_attribute_setget('mnt_routes',$mnt_route);
+    return $self->_multiple_attribute_setget( 'mnt_routes', $mnt_route );
 }
 
 =head2 B<mnt_domains( [$mnt_route] )>
@@ -323,7 +322,7 @@ object.
 sub mnt_domains {
     my ( $self, $mnt_route ) = @_;
 
-    return $self->_multiple_attribute_setget('mnt_domains',$mnt_route);
+    return $self->_multiple_attribute_setget( 'mnt_domains', $mnt_route );
 }
 
 =head2 B<mnt_irt( [$mnt_irt] )>
@@ -340,7 +339,7 @@ object to be able to add this reference.
 sub mnt_irt {
     my ( $self, $mnt_irt ) = @_;
 
-    return $self->_multiple_attribute_setget('mnt_irt',$mnt_irt);
+    return $self->_multiple_attribute_setget( 'mnt_irt', $mnt_irt );
 }
 
 =head2 B<changed( [$changed] )>
@@ -363,7 +362,7 @@ format using one of the following two formats: YYYYMMDD or YYMMDD.
 sub changed {
     my ( $self, $changed ) = @_;
 
-    return $self->_multiple_attribute_setget('changed',$changed);
+    return $self->_multiple_attribute_setget( 'changed', $changed );
 }
 
 =head2 B<source( [$source] )>
@@ -378,7 +377,7 @@ The database where the object is registered.
 sub source {
     my ( $self, $source ) = @_;
 
-    return $self->_single_attribute_setget('source',$source);
+    return $self->_single_attribute_setget( 'source', $source );
 }
 
 1;

@@ -48,11 +48,11 @@ sub new {
         $self->$key( $options{$key} );
     }
 
-    $self->attributes('primary',['inet_rtr']);
-    $self->attributes('mandatory',['inet_rtr',  'descr', 'local_as', 'ifaddr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source']);
+    $self->attributes( 'primary', ['inet_rtr'] );
+    $self->attributes( 'mandatory', [ 'inet_rtr', 'descr', 'local_as', 'ifaddr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
     $self->attributes( 'optionnal', [ 'alias', 'interface', 'peer', 'mp_peer', 'member_of', 'remarks', 'org', 'notify' ] );
-    $self->attributes('single',['inet_rtr', 'local_as', 'source']);
-    $self->attributes('multiple',['descr', 'remarks', 'alias', 'ifaddr', 'interface', 'peer', 'mp_peer', 'member_of', 'org', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'changed']);
+    $self->attributes( 'single', [ 'inet_rtr', 'local_as', 'source' ] );
+    $self->attributes( 'multiple', [ 'descr', 'remarks', 'alias', 'ifaddr', 'interface', 'peer', 'mp_peer', 'member_of', 'org', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'changed' ] );
 
     return $self;
 }
@@ -70,7 +70,7 @@ dot.
 sub inet_rtr {
     my ( $self, $inet_rtr ) = @_;
 
-    return $self->_single_attribute_setget('inet_rtr',$inet_rtr);
+    return $self->_single_attribute_setget( 'inet_rtr', $inet_rtr );
 }
 
 =head2 B<descr( [$descr] )>
@@ -86,7 +86,7 @@ A short description related to the object's purpose.
 sub descr {
     my ( $self, $descr ) = @_;
 
-    return $self->_multiple_attribute_setget('descr',$descr);
+    return $self->_multiple_attribute_setget( 'descr', $descr );
 }
 
 =head2 B<alias( [$alias] )>
@@ -103,7 +103,7 @@ specified router.
 sub alias {
     my ( $self, $alias ) = @_;
 
-    return $self->_multiple_attribute_setget('alias',$alias);
+    return $self->_multiple_attribute_setget( 'alias', $alias );
 }
 
 =head2 B<local_as( [$local_as] )>
@@ -119,7 +119,7 @@ operates this router.
 sub local_as {
     my ( $self, $local_as ) = @_;
 
-    return $self->_single_attribute_setget('local_as',$local_as);
+    return $self->_single_attribute_setget( 'local_as', $local_as );
 }
 
 =head2 B<ifaddr( [$ifaddr] )>
@@ -137,7 +137,7 @@ interface.
 sub ifaddr {
     my ( $self, $ifaddr ) = @_;
 
-    return $self->_multiple_attribute_setget('ifaddr',$ifaddr);
+    return $self->_multiple_attribute_setget( 'ifaddr', $ifaddr );
 }
 
 =head2 B<peer( [$peer] )>
@@ -154,7 +154,7 @@ peering.
 sub peer {
     my ( $self, $peer ) = @_;
 
-    return $self->_multiple_attribute_setget('peer',$peer);
+    return $self->_multiple_attribute_setget( 'peer', $peer );
 }
 
 =head2 B<member_of( [$member_of] )>
@@ -172,7 +172,7 @@ respective mbrs-by-ref attribute in the referenced object.
 sub member_of {
     my ( $self, $member_of ) = @_;
 
-    return $self->_multiple_attribute_setget('member_of',$member_of);
+    return $self->_multiple_attribute_setget( 'member_of', $member_of );
 }
 
 =head2 B<remarks( [$remark] )>
@@ -189,7 +189,7 @@ complaints.
 sub remarks {
     my ( $self, $remark ) = @_;
 
-    return $self->_multiple_attribute_setget('remarks',$remark);
+    return $self->_multiple_attribute_setget( 'remarks', $remark );
 }
 
 =head2 B<admin_c( [$contact] )>
@@ -209,7 +209,7 @@ located at the site of the network.
 sub admin_c {
     my ( $self, $contact ) = @_;
 
-    return $self->_multiple_attribute_setget('admin_c',$contact);
+    return $self->_multiple_attribute_setget( 'admin_c', $contact );
 }
 
 =head2 B<tech_c( [$contact] )>
@@ -231,7 +231,7 @@ physically located at the site of the network.
 sub tech_c {
     my ( $self, $contact ) = @_;
 
-    return $self->_multiple_attribute_setget('tech_c',$contact);
+    return $self->_multiple_attribute_setget( 'tech_c', $contact );
 }
 
 =head2 B<notify( [$notify] )>
@@ -248,7 +248,7 @@ be sent.
 sub notify {
     my ( $self, $notify ) = @_;
 
-    return $self->_multiple_attribute_setget('notify',$notify);
+    return $self->_multiple_attribute_setget( 'notify', $notify );
 }
 
 =head2 B<mnt_by( [$mnt_by] )>
@@ -265,7 +265,7 @@ object.
 sub mnt_by {
     my ( $self, $mnt_by ) = @_;
 
-    return $self->_multiple_attribute_setget('mnt_by',$mnt_by);
+    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
 }
 
 =head2 B<changed( [$changed] )>
@@ -288,7 +288,7 @@ format using one of the following two formats: YYYYMMDD or YYMMDD.
 sub changed {
     my ( $self, $changed ) = @_;
 
-    return $self->_multiple_attribute_setget('changed',$changed);
+    return $self->_multiple_attribute_setget( 'changed', $changed );
 }
 
 =head2 B<source( [$source] )>
@@ -303,7 +303,7 @@ The database where the object is registered.
 sub source {
     my ( $self, $source ) = @_;
 
-    return $self->_single_attribute_setget('source',$source);
+    return $self->_single_attribute_setget( 'source', $source );
 }
 
 =head2 B<mp_peer( [$peer] )>
@@ -323,7 +323,7 @@ The mp-peer attribute extends the peer attribute for IPv6 addresses.
 sub mp_peer {
     my ( $self, $mp_peer ) = @_;
 
-    return $self->_multiple_attribute_setget('mp_peer',$mp_peer);
+    return $self->_multiple_attribute_setget( 'mp_peer', $mp_peer );
 }
 
 =head2 B<interface( [$interface] )>
@@ -340,7 +340,7 @@ an Internet router, optional action and tunnel definition.
 sub interface {
     my ( $self, $interface ) = @_;
 
-    return $self->_multiple_attribute_setget('interface',$interface);
+    return $self->_multiple_attribute_setget( 'interface', $interface );
 }
 
 =head2 B<org( [$org] )>
@@ -356,7 +356,7 @@ The organisation entity this object is bound to.
 sub org {
     my ( $self, $org ) = @_;
 
-    return $self->_multiple_attribute_setget('org',$org);
+    return $self->_multiple_attribute_setget( 'org', $org );
 }
 
 1;

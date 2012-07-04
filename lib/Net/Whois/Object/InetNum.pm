@@ -23,7 +23,6 @@ use base qw/Net::Whois::Object/;
 # changed:       [mandatory]  [multiple]   [ ]
 # source:        [mandatory]  [single]     [ ]
 
-
 # From  http://www.apnic.net/apnic-info/whois_search/using-whois/guide/inetnum?view=text-only
 #
 # mnt-irt:        [mandatory]  [multiple]   [inverse key]
@@ -55,12 +54,11 @@ sub new {
         $self->$key( $options{$key} );
     }
 
-    $self->attributes('primary',['inetnum']);
-    $self->attributes('mandatory',['inetnum', 'netname', 'descr', 'country', 'tech_c', 'admin_c', 'status', 'mnt_by', 'changed', 'source']);
+    $self->attributes( 'primary', ['inetnum'] );
+    $self->attributes( 'mandatory', [ 'inetnum', 'netname', 'descr', 'country', 'tech_c', 'admin_c', 'status', 'mnt_by', 'changed', 'source' ] );
     $self->attributes( 'optionnal', [ 'org', 'remarks', 'notify', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt' ] );
-    $self->attributes('single',['inetnum', 'netname', 'org', 'status', 'source']);
-    $self->attributes('multiple',['descr', 'country', 'tech_c', 'admin_c',
-            'remarks', 'notify', 'mnt_by', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt', 'changed']);
+    $self->attributes( 'single', [ 'inetnum', 'netname', 'org', 'status', 'source' ] );
+    $self->attributes( 'multiple', [ 'descr', 'country', 'tech_c', 'admin_c', 'remarks', 'notify', 'mnt_by', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt', 'changed' ] );
 
     return $self;
 }
@@ -75,7 +73,7 @@ Accepts an optional inetnum value, always return the current inetnum value.
 sub inetnum {
     my ( $self, $inetnum ) = @_;
 
-    return $self->_single_attribute_setget('inetnum',$inetnum);
+    return $self->_single_attribute_setget( 'inetnum', $inetnum );
 }
 
 =head2 B<netname( [$netname] )>
@@ -88,7 +86,7 @@ Accepts an optional netname, always return the current netname.
 sub netname {
     my ( $self, $netname ) = @_;
 
-    return $self->_single_attribute_setget('netname',$netname);
+    return $self->_single_attribute_setget( 'netname', $netname );
 }
 
 =head2 B<descr( [$descr] )>
@@ -102,7 +100,7 @@ always return the current descr array.
 sub descr {
     my ( $self, $descr ) = @_;
 
-    return $self->_multiple_attribute_setget('descr',$descr);
+    return $self->_multiple_attribute_setget( 'descr', $descr );
 }
 
 =head2 B<country( [$country] )>
@@ -116,7 +114,7 @@ always return the current country array.
 sub country {
     my ( $self, $country ) = @_;
 
-    return $self->_multiple_attribute_setget('country',$country);
+    return $self->_multiple_attribute_setget( 'country', $country );
 }
 
 =head2 B<org( [$org] )>
@@ -132,7 +130,7 @@ This is to ensure only one organisation is responsible for this resource.
 sub org {
     my ( $self, $org ) = @_;
 
-    return $self->_single_attribute_setget('org',$org);
+    return $self->_single_attribute_setget( 'org', $org );
 }
 
 =head2 B<admin_c( [$contact] )>
@@ -152,7 +150,7 @@ located at the site of the network.
 sub admin_c {
     my ( $self, $contact ) = @_;
 
-    return $self->_multiple_attribute_setget('admin_c',$contact);
+    return $self->_multiple_attribute_setget( 'admin_c', $contact );
 }
 
 =head2 B<tech_c( [$contact] )>
@@ -174,7 +172,7 @@ physically located at the site of the network.
 sub tech_c {
     my ( $self, $contact ) = @_;
 
-    return $self->_multiple_attribute_setget('tech_c',$contact);
+    return $self->_multiple_attribute_setget( 'tech_c', $contact );
 }
 
 =head2 B<status( [$status] )>
@@ -218,7 +216,7 @@ Status can have one of these values:
 sub status {
     my ( $self, $status ) = @_;
 
-    return $self->_single_attribute_setget('status',$status);
+    return $self->_single_attribute_setget( 'status', $status );
 }
 
 =head2 B<remarks( [$remark] )>
@@ -235,7 +233,7 @@ complaints.
 sub remarks {
     my ( $self, $remark ) = @_;
 
-    return $self->_multiple_attribute_setget('remarks',$remark);
+    return $self->_multiple_attribute_setget( 'remarks', $remark );
 }
 
 =head2 B<notify( [$notify] )>
@@ -252,7 +250,7 @@ sent.
 sub notify {
     my ( $self, $notify ) = @_;
 
-    return $self->_multiple_attribute_setget('notify',$notify);
+    return $self->_multiple_attribute_setget( 'notify', $notify );
 }
 
 =head2 B<mnt_by( [$mnt_by] )>
@@ -269,7 +267,7 @@ object.
 sub mnt_by {
     my ( $self, $mnt_by ) = @_;
 
-    return $self->_multiple_attribute_setget('mnt_by',$mnt_by);
+    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
 }
 
 =head2 B<mnt_lower( [$mnt_lower] )>
@@ -286,7 +284,7 @@ used as well as mnt_by.
 sub mnt_lower {
     my ( $self, $mnt_lower ) = @_;
 
-    return $self->_multiple_attribute_setget('mnt_lower',$mnt_lower);
+    return $self->_multiple_attribute_setget( 'mnt_lower', $mnt_lower );
 }
 
 =head2 B<mnt_routes( [$mnt_route] )>
@@ -304,7 +302,7 @@ object.
 sub mnt_routes {
     my ( $self, $mnt_route ) = @_;
 
-    return $self->_multiple_attribute_setget('mnt_route',$mnt_route);
+    return $self->_multiple_attribute_setget( 'mnt_route', $mnt_route );
 }
 
 =head2 B<mnt_domains( [$mnt_domain] )>
@@ -322,7 +320,7 @@ object.
 sub mnt_domains {
     my ( $self, $mnt_domain ) = @_;
 
-    return $self->_multiple_attribute_setget('mnt_domain',$mnt_domain);
+    return $self->_multiple_attribute_setget( 'mnt_domain', $mnt_domain );
 }
 
 =head2 B<changed( [$changed] )>
@@ -345,7 +343,7 @@ format using one of the following two formats: YYYYMMDD or YYMMDD.
 sub changed {
     my ( $self, $changed ) = @_;
 
-    return $self->_multiple_attribute_setget('changed',$changed);
+    return $self->_multiple_attribute_setget( 'changed', $changed );
 }
 
 =head2 B<source( [$source] )>
@@ -360,7 +358,7 @@ The database where the object is registered.
 sub source {
     my ( $self, $source ) = @_;
 
-    return $self->_single_attribute_setget('source',$source);
+    return $self->_single_attribute_setget( 'source', $source );
 }
 
 =head2 B<mnt_irt( [$mnt_irt] )>
@@ -377,7 +375,7 @@ about a Computer Security Incident Response Team (CSIRT).
 sub mnt_irt {
     my ( $self, $mnt_irt ) = @_;
 
-    return $self->_multiple_attribute_setget('mnt_irt',$mnt_irt);
+    return $self->_multiple_attribute_setget( 'mnt_irt', $mnt_irt );
 }
 
 1;

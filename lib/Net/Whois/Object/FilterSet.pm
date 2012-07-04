@@ -46,11 +46,11 @@ sub new {
         $self->$key( $options{$key} );
     }
 
-    $self->attributes('primary',['filter_set']);
-    $self->attributes('mandatory',['filter_set', 'filter', 'mp_filter', 'source']);
-    $self->attributes( 'optionnal', [ 'remarks', 'org', 'notify', 'mnt_lower'] );
-    $self->attributes('single',['filter_set', 'filter', 'mp_filter', 'source']);
-    $self->attributes('multiple',['descr', 'remarks', 'org', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'mnt_lower', 'changed']);
+    $self->attributes( 'primary',   ['filter_set'] );
+    $self->attributes( 'mandatory', [ 'filter_set', 'filter', 'mp_filter', 'source' ] );
+    $self->attributes( 'optionnal', [ 'remarks', 'org', 'notify', 'mnt_lower' ] );
+    $self->attributes( 'single',    [ 'filter_set', 'filter', 'mp_filter', 'source' ] );
+    $self->attributes( 'multiple',  [ 'descr', 'remarks', 'org', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'mnt_lower', 'changed' ] );
 
     return $self;
 }
@@ -74,11 +74,11 @@ components of a hierarchical filter-name have to be filter_set names.
 
 sub filter_set {
     my ( $self, $filter_set ) = @_;
-    if ($filter_set and $filter_set !~/^fltr-/i) {
+    if ( $filter_set and $filter_set !~ /^fltr-/i ) {
         warn "Incorrect FilterSet's name ($filter_set) : Should start with 'FLTR-'";
     }
 
-    return $self->_single_attribute_setget('filter_set',$filter_set);
+    return $self->_single_attribute_setget( 'filter_set', $filter_set );
 }
 
 =head2 B<descr( [$descr] )>
@@ -94,7 +94,7 @@ A short description related to the object's purpose.
 sub descr {
     my ( $self, $descr ) = @_;
 
-    return $self->_multiple_attribute_setget('descr',$descr);
+    return $self->_multiple_attribute_setget( 'descr', $descr );
 }
 
 =head2 B<filter( [$filter] )>
@@ -113,7 +113,7 @@ you have said you want to see.
 sub filter {
     my ( $self, $filter ) = @_;
 
-    return $self->_single_attribute_setget('filter',$filter);
+    return $self->_single_attribute_setget( 'filter', $filter );
 }
 
 =head2 B<mp_filter( [$mp_filter] )>
@@ -129,7 +129,7 @@ a subset of these routes.
 sub mp_filter {
     my ( $self, $mp_filter ) = @_;
 
-    return $self->_single_attribute_setget('mp_filter',$mp_filter);
+    return $self->_single_attribute_setget( 'mp_filter', $mp_filter );
 }
 
 =head2 B<remarks( [$remark] )>
@@ -145,7 +145,7 @@ General remarks. May include a URL or email address.
 sub remarks {
     my ( $self, $remark ) = @_;
 
-    return $self->_multiple_attribute_setget('remarks',$remark);
+    return $self->_multiple_attribute_setget( 'remarks', $remark );
 }
 
 =head2 B<tech_c( [$contact] )>
@@ -167,7 +167,7 @@ physically located at the site of the network.
 sub tech_c {
     my ( $self, $contact ) = @_;
 
-    return $self->_multiple_attribute_setget('tech_c',$contact);
+    return $self->_multiple_attribute_setget( 'tech_c', $contact );
 }
 
 =head2 B<admin_c( [$contact] )>
@@ -187,7 +187,7 @@ located at the site of the network.
 sub admin_c {
     my ( $self, $contact ) = @_;
 
-    return $self->_multiple_attribute_setget('admin_c',$contact);
+    return $self->_multiple_attribute_setget( 'admin_c', $contact );
 }
 
 =head2 B<org( [$org] )>
@@ -203,7 +203,7 @@ The organisation responsible for this FilterSet object.
 sub org {
     my ( $self, $org ) = @_;
 
-    return $self->_multiple_attribute_setget('org',$org);
+    return $self->_multiple_attribute_setget( 'org', $org );
 }
 
 =head2 B<notify( [$notify] )>
@@ -226,7 +226,7 @@ format using one of the following two formats: YYYYMMDD or YYMMDD.
 sub notify {
     my ( $self, $notify ) = @_;
 
-    return $self->_multiple_attribute_setget('notify',$notify);
+    return $self->_multiple_attribute_setget( 'notify', $notify );
 }
 
 =head2 B<mnt_by( [$mnt_by] )>
@@ -247,7 +247,7 @@ object will be able to change details.
 sub mnt_by {
     my ( $self, $mnt_by ) = @_;
 
-    return $self->_multiple_attribute_setget('mnt_by',$mnt_by);
+    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
 }
 
 =head2 B<mnt_lower( [$mnt_lower] )>
@@ -264,7 +264,7 @@ used as well as mnt_by.
 sub mnt_lower {
     my ( $self, $mnt_lower ) = @_;
 
-    return $self->_multiple_attribute_setget('mnt_lower',$mnt_lower);
+    return $self->_multiple_attribute_setget( 'mnt_lower', $mnt_lower );
 }
 
 =head2 B<changed( [$changed] )>
@@ -287,7 +287,7 @@ format using one of the following two formats: YYYYMMDD or YYMMDD.
 sub changed {
     my ( $self, $changed ) = @_;
 
-    return $self->_multiple_attribute_setget('changed',$changed);
+    return $self->_multiple_attribute_setget( 'changed', $changed );
 }
 
 =head2 B<source( [$source] )>
@@ -302,7 +302,7 @@ The database where the object is registered.
 sub source {
     my ( $self, $source ) = @_;
 
-    return $self->_single_attribute_setget('source',$source);
+    return $self->_single_attribute_setget( 'source', $source );
 }
 
 1;

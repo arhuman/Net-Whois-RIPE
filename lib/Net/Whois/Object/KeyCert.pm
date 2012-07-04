@@ -46,11 +46,11 @@ sub new {
         $self->$key( $options{$key} );
     }
 
-    $self->attributes('primary',['key_cert']);
-    $self->attributes('mandatory',['key_cert', 'certif', 'mnt_by', 'changed', 'source']);
+    $self->attributes( 'primary',   ['key_cert'] );
+    $self->attributes( 'mandatory', [ 'key_cert', 'certif', 'mnt_by', 'changed', 'source' ] );
     $self->attributes( 'optionnal', [ 'org', 'remarks', 'notify', 'admin_c', 'tech_c' ] );
-    $self->attributes('single',['key_cert', 'method', 'fingerpr', 'source']);
-    $self->attributes('multiple',['owner', 'certif', 'org', 'remarks', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'changed']);
+    $self->attributes( 'single', [ 'key_cert', 'method', 'fingerpr', 'source' ] );
+    $self->attributes( 'multiple', [ 'owner', 'certif', 'org', 'remarks', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'changed' ] );
 
     return $self;
 }
@@ -74,7 +74,7 @@ recreate it with the same name.
 sub key_cert {
     my ( $self, $key_cert ) = @_;
 
-    return $self->_single_attribute_setget('key_cert',$key_cert);
+    return $self->_single_attribute_setget( 'key_cert', $key_cert );
 }
 
 =head2 B<method( [$method] )>
@@ -93,7 +93,7 @@ value. In this case a warning is returned to the user.
 sub method {
     my ( $self, $method ) = @_;
 
-    return $self->_single_attribute_setget('method',$method);
+    return $self->_single_attribute_setget( 'method', $method );
 }
 
 =head2 B<owner( [$owner] )>
@@ -113,7 +113,7 @@ value. In this case a warning is returned to the user.
 sub owner {
     my ( $self, $owner ) = @_;
 
-    return $self->_multiple_attribute_setget('owner',$owner);
+    return $self->_multiple_attribute_setget( 'owner', $owner );
 }
 
 =head2 B<fingerpr( [$fingerpr] )>
@@ -132,7 +132,7 @@ value. In this case a warning is returned to the user.
 sub fingerpr {
     my ( $self, $fingerpr ) = @_;
 
-    return $self->_single_attribute_setget('fingerpr',$fingerpr);
+    return $self->_single_attribute_setget( 'fingerpr', $fingerpr );
 }
 
 =head2 B<certif( [$certif] )>
@@ -156,7 +156,7 @@ from the key body.
 sub certif {
     my ( $self, $certif ) = @_;
 
-    return $self->_multiple_attribute_setget('certif',$certif);
+    return $self->_multiple_attribute_setget( 'certif', $certif );
 }
 
 =head2 B<remarks( [$remark] )>
@@ -172,7 +172,7 @@ General remarks. May include a URL or email address.
 sub remarks {
     my ( $self, $remark ) = @_;
 
-    return $self->_multiple_attribute_setget('remarks',$remark);
+    return $self->_multiple_attribute_setget( 'remarks', $remark );
 }
 
 =head2 B<org( [$org] )>
@@ -188,7 +188,7 @@ The organisation entity this object is bound to.
 sub org {
     my ( $self, $org ) = @_;
 
-    return $self->_multiple_attribute_setget('org',$org);
+    return $self->_multiple_attribute_setget( 'org', $org );
 }
 
 =head2 B<notify( [$notify] )>
@@ -205,7 +205,7 @@ sent.
 sub notify {
     my ( $self, $notify ) = @_;
 
-    return $self->_multiple_attribute_setget('notify',$notify);
+    return $self->_multiple_attribute_setget( 'notify', $notify );
 }
 
 =head2 B<admin_c( [$contact] )>
@@ -225,7 +225,7 @@ located at the site of the network.
 sub admin_c {
     my ( $self, $contact ) = @_;
 
-    return $self->_multiple_attribute_setget('admin_c',$contact);
+    return $self->_multiple_attribute_setget( 'admin_c', $contact );
 }
 
 =head2 B<tech_c( [$contact] )>
@@ -264,7 +264,7 @@ object.
 sub mnt_by {
     my ( $self, $mnt_by ) = @_;
 
-    return $self->_multiple_attribute_setget('mnt_by',$mnt_by);
+    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
 }
 
 =head2 B<changed( [$changed] )>
@@ -287,7 +287,7 @@ format using one of the following two formats: YYYYMMDD or YYMMDD.
 sub changed {
     my ( $self, $changed ) = @_;
 
-    return $self->_multiple_attribute_setget('changed',$changed);
+    return $self->_multiple_attribute_setget( 'changed', $changed );
 }
 
 =head2 B<source( [$source] )>
@@ -302,7 +302,7 @@ The database where the object is registered.
 sub source {
     my ( $self, $source ) = @_;
 
-    return $self->_single_attribute_setget('source',$source);
+    return $self->_single_attribute_setget( 'source', $source );
 }
 
 1;

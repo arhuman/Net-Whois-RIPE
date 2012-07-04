@@ -13,8 +13,8 @@ BEGIN { $class = 'Net::Whois::Object::PoeticForm'; use_ok $class; }
 
 my %tested;
 
-my  @lines = <DATA>; 
-my $object = (Net::Whois::Object->new(@lines))[0];
+my @lines  = <DATA>;
+my $object = ( Net::Whois::Object->new(@lines) )[0];
 
 isa_ok $object, $class;
 
@@ -24,60 +24,56 @@ can_ok $object, $object->attributes('optionnal');
 
 # Test 'poetic_form'
 $tested{'poetic_form'}++;
-is ($object->poetic_form(),'POEM-EXAMPLE','poetic_form properly parsed');
+is( $object->poetic_form(), 'POEM-EXAMPLE', 'poetic_form properly parsed' );
 $object->poetic_form('POEM-EXAMPLE2');
-is ($object->poetic_form(),'POEM-EXAMPLE2','poetic_form properly set');
+is( $object->poetic_form(), 'POEM-EXAMPLE2', 'poetic_form properly set' );
 
 # Test 'remarks'
 $tested{'remarks'}++;
-is_deeply ($object->remarks(),[ 'I hope nobody ever read this text' ],'remarks properly parsed');
+is_deeply( $object->remarks(), ['I hope nobody ever read this text'], 'remarks properly parsed' );
 $object->remarks('Added remark');
-is ($object->remarks()->[1],'Added remark','remarks properly added');
+is( $object->remarks()->[1], 'Added remark', 'remarks properly added' );
 
 # Test 'descr'
 $tested{'descr'}++;
-is_deeply ($object->descr(),[ 'line 1 is funny',
-                                'line 2 is easy',
-                                'line 3 is boring',
-                                'I\'d stick with coding',
-                                ''],'descr properly parsed');
+is_deeply( $object->descr(), [ 'line 1 is funny', 'line 2 is easy', 'line 3 is boring', 'I\'d stick with coding', '' ], 'descr properly parsed' );
 $object->descr('Added descr');
-is ($object->descr()->[5],'Added descr','descr properly added');
+is( $object->descr()->[5], 'Added descr', 'descr properly added' );
 
 # Test 'admin_c'
 $tested{'admin_c'}++;
-is_deeply ($object->admin_c(),[ 'CPNY-ADM' ],'admin_c properly parsed');
+is_deeply( $object->admin_c(), ['CPNY-ADM'], 'admin_c properly parsed' );
 $object->admin_c('CPNY-ADM2');
-is ($object->admin_c()->[1],'CPNY-ADM2','admin_c properly added');
+is( $object->admin_c()->[1], 'CPNY-ADM2', 'admin_c properly added' );
 
 # Test 'mnt_by'
 $tested{'mnt_by'}++;
-is_deeply ($object->mnt_by(),[ 'CPNY-MNT' ],'mnt_by properly parsed');
+is_deeply( $object->mnt_by(), ['CPNY-MNT'], 'mnt_by properly parsed' );
 $object->mnt_by('CPNY-MNT2');
-is ($object->mnt_by()->[1],'CPNY-MNT2','mnt_by properly added');
+is( $object->mnt_by()->[1], 'CPNY-MNT2', 'mnt_by properly added' );
 
 # Test 'notify'
 $tested{'notify'}++;
-is_deeply ($object->notify(),[ 'CPNY-MNT' ],'notify properly parsed');
+is_deeply( $object->notify(), ['CPNY-MNT'], 'notify properly parsed' );
 $object->notify('CPNY-MNT2');
-is ($object->notify()->[1],'CPNY-MNT2','notify properly added');
+is( $object->notify()->[1], 'CPNY-MNT2', 'notify properly added' );
 
 # Test 'changed'
 $tested{'changed'}++;
-is_deeply ($object->changed(),[ 'arhuman@gmail.com 20120623' ],'changed properly parsed');
+is_deeply( $object->changed(), ['arhuman@gmail.com 20120623'], 'changed properly parsed' );
 $object->changed('arhuman@gmail.com 20120624');
-is ($object->changed()->[1],'arhuman@gmail.com 20120624','changed properly added');
+is( $object->changed()->[1], 'arhuman@gmail.com 20120624', 'changed properly added' );
 
 # Test 'source'
 $tested{'source'}++;
-is ($object->source(),'RIPE #Filtered','source properly parsed');
+is( $object->source(), 'RIPE #Filtered', 'source properly parsed' );
 $object->source('APNIC');
-is ($object->source(),'APNIC','source properly set');
+is( $object->source(), 'APNIC', 'source properly set' );
 
 # Do cause issue with lexicals
 eval `cat t/common.pl`;
-ok(!$!,"Can read t/common.pl ($!)");
-ok(!$@,"Can evaluate t/common.pl ($@)");
+ok( !$!, "Can read t/common.pl ($!)" );
+ok( !$@, "Can evaluate t/common.pl ($@)" );
 
 __DATA__
 poetic_form:    POEM-EXAMPLE

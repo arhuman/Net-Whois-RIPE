@@ -48,11 +48,11 @@ sub new {
         $self->$key( $options{$key} );
     }
 
-    $self->attributes('primary',['as_block']);
-    $self->attributes('mandatory',['as_block', 'admin_c', 'tech_c', 'mnt_by', 'changed', 'source']);
-    $self->attributes('optionnal',['descr', 'remarks', 'org', 'notify', 'mnt_lower']);
-    $self->attributes('single',['as_block', 'source']);
-    $self->attributes('multiple',['descr', 'remarks', 'org', 'admin_c', 'tech_c', 'notify', 'mnt_lower', 'mnt_by', 'changed']);
+    $self->attributes( 'primary', ['as_block'] );
+    $self->attributes( 'mandatory', [ 'as_block', 'admin_c', 'tech_c', 'mnt_by', 'changed', 'source' ] );
+    $self->attributes( 'optionnal', [ 'descr', 'remarks', 'org', 'notify', 'mnt_lower' ] );
+    $self->attributes( 'single', [ 'as_block', 'source' ] );
+    $self->attributes( 'multiple', [ 'descr', 'remarks', 'org', 'admin_c', 'tech_c', 'notify', 'mnt_lower', 'mnt_by', 'changed' ] );
 
     return $self;
 }
@@ -75,7 +75,7 @@ stored in the appropriate Internet Registry's Whois Database.
 sub as_block {
     my ( $self, $as_block ) = @_;
 
-    return $self->_single_attribute_setget('as_block',$as_block);
+    return $self->_single_attribute_setget( 'as_block', $as_block );
 }
 
 =head2 B<descr( [$descr] )>
@@ -91,7 +91,7 @@ in the as-block.
 sub descr {
     my ( $self, $descr ) = @_;
 
-    return $self->_multiple_attribute_setget('descr',$descr);
+    return $self->_multiple_attribute_setget( 'descr', $descr );
 }
 
 =head2 B<remarks( [$remarks] )>
@@ -111,7 +111,7 @@ the AS numbers.
 sub remarks {
     my ( $self, $remarks ) = @_;
 
-    return $self->_multiple_attribute_setget('remarks',$remarks);
+    return $self->_multiple_attribute_setget( 'remarks', $remarks );
 }
 
 =head2 B<tech_c( [$tech_c] )>
@@ -134,7 +134,7 @@ physically located at the site of the network.
 sub tech_c {
     my ( $self, $tech_c ) = @_;
 
-    return $self->_multiple_attribute_setget('tech_c',$tech_c);
+    return $self->_multiple_attribute_setget( 'tech_c', $tech_c );
 }
 
 =head2 B<admin_c( [$admin_c])>
@@ -154,7 +154,7 @@ located at the site of the network.
 sub admin_c {
     my ( $self, $admin_c ) = @_;
 
-    return $self->_multiple_attribute_setget('admin_c',$admin_c);
+    return $self->_multiple_attribute_setget( 'admin_c', $admin_c );
 }
 
 =head2 B<notify( [$notify] )>
@@ -171,7 +171,7 @@ to the object should be sent.
 sub notify {
     my ( $self, $notify ) = @_;
 
-    return $self->_multiple_attribute_setget('notify',$notify);
+    return $self->_multiple_attribute_setget( 'notify', $notify );
 }
 
 =head2 B<mnt_lower( [$mnt_lower] )>
@@ -191,7 +191,7 @@ authorization.
 sub mnt_lower {
     my ( $self, $mnt_lower ) = @_;
 
-    return $self->_multiple_attribute_setget('mnt_lower',$mnt_lower);
+    return $self->_multiple_attribute_setget( 'mnt_lower', $mnt_lower );
 }
 
 =head2 B<mnt_by( [$mnt_by] )>
@@ -212,7 +212,7 @@ object will be able to change details.
 sub mnt_by {
     my ( $self, $mnt_by ) = @_;
 
-    return $self->_multiple_attribute_setget('mnt_by',$mnt_by);
+    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
 }
 
 =head2 B<changed( [$changed] )>
@@ -235,7 +235,7 @@ format using one of the following two formats: YYYYMMDD or YYMMDD.
 sub changed {
     my ( $self, $changed ) = @_;
 
-    return $self->_multiple_attribute_setget('changed',$changed);
+    return $self->_multiple_attribute_setget( 'changed', $changed );
 }
 
 =head2 B<source( [$source] )>
@@ -250,7 +250,7 @@ The database where the object is registered.
 sub source {
     my ( $self, $source ) = @_;
 
-    return $self->_single_attribute_setget('source',$source);
+    return $self->_single_attribute_setget( 'source', $source );
 }
 
 =head2 B<org( [$org] )>
@@ -265,7 +265,7 @@ The organisation entity this object is bound to.
 sub org {
     my ( $self, $org ) = @_;
 
-    return $self->_single_attribute_setget('org',$org);
+    return $self->_single_attribute_setget( 'org', $org );
 }
 
 1;
