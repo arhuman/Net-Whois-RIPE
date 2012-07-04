@@ -9,27 +9,29 @@ STDOUT->autoflush(1);
 STDERR->autoflush(1);
 
 our $class;
-BEGIN { $class = 'Net::Whois::Object'; use_ok $class; }
+BEGIN { $class = 'Net::Whois::Object::Response'; use_ok $class; }
+
+my %tested;
 
 my  @lines = <DATA>; 
 my $object = (Net::Whois::Object->new(@lines))[0];
 
-isa_ok $object, "Net::Whois::Object::Response";
+isa_ok $object, $class;
 
-# Inherited method from Net::Whois::Object;
-can_ok $object,
-
-    # Constructor
-    qw( new ),
-
-    # OO Support
-    qw( query_filter filtered_attributes displayed_attributes );
-
+# Non-inherited methods 
 can_ok $object, qw( response );
 
-ok( !$object->can('bogusmethod'), "No AUTOLOAD interference with Net::Whois::Object::Response tests" );
+# Check if typed attributes are correct
+can_ok $object, $object->attributes('mandatory');
 
+# Test 'response'
+$tested{'response'}++;
 is ($object->response(),'Response from server','response properly parsed');
+
+# Do cause issue with lexicals
+eval `cat t/common.pl`;
+ok(!$!,"Can read t/common.pl ($!)");
+ok(!$@,"Can evaluate t/common.pl ($@)");
 
 __DATA__
 %Response from server

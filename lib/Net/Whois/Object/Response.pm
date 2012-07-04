@@ -35,6 +35,10 @@ sub new {
         $self->$key( $options{$key} );
     }
 
+    $self->attributes('mandatory',['response' ]);
+    $self->attributes( 'optionnal', [ ] );
+    $self->attributes('single',['response' ]);
+
     return $self;
 }
 
@@ -47,8 +51,8 @@ Accepts an optional response, always return the current response.
 
 sub response {
     my ( $self, $response ) = @_;
-    $self->{response} = $response if defined $response;
-    return $self->{response};
+
+    return $self->_single_attribute_setget('response', $response);
 }
 
 1;
