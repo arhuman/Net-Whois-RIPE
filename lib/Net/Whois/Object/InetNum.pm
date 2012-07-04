@@ -55,6 +55,7 @@ sub new {
         $self->$key( $options{$key} );
     }
 
+    $self->attributes('primary',['inetnum']);
     $self->attributes('mandatory',['inetnum', 'netname', 'descr', 'country', 'tech_c', 'admin_c', 'status', 'mnt_by', 'changed', 'source']);
     $self->attributes( 'optionnal', [ 'org', 'remarks', 'notify', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt' ] );
     $self->attributes('single',['inetnum', 'netname', 'org', 'status', 'source']);

@@ -56,6 +56,7 @@ sub new {
         $self->$key( $options{$key} );
     }
 
+    $self->attributes('primary',['mntner']);
     $self->attributes('mandatory',['mntner', 'descr', 'admin_c', 'auth', 'mnt_by', 'referral_by', 'changed', 'source']);
     $self->attributes( 'optionnal', [ 'org', 'tech_c', 'mnt_nfy', 'remarks', 'notify', 'abuse_mailbox', 'auth_override' ] );
     $self->attributes('single',['mntner', 'auth_override', 'auth', 'referral_by', 'source']);

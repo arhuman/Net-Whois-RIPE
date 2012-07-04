@@ -54,6 +54,7 @@ sub new {
         $self->$key( $options{$key} );
     }
 
+    $self->attributes('primary',['irt']);
     $self->attributes('mandatory',['irt', 'address', 'e_mail', 'abuse_mailbox', 'tech_c', 'admin_c', 'auth', 'mnt_by', 'changed', 'source']);
     $self->attributes( 'optionnal', [ 'phone', 'fax_no', 'signature', 'encryption', 'org',  'remarks', 'irt_nfy', 'notify' ] );
     $self->attributes('single',['irt', 'source']);

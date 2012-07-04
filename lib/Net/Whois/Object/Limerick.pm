@@ -42,6 +42,7 @@ sub new {
         $self->$key( $options{$key} );
     }
 
+    $self->attributes('primary',['limerick']);
     $self->attributes('mandatory',['limerick', 'text', 'admin_c', 'author', 'mnt_by', 'changed', 'source']);
     $self->attributes( 'optionnal', [ 'descr', 'remarks', 'notify' ] );
     $self->attributes('single',['limerick', 'source']);

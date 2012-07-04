@@ -44,6 +44,7 @@ sub new {
         $self->$key( $options{$key} );
     }
 
+    $self->attributes('primary',['poem']);
     $self->attributes('mandatory',['poem', 'form', 'text', 'author', 'admin_c', 'mnt_by', 'changed', 'source']);
     $self->attributes( 'optionnal', [ 'descr', 'remarks', 'notify' ] );
     $self->attributes('single',['poem', 'form', 'source']);

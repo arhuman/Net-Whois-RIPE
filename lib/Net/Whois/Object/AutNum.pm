@@ -56,6 +56,7 @@ sub new {
         $self->$key( $options{$key} );
     }
 
+    $self->attributes('primary',['aut_num']);
     $self->attributes('mandatory',['aut_num', 'as_name', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source']);
     $self->attributes( 'optionnal', [ 'member_of', 'import', 'mp_import', 'export', 'mp_export', 'default', 'mp_default', 'remarks', 'notify', 'mnt_lower', 'mnt_routes' ] );
     $self->attributes('single',['aut_num', 'as_name', 'source']);

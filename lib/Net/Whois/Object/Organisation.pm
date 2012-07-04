@@ -50,6 +50,7 @@ sub new {
         $self->$key( $options{$key} );
     }
 
+    $self->attributes('primary',['organisation']);
     $self->attributes('mandatory',['organisation', 'org_name', 'org_type', 'address', 'e_mail', 'mnt_ref', 'mnt_by', 'changed', 'source']);
     $self->attributes( 'optionnal', [ 'descr', 'remarks', 'phone', 'fax_no', 'org', 'admin_c', 'tech_c', 'ref_nfy', 'notify' ] );
     $self->attributes('single',['organisation', 'org_name', 'org_type', 'source']);

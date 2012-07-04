@@ -48,6 +48,7 @@ sub new {
         $self->$key( $options{$key} );
     }
 
+    $self->attributes('primary',['inet_rtr']);
     $self->attributes('mandatory',['inet_rtr',  'descr', 'local_as', 'ifaddr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source']);
     $self->attributes( 'optionnal', [ 'alias', 'interface', 'peer', 'mp_peer', 'member_of', 'remarks', 'org', 'notify' ] );
     $self->attributes('single',['inet_rtr', 'local_as', 'source']);

@@ -48,6 +48,7 @@ sub new {
         $self->$key( $options{$key} );
     }
 
+    $self->attributes('primary',['as_block']);
     $self->attributes('mandatory',['as_block', 'admin_c', 'tech_c', 'mnt_by', 'changed', 'source']);
     $self->attributes('optionnal',['descr', 'remarks', 'org', 'notify', 'mnt_lower']);
     $self->attributes('single',['as_block', 'source']);

@@ -52,6 +52,7 @@ sub new {
         $self->$key( $options{$key} );
     }
 
+    $self->attributes('primary',['role']);
     $self->attributes('mandatory',['role', 'address', 'e_mail', 'tech_c', 'admin_c', 'nic_hdl', 'changed', 'source']);
     $self->attributes( 'optionnal', [ 'phone', 'fax_no', 'trouble', 'remarks', 'notify', 'mnt_by' ] );
     $self->attributes('single',['role', 'nic_hdl', 'source']);

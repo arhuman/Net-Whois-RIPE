@@ -1,5 +1,9 @@
 package Net::Whois::Object;
+use strict;
+use warnings;
+
 use Carp;
+use WWW::Mechanize;
 
 =head1 NAME
 
@@ -170,6 +174,7 @@ sub new {
 
 Accessor to the attributes of the object. 
 $type can be 
+    'primary'   Primary/Lookup key
     'mandatory' Required for update creation
     'optionnal' Optionnal for update/creation
     'multiple'  Can have multiple values
@@ -188,7 +193,7 @@ sub attributes {
         return ( $self->attributes('mandatory') , $self->attributes('optionnal'));
     }
     croak "Invalid attribute's type ($type)"    unless $type =~
-    m/(all|mandatory|optionnal|single|multiple)/i;
+    m/(all|primary|mandatory|optionnal|single|multiple)/i;
     if ($r_attributes) { 
         for my $a (@{$r_attributes}) {
             $self->{TYPE}{$type}{$a} = 1;
@@ -287,6 +292,25 @@ sub dump {
     }
 
     return $result;
+}
+
+=head2 B<web_update( $password )>
+
+Update the RIPE database through the web update interface.
+Use the password passed as parameter to authenticate.
+
+=cut
+
+sub web_update {
+    my ( $self, $password ) = @_;
+
+    my $mech = WWW::Mechanize->new();
+    $mech->get(https://apps.db.ripe.net/webupdates/search.html);
+
+
+
+    push @{ $self->{web_update} }, $web_update if defined $web_update;
+    return @{ $self->{web_update} };
 }
 
 =begin UNDOCUMENTED

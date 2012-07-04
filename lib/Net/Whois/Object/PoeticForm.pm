@@ -42,6 +42,7 @@ sub new {
         $self->$key( $options{$key} );
     }
 
+    $self->attributes('primary',['poetic_form']);
     $self->attributes('mandatory',['poetic_form', 'admin_c', 'mnt_by', 'changed', 'source']);
     $self->attributes( 'optionnal', [ 'descr', 'remarks', 'notify' ] );
     $self->attributes('single',['poetic_form', 'source']);

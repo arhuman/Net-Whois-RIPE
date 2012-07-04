@@ -45,6 +45,7 @@ sub new {
         $self->$key( $options{$key} );
     }
 
+    $self->attributes('primary',['person']);
     $self->attributes('mandatory',['person', 'address', 'phone', 'nic_hdl', 'changed', 'source']);
     $self->attributes( 'optionnal', [ 'fax_no', 'e_mail', 'remarks', 'notify', 'mnt_by' ] );
     $self->attributes('single',['person', 'nic_hdl', 'source']);

@@ -57,6 +57,7 @@ sub new {
         $self->$key( $options{$key} );
     }
 
+    $self->attributes('primary',['route6']);
     $self->attributes('mandatory',['route6', 'origin', 'descr', 'mnt_by', 'changed', 'source']);
     $self->attributes( 'optionnal', [ 'holes', 'org', 'member_of', 'inject', 'aggr_mtd', 'aggr_bndry', 'export_comps', 'components', 'remarks', 'notify', 'mnt_lower', 'mnt_routes' ] );
     $self->attributes('single',['route6', 'origin', 'aggr_mtd', 'aggr_bndry', 'export_comps', 'components', 'source']);

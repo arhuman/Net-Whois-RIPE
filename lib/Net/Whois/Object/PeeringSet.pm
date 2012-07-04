@@ -49,6 +49,7 @@ sub new {
         $self->$key( $options{$key} );
     }
 
+    $self->attributes('primary',['peering_set']);
     $self->attributes('mandatory',['peering_set', 'descr', 'peering', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source']);
     $self->attributes( 'optionnal', [ 'remarks', 'notify' ] );
     $self->attributes('single',['peering_set', 'source']);
