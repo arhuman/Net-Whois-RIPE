@@ -56,10 +56,11 @@ sub new {
         $self->$key( $options{$key} );
     }
 
-    $self->attributes('mandatory',['mntner', 'descr', 'admin_c', 'auth', 'mnt_by', 'referral_by', 'changed', 'source']);
+    $self->attributes( 'primary', ['mntner'] );
+    $self->attributes( 'mandatory', [ 'mntner', 'descr', 'admin_c', 'auth', 'mnt_by', 'referral_by', 'changed', 'source' ] );
     $self->attributes( 'optionnal', [ 'org', 'tech_c', 'mnt_nfy', 'remarks', 'notify', 'abuse_mailbox', 'auth_override' ] );
-    $self->attributes('single',['mntner', 'auth_override', 'auth', 'referral_by', 'source']);
-    $self->attributes('multiple',['descr', 'admin_c', 'mnt_by', 'changed', 'org', 'tech_c', 'mnt_nfy', 'remarks', 'notify', 'abuse_mailbox' ] );
+    $self->attributes( 'single', [ 'mntner', 'auth_override', 'auth', 'referral_by', 'source' ] );
+    $self->attributes( 'multiple', [ 'descr', 'admin_c', 'mnt_by', 'changed', 'org', 'tech_c', 'mnt_nfy', 'remarks', 'notify', 'abuse_mailbox' ] );
 
     return $self;
 }
@@ -84,7 +85,7 @@ Maintainer for resource registrations:
 sub mntner {
     my ( $self, $mntner ) = @_;
 
-    return $self->_single_attribute_setget('mntner', $mntner);
+    return $self->_single_attribute_setget( 'mntner', $mntner );
 }
 
 =head2 B<descr( [$descr] )>
@@ -101,7 +102,7 @@ associated with it.
 sub descr {
     my ( $self, $descr ) = @_;
 
-    return $self->_multiple_attribute_setget('descr', $descr);
+    return $self->_multiple_attribute_setget( 'descr', $descr );
 }
 
 =head2 B<org( [$org] )>
@@ -117,7 +118,7 @@ The organisation this object is bound to.
 sub org {
     my ( $self, $org ) = @_;
 
-    return $self->_multiple_attribute_setget('org', $org);
+    return $self->_multiple_attribute_setget( 'org', $org );
 }
 
 =head2 B<admin_c( [$contact] )>
@@ -138,7 +139,7 @@ physically located at the site of the network.
 sub admin_c {
     my ( $self, $contact ) = @_;
 
-    return $self->_multiple_attribute_setget('admin_c', $contact);
+    return $self->_multiple_attribute_setget( 'admin_c', $contact );
 }
 
 =head2 B<tech_c( [$contact] )>
@@ -160,7 +161,7 @@ physically located at the site of the network.
 sub tech_c {
     my ( $self, $contact ) = @_;
 
-    return $self->_multiple_attribute_setget('tech_c', $contact);
+    return $self->_multiple_attribute_setget( 'tech_c', $contact );
 }
 
 =head2 B<upd_to( [$upd_to] )>
@@ -177,7 +178,7 @@ attempt to update an object protected by this Mntner is unsuccessful.
 sub upd_to {
     my ( $self, $upd_to ) = @_;
 
-    return $self->_multiple_attribute_setget('upd_to', $upd_to);
+    return $self->_multiple_attribute_setget( 'upd_to', $upd_to );
 }
 
 =head2 B<mnt_nfy( [$mnt_nfy] )>
@@ -194,7 +195,7 @@ object protected by this Mntner is successfully updated.
 sub mnt_nfy {
     my ( $self, $mnt_nfy ) = @_;
 
-    return $self->_multiple_attribute_setget('mnt_nfy', $mnt_nfy);
+    return $self->_multiple_attribute_setget( 'mnt_nfy', $mnt_nfy );
 }
 
 =head2 B<auth( [$auth] )>
@@ -211,7 +212,7 @@ the current authentication schemes used by the RIPE Database are allowed.
 sub auth {
     my ( $self, $auth ) = @_;
 
-    return $self->_multiple_attribute_setget('auth', $auth);
+    return $self->_multiple_attribute_setget( 'auth', $auth );
 }
 
 =head2 B<remarks( [$remark] )>
@@ -227,7 +228,7 @@ General remarks. May include a URL or email address.
 sub remarks {
     my ( $self, $remark ) = @_;
 
-    return $self->_multiple_attribute_setget('remarks', $remark);
+    return $self->_multiple_attribute_setget( 'remarks', $remark );
 }
 
 =head2 B<notify( [$notify] )>
@@ -244,7 +245,7 @@ be sent.
 sub notify {
     my ( $self, $notify ) = @_;
 
-    return $self->_multiple_attribute_setget('notify', $notify);
+    return $self->_multiple_attribute_setget( 'notify', $notify );
 }
 
 =head2 B<mnt_by( [$mnt_by] )>
@@ -263,7 +264,7 @@ Most users set the mnt-by value in a Mntner to reference itself.
 sub mnt_by {
     my ( $self, $mnt_by ) = @_;
 
-    return $self->_multiple_attribute_setget('mnt_by', $mnt_by);
+    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
 }
 
 =head2 B<auth_override( [$auth_override] )>
@@ -282,7 +283,7 @@ it has not been implemented in the current version of the database.
 sub auth_override {
     my ( $self, $auth_override ) = @_;
 
-    return $self->_single_attribute_setget('auth_override', $auth_override);
+    return $self->_single_attribute_setget( 'auth_override', $auth_override );
 }
 
 =head2 B<referral_by( [$referral_by] )>
@@ -301,7 +302,7 @@ it has not been implemented in the current version of the database.
 sub referral_by {
     my ( $self, $referral_by ) = @_;
 
-    return $self->_single_attribute_setget('referral_by', $referral_by);
+    return $self->_single_attribute_setget( 'referral_by', $referral_by );
 }
 
 =head2 B<changed( [$changed] )>
@@ -324,7 +325,7 @@ format using one of the following two formats: YYYYMMDD or YYMMDD.
 sub changed {
     my ( $self, $changed ) = @_;
 
-    return $self->_multiple_attribute_setget('changed', $changed);
+    return $self->_multiple_attribute_setget( 'changed', $changed );
 }
 
 =head2 B<source( [$source] )>
@@ -339,7 +340,7 @@ The name of the database from which the data was obtained.
 sub source {
     my ( $self, $source ) = @_;
 
-    return $self->_single_attribute_setget('source', $source);
+    return $self->_single_attribute_setget( 'source', $source );
 }
 
 =head2 B<country( [$country] )>
@@ -355,7 +356,7 @@ Please use UPPERCASE letters.
 sub country {
     my ( $self, $country ) = @_;
 
-    return $self->_single_attribute_setget('country', $country);
+    return $self->_single_attribute_setget( 'country', $country );
 }
 
 =head2 B<abuse_mailbox( [$abuse_mailbox] )>
@@ -369,7 +370,7 @@ always return the current abuse_mailbox array.
 sub abuse_mailbox {
     my ( $self, $abuse_mailbox ) = @_;
 
-    return $self->_multiple_attribute_setget('abuse_mailbox', $abuse_mailbox);
+    return $self->_multiple_attribute_setget( 'abuse_mailbox', $abuse_mailbox );
 }
 
 1;

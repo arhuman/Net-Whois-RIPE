@@ -35,9 +35,10 @@ sub new {
         $self->$key( $options{$key} );
     }
 
-    $self->attributes('mandatory',['response' ]);
-    $self->attributes( 'optionnal', [ ] );
-    $self->attributes('single',['response' ]);
+    $self->attributes( 'mandatory', ['response'] );
+    $self->attributes( 'optionnal', ['comment'] );
+    $self->attributes( 'single',    ['response'] );
+    $self->attributes( 'multiple',  ['comment'] );
 
     return $self;
 }
@@ -52,7 +53,20 @@ Accepts an optional response, always return the current response.
 sub response {
     my ( $self, $response ) = @_;
 
-    return $self->_single_attribute_setget('response', $response);
+    return $self->_single_attribute_setget( 'response', $response );
+}
+
+=head2 B<comment( [$comment] )>
+
+Accessor to the comment attribute.
+Accepts an optional comment, always return the current comment.
+
+=cut
+
+sub comment {
+    my ( $self, $comment ) = @_;
+
+    return $self->_multiple_attribute_setget( 'comment', $comment );
 }
 
 1;

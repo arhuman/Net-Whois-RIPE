@@ -43,10 +43,11 @@ sub new {
         $self->$key( $options{$key} );
     }
 
-    $self->attributes('mandatory',['as_set', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source']);
-    $self->attributes('optionnal',['members', 'mbrs_by_ref', 'remarks', 'notify']);
-    $self->attributes('single',['as_set', 'source']);
-    $self->attributes('multiple',['descr', 'members', 'mbrs_by_ref', 'remarks', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'changed']);
+    $self->attributes( 'primary', ['as_set'] );
+    $self->attributes( 'mandatory', [ 'as_set', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
+    $self->attributes( 'optionnal', [ 'members', 'mbrs_by_ref', 'remarks', 'notify' ] );
+    $self->attributes( 'single', [ 'as_set', 'source' ] );
+    $self->attributes( 'multiple', [ 'descr', 'members', 'mbrs_by_ref', 'remarks', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'changed' ] );
 
     return $self;
 }
@@ -67,7 +68,7 @@ with 'as-'.
 sub as_set {
     my ( $self, $as_set ) = @_;
 
-    return $self->_single_attribute_setget('as_set',$as_set);
+    return $self->_single_attribute_setget( 'as_set', $as_set );
 }
 
 =head2 B<descr( [$descr] )>
@@ -83,7 +84,7 @@ A short description related to the object's purpose.
 sub descr {
     my ( $self, $descr ) = @_;
 
-    return $self->_multiple_attribute_setget('descr',$descr);
+    return $self->_multiple_attribute_setget( 'descr', $descr );
 }
 
 =head2 B<members( [$member] )>
@@ -100,7 +101,7 @@ of AS Numbers, or other as-set names.
 sub members {
     my ( $self, $member ) = @_;
 
-    return $self->_multiple_attribute_setget('member',$member);
+    return $self->_multiple_attribute_setget( 'member', $member );
 }
 
 =head2 B<mbrs_by_ref( [$mbr] )>
@@ -126,7 +127,7 @@ defined explicitly by the members attribute.
 sub mbrs_by_ref {
     my ( $self, $mbr ) = @_;
 
-    return $self->_multiple_attribute_setget('mbr',$mbr);
+    return $self->_multiple_attribute_setget( 'mbr', $mbr );
 }
 
 =head2 B<remarks( [$remark] )>
@@ -143,7 +144,7 @@ May include a URL or email address.
 sub remarks {
     my ( $self, $remark ) = @_;
 
-    return $self->_multiple_attribute_setget('remarks',$remark);
+    return $self->_multiple_attribute_setget( 'remarks', $remark );
 }
 
 =head2 B<tech_c( [$tech_c] )>
@@ -165,7 +166,7 @@ physically located at the site of the network.
 sub tech_c {
     my ( $self, $tech_c ) = @_;
 
-    return $self->_multiple_attribute_setget('tech_c',$tech_c);
+    return $self->_multiple_attribute_setget( 'tech_c', $tech_c );
 }
 
 =head2 B<admin_c( [$admin_c] )>
@@ -185,7 +186,7 @@ located at the site of the network.
 sub admin_c {
     my ( $self, $admin_c ) = @_;
 
-    return $self->_multiple_attribute_setget('admin_c',$admin_c);
+    return $self->_multiple_attribute_setget( 'admin_c', $admin_c );
 }
 
 =head2 B<notify( [$notify] )>
@@ -202,7 +203,7 @@ sent.
 sub notify {
     my ( $self, $notify ) = @_;
 
-    return $self->_multiple_attribute_setget('notify',$notify);
+    return $self->_multiple_attribute_setget( 'notify', $notify );
 }
 
 =head2 B<mnt_by( [$mnt] )>
@@ -223,7 +224,7 @@ object will be able to change details.
 sub mnt_by {
     my ( $self, $mnt ) = @_;
 
-    return $self->_multiple_attribute_setget('mnt',$mnt);
+    return $self->_multiple_attribute_setget( 'mnt', $mnt );
 }
 
 =head2 B<changed( [$changed] )>
@@ -246,7 +247,7 @@ format using one of the following two formats: YYYYMMDD or YYMMDD.
 sub changed {
     my ( $self, $changed ) = @_;
 
-    return $self->_multiple_attribute_setget('changed',$changed);
+    return $self->_multiple_attribute_setget( 'changed', $changed );
 }
 
 =head2 B<source( [$source] )>
@@ -261,7 +262,7 @@ The database where the object is registered.
 sub source {
     my ( $self, $source ) = @_;
 
-    return $self->_single_attribute_setget('source',$source);
+    return $self->_single_attribute_setget( 'source', $source );
 }
 
 1;

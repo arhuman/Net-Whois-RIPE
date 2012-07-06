@@ -36,9 +36,9 @@ sub new {
         $self->$key( $options{$key} );
     }
 
-    $self->attributes('mandatory',['comment']);
-    $self->attributes( 'optionnal', [ ] );
-    $self->attributes('multiple',['comment']);
+    $self->attributes( 'mandatory', ['comment'] );
+    $self->attributes( 'optionnal', [] );
+    $self->attributes( 'multiple',  ['comment'] );
 
     return $self;
 }
@@ -54,7 +54,7 @@ always return the current comment array.
 sub comment {
     my ( $self, $comment ) = @_;
 
-    return $self->_multiple_attribute_setget('comment',$comment);
+    return $self->_multiple_attribute_setget( 'comment', $comment );
 }
 
 1;

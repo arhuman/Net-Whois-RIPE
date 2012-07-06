@@ -11,8 +11,6 @@ STDERR->autoflush(1);
 our $class;
 BEGIN { $class = 'Net::Whois::Object'; use_ok $class; }
 
-my %tested;
-
 my @lines = <DATA>;
 my @o     = Net::Whois::Object->new(@lines);
 for my $object (@o) {
@@ -41,7 +39,7 @@ is_deeply( [ $o[0]->attributes('optionnal') ], [ 'opt1', 'opt2', 'opt3' ] );
 is_deeply( [ $o[0]->attributes('all') ], [ 'comment', 'opt1', 'opt2', 'opt3' ] );
 is_deeply( [ $o[0]->attributes() ],      [ 'comment', 'opt1', 'opt2', 'opt3' ] );
 
-is( $o[2]->dump, "class:    Information\n% Information related to 'AS30720 - AS30895'\n" );
+is( $o[2]->dump, "% Information related to 'AS30720 - AS30895'\n" );
 
 __DATA__
 % This is the RIPE Database query service.

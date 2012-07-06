@@ -1,6 +1,7 @@
 Revision history for net-whois-ripe
 
 
+            - Add RIPE SyncUpdates prototype implementation (Create, Update, Delete)
             - Add type on attributes to prepare future update, with the 
               following methods :
                 attributes()

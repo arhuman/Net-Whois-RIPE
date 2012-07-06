@@ -49,11 +49,12 @@ sub new {
         $self->$key( $options{$key} );
     }
 
-    $self->attributes('mandatory',['rtr_set', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source']);
+    $self->attributes( 'primary', ['rtr_set'] );
+    $self->attributes( 'mandatory', [ 'rtr_set', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
     $self->attributes( 'optionnal', [ 'members', 'mbrs_by_ref', 'remarks', 'notify' ] );
-    $self->attributes('single',['rtr_set', 'source']);
-    $self->attributes('multiple',[ 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'members', 'mbrs_by_ref', 'remarks', 'notify' ] );
-    
+    $self->attributes( 'single', [ 'rtr_set', 'source' ] );
+    $self->attributes( 'multiple', [ 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'members', 'mbrs_by_ref', 'remarks', 'notify' ] );
+
     return $self;
 }
 
@@ -67,7 +68,7 @@ Accepts an optional rtr_set, always return the current rtr_set.
 sub rtr_set {
     my ( $self, $rtr_set ) = @_;
 
-    return $self->_single_attribute_setget('rtr_set', $rtr_set);
+    return $self->_single_attribute_setget( 'rtr_set', $rtr_set );
 }
 
 =head2 B<descr( [$descr] )>
@@ -81,7 +82,7 @@ always return the current descr array.
 sub descr {
     my ( $self, $descr ) = @_;
 
-    return $self->_multiple_attribute_setget('descr', $descr);
+    return $self->_multiple_attribute_setget( 'descr', $descr );
 }
 
 =head2 B<members( [$member] )>
@@ -95,7 +96,7 @@ always return the current members array.
 sub members {
     my ( $self, $member ) = @_;
 
-    return $self->_multiple_attribute_setget('members', $member);
+    return $self->_multiple_attribute_setget( 'members', $member );
 }
 
 =head2 B<mbrs_by_ref( [$mbrs_by_ref] )>
@@ -109,7 +110,7 @@ always return the current mbrs_by_ref array.
 sub mbrs_by_ref {
     my ( $self, $mbrs_by_ref ) = @_;
 
-    return $self->_multiple_attribute_setget('mbrs_by_ref', $mbrs_by_ref);
+    return $self->_multiple_attribute_setget( 'mbrs_by_ref', $mbrs_by_ref );
 }
 
 =head2 B<remarks( [$remark] )>
@@ -123,7 +124,7 @@ always return the current remarks array.
 sub remarks {
     my ( $self, $remark ) = @_;
 
-    return $self->_multiple_attribute_setget('remarks', $remark);
+    return $self->_multiple_attribute_setget( 'remarks', $remark );
 }
 
 =head2 B<tech_c( [$contact] )>
@@ -137,7 +138,7 @@ always return the current tech_c array.
 sub tech_c {
     my ( $self, $contact ) = @_;
 
-    return $self->_multiple_attribute_setget('tech_c', $contact);
+    return $self->_multiple_attribute_setget( 'tech_c', $contact );
 }
 
 =head2 B<admin_c( [$contact] )>
@@ -151,7 +152,7 @@ always return the current admin_c array.
 sub admin_c {
     my ( $self, $contact ) = @_;
 
-    return $self->_multiple_attribute_setget('admin_c', $contact);
+    return $self->_multiple_attribute_setget( 'admin_c', $contact );
 }
 
 =head2 B<notify( [$notify] )>
@@ -165,7 +166,7 @@ always return the current notify array.
 sub notify {
     my ( $self, $notify ) = @_;
 
-    return $self->_multiple_attribute_setget('notify', $notify);
+    return $self->_multiple_attribute_setget( 'notify', $notify );
 }
 
 =head2 B<mnt_by( [$mnt_by])>
@@ -179,7 +180,7 @@ always return the current mnt_by array.
 sub mnt_by {
     my ( $self, $mnt_by ) = @_;
 
-    return $self->_multiple_attribute_setget('mnt_by', $mnt_by);
+    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
 }
 
 =head2 B<changed( [$changed] )>
@@ -193,7 +194,7 @@ always return the current changed array.
 sub changed {
     my ( $self, $changed ) = @_;
 
-    return $self->_multiple_attribute_setget('changed', $changed);
+    return $self->_multiple_attribute_setget( 'changed', $changed );
 }
 
 =head2 B<source( [$source] )>
@@ -206,7 +207,7 @@ Accepts an optional source, always return the current source.
 sub source {
     my ( $self, $source ) = @_;
 
-    return $self->_single_attribute_setget('source', $source);
+    return $self->_single_attribute_setget( 'source', $source );
 }
 
 =head2 B<mp_members( [$mp_member] )>
@@ -231,7 +232,7 @@ Explicitly lists IPv4 or IPv6 'members' of the rtr-set can be:
 sub mp_members {
     my ( $self, $mp_member ) = @_;
 
-    return $self->_multiple_attribute_setget('mp_members', $mp_member);
+    return $self->_multiple_attribute_setget( 'mp_members', $mp_member );
 }
 
 1;

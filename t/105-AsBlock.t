@@ -2,7 +2,6 @@ use strict;
 use warnings;
 use Test::More qw( no_plan );
 use Test::Exception;
-# use Net::Whois::Object;
 
 # synchronizes the {error,standard} output of this test.
 use IO::Handle;
@@ -14,12 +13,12 @@ BEGIN { $class = 'Net::Whois::Object::AsBlock'; use_ok $class; }
 
 my %tested;
 
-my  @lines = <DATA>; 
-my $object = (Net::Whois::Object->new(@lines))[0];
+my @lines  = <DATA>;
+my $object = ( Net::Whois::Object->new(@lines) )[0];
 
 isa_ok $object, $class;
 
-# Non-inherited method 
+# Non-inherited method
 can_ok $object, qw( as_block descr remarks tech_c admin_c notify mnt_lower mnt_by changed source);
 can_ok $object, qw( org );
 
@@ -28,89 +27,80 @@ can_ok $object, $object->attributes('optionnal');
 
 # Test 'as_block'
 $tested{'as_block'}++;
-is ($object->as_block(),'AS30720 - AS30895','as-block properly parsed');
+is( $object->as_block(), 'AS30720 - AS30895', 'as-block properly parsed' );
 $object->as_block('AS1 - AS2');
-is ($object->as_block(),'AS1 - AS2','as_block properly set');
+is( $object->as_block(), 'AS1 - AS2', 'as_block properly set' );
 
 # Test 'descr'
 $tested{'descr'}++;
-is_deeply ($object->descr(),[ 'RIPE NCC ASN block' ],'descr properly parsed');
+is_deeply( $object->descr(), ['RIPE NCC ASN block'], 'descr properly parsed' );
 $object->descr('Added');
-is_deeply ($object->descr(),[ 'RIPE NCC ASN block', 'Added' ],'descr properly added');
+is_deeply( $object->descr(), [ 'RIPE NCC ASN block', 'Added' ], 'descr properly added' );
 
 # Test 'remarks'
 $tested{'remarks'}++;
-is_deeply ($object->remarks(),
-        [
-            'These AS Numbers are further assigned to network',
-            'operators in the RIPE NCC service region. AS',
-            'assignment policy is documented in:',
-            '<http://www.ripe.net/ripe/docs/asn-assignment.html>',
-            'RIPE NCC members can request AS Numbers using the',
-            'form available in the LIR Portal or at:',
-            '<http://www.ripe.net/ripe/docs/asnrequestform.html>'
-        ],'remarks properly parsed');
+is_deeply( $object->remarks(), [ 'These AS Numbers are further assigned to network', 'operators in the RIPE NCC service region. AS', 'assignment policy is documented in:', '<http://www.ripe.net/ripe/docs/asn-assignment.html>', 'RIPE NCC members can request AS Numbers using the', 'form available in the LIR Portal or at:', '<http://www.ripe.net/ripe/docs/asnrequestform.html>' ], 'remarks properly parsed' );
 
 $object->remarks('Added remarks');
-is ($object->remarks()->[7],'Added remarks','remarks properly added');
+is( $object->remarks()->[7], 'Added remarks', 'remarks properly added' );
 
 # Test 'org'
 $tested{'org'}++;
-is ($object->org(),'ORG-NCC1-RIPE','as-block properly parsed');
+is( $object->org(), 'ORG-NCC1-RIPE', 'as-block properly parsed' );
 $object->org('ORG-MDFIED');
-is ($object->org(),'ORG-MDFIED','as-block properly set');
+is( $object->org(), 'ORG-MDFIED', 'as-block properly set' );
 
 # Test 'admin_c'
 $tested{'admin_c'}++;
-is_deeply ($object->admin_c(),['CREW-RIPE'],'admin_c properly parsed');
+is_deeply( $object->admin_c(), ['CREW-RIPE'], 'admin_c properly parsed' );
 $object->admin_c('Added admin_c');
-is ($object->admin_c()->[1],'Added admin_c','admin_c properly added');
+is( $object->admin_c()->[1], 'Added admin_c', 'admin_c properly added' );
 
 # Test 'tech_c'
 $tested{'tech_c'}++;
-is_deeply ($object->tech_c(),['RD132-RIPE'],'tech_c properly parsed');
+is_deeply( $object->tech_c(), ['RD132-RIPE'], 'tech_c properly parsed' );
 $object->tech_c('Added tech_c');
-is ($object->tech_c()->[1],'Added tech_c','tech_c properly added');
+is( $object->tech_c()->[1], 'Added tech_c', 'tech_c properly added' );
 
 # Test 'mnt_by'
 $tested{'mnt_by'}++;
-is_deeply ($object->mnt_by(),['RIPE-DBM-MNT'],'mnt_by properly parsed');
+is_deeply( $object->mnt_by(), ['RIPE-DBM-MNT'], 'mnt_by properly parsed' );
 $object->mnt_by('Added mnt_by');
-is ($object->mnt_by()->[1],'Added mnt_by','mnt_by properly added');
+is( $object->mnt_by()->[1], 'Added mnt_by', 'mnt_by properly added' );
 
 # Test 'mnt_lower'
 $tested{'mnt_lower'}++;
-is_deeply ($object->mnt_lower(),['RIPE-NCC-HM-MNT'],'mnt_lower properly parsed');
+is_deeply( $object->mnt_lower(), ['RIPE-NCC-HM-MNT'], 'mnt_lower properly parsed' );
 $object->mnt_lower('Added mnt_lower');
-is ($object->mnt_lower()->[1],'Added mnt_lower','mnt_lower properly added');
+is( $object->mnt_lower()->[1], 'Added mnt_lower', 'mnt_lower properly added' );
 
 # Test 'notify'
 $tested{'notify'}++;
-is_deeply ($object->notify(),['RIPE-DBM-MNT'],'notify properly parsed');
+is_deeply( $object->notify(), ['RIPE-DBM-MNT'], 'notify properly parsed' );
 $object->notify('Added notify');
-is ($object->notify()->[1],'Added notify','notify properly added');
+is( $object->notify()->[1], 'Added notify', 'notify properly added' );
 
 # Test 'changed'
 $tested{'changed'}++;
-is_deeply ($object->changed(),['arhuman@gmail.com 20120701'],'changed properly parsed');
+is_deeply( $object->changed(), ['arhuman@gmail.com 20120701'], 'changed properly parsed' );
 $object->changed('Added changed');
-is ($object->changed()->[1],'Added changed','changed properly added');
+is( $object->changed()->[1], 'Added changed', 'changed properly added' );
 
 # Test 'source'
 $tested{'source'}++;
-is ($object->source(),'RIPE # Filtered','source properly parsed');
+is( $object->source(), 'RIPE # Filtered', 'source properly parsed' );
 $object->source('APNIC');
-is ($object->source(),'APNIC','source properly set');
+is( $object->source(), 'APNIC', 'source properly set' );
 
 # Do cause issue with lexicals
 eval `cat t/common.pl`;
-ok(!$!,"Can read t/common.pl ($!)");
-ok(!$@,"Can evaluate t/common.pl ($@)");
+ok( !$!, "Can read t/common.pl ($!)" );
+ok( !$@, "Can evaluate t/common.pl ($@)" );
 
 # Do cause issue with lexicals
 eval `cat t/common.pl`;
-ok(!$!,"Can read t/common.pl ($!)");
-ok(!$@,"Can evaluate t/common.pl ($@)");
+ok( !$!, "Can read t/common.pl ($!)" );
+ok( !$@, "Can evaluate t/common.pl ($@)" );
 
 __DATA__
 as-block:       AS30720 - AS30895
