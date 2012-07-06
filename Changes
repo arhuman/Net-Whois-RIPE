@@ -1,7 +1,7 @@
 Revision history for net-whois-ripe
 
 
-2.00013     06 Jun 2012
+2.00013     07 Jun 2012
             - Add RIPE SyncUpdates prototype implementation (Create, Update, Delete)
             - Add type on attributes and the following methods :
                 attributes()
