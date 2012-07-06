@@ -42,7 +42,14 @@ sub new {
         $self->$key( $options{$key} );
     }
 
+    $self->attributes( 'primary', ['limerick'] );
+    $self->attributes( 'mandatory', [ 'limerick', 'text', 'admin_c', 'author', 'mnt_by', 'changed', 'source' ] );
+    $self->attributes( 'optionnal', [ 'descr', 'remarks', 'notify' ] );
+    $self->attributes( 'single', [ 'limerick', 'source' ] );
+    $self->attributes( 'multiple', [ 'text', 'admin_c', 'author', 'mnt_by', 'changed', 'descr', 'remarks', 'notify' ] );
+
     return $self;
+
 }
 
 =head2 B<limerick( [$limerick] )>
@@ -54,8 +61,8 @@ Accepts an optional value, always return the current limerick value.
 
 sub limerick {
     my ( $self, $limerick ) = @_;
-    $self->{limerick} = $limerick if defined $limerick;
-    return $self->{limerick};
+
+    return $self->_single_attribute_setget( 'limerick', $limerick );
 }
 
 =head2 B<descr( [$descr] )>
@@ -68,8 +75,8 @@ always return the current descr array.
 
 sub descr {
     my ( $self, $descr ) = @_;
-    push @{ $self->{descr} }, $descr if defined $descr;
-    return \@{ $self->{descr} };
+
+    return $self->_multiple_attribute_setget( 'descr', $descr );
 }
 
 =head2 B<text( [$text] )>
@@ -82,8 +89,8 @@ always return the current text array.
 
 sub text {
     my ( $self, $text ) = @_;
-    push @{ $self->{text} }, $text if defined $text;
-    return \@{ $self->{text} };
+
+    return $self->_multiple_attribute_setget( 'text', $text );
 }
 
 =head2 B<admin_c( [$contact] )>
@@ -96,8 +103,8 @@ always return the current admin_c array.
 
 sub admin_c {
     my ( $self, $contact ) = @_;
-    push @{ $self->{admin_c} }, $contact if defined $contact;
-    return \@{ $self->{admin_c} };
+
+    return $self->_multiple_attribute_setget( 'admin_c', $contact );
 }
 
 =head2 B<author( [$author] )>
@@ -110,8 +117,8 @@ always return the current author array.
 
 sub author {
     my ( $self, $author ) = @_;
-    push @{ $self->{author} }, $author if defined $author;
-    return \@{ $self->{author} };
+
+    return $self->_multiple_attribute_setget( 'author', $author );
 }
 
 =head2 B<remarks( [$remark] )>
@@ -123,9 +130,9 @@ always return the current remarks array.
 =cut
 
 sub remarks {
-    my ( $self, $remarks ) = @_;
-    push @{ $self->{remarks} }, $remarks if defined $remarks;
-    return \@{ $self->{remarks} };
+    my ( $self, $remark ) = @_;
+
+    return $self->_multiple_attribute_setget( 'remarks', $remark );
 }
 
 =head2 B<notify( [$notify] )>
@@ -138,8 +145,8 @@ always return the current notify array.
 
 sub notify {
     my ( $self, $notify ) = @_;
-    push @{ $self->{notify} }, $notify if defined $notify;
-    return \@{ $self->{notify} };
+
+    return $self->_multiple_attribute_setget( 'notify', $notify );
 }
 
 =head2 B<mnt_by( [$mnt_by] )>
@@ -152,8 +159,8 @@ always return the current mnt_by array.
 
 sub mnt_by {
     my ( $self, $mnt_by ) = @_;
-    push @{ $self->{mnt_by} }, $mnt_by if defined $mnt_by;
-    return \@{ $self->{mnt_by} };
+
+    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
 }
 
 =head2 B<changed( [$changed] )>
@@ -166,8 +173,8 @@ always return the current changed array.
 
 sub changed {
     my ( $self, $changed ) = @_;
-    push @{ $self->{changed} }, $changed if defined $changed;
-    return \@{ $self->{changed} };
+
+    return $self->_multiple_attribute_setget( 'changed', $changed );
 }
 
 =head2 B<source( [$source] )>
@@ -179,8 +186,8 @@ Accepts an optional source, always return the current source.
 
 sub source {
     my ( $self, $source ) = @_;
-    $self->{source} = $source if defined $source;
-    return $self->{source};
+
+    return $self->_single_attribute_setget( 'source', $source );
 }
 
 1;

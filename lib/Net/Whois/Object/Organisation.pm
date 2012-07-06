@@ -23,7 +23,7 @@ use base qw/Net::Whois::Object/;
 # mnt-by:        [mandatory]  [multiple]   [inverse key]
 # changed:       [mandatory]  [multiple]   [ ]
 # source:        [mandatory]  [single]     [ ]
-# 
+#
 
 =head1 NAME
 
@@ -50,6 +50,12 @@ sub new {
         $self->$key( $options{$key} );
     }
 
+    $self->attributes( 'primary',   ['organisation'] );
+    $self->attributes( 'mandatory', [ 'organisation', 'org_name', 'org_type', 'address', 'e_mail', 'mnt_ref', 'mnt_by', 'changed', 'source' ] );
+    $self->attributes( 'optionnal', [ 'descr', 'remarks', 'phone', 'fax_no', 'org', 'admin_c', 'tech_c', 'ref_nfy', 'notify' ] );
+    $self->attributes( 'single', [ 'organisation', 'org_name', 'org_type', 'source' ] );
+    $self->attributes( 'multiple', [ 'descr', 'remarks', 'address', 'phone', 'fax_no', 'e_mail', 'org', 'admin_c', 'tech_c', 'ref_nfy', 'mnt_ref', 'notify', 'mnt_by', 'changed' ] );
+
     return $self;
 }
 
@@ -62,8 +68,8 @@ Accepts an optional organisation, always return the current organisation.
 
 sub organisation {
     my ( $self, $organisation ) = @_;
-    $self->{organisation} = $organisation if defined $organisation;
-    return $self->{organisation};
+
+    return $self->_single_attribute_setget( 'organisation', $organisation );
 }
 
 =head2 B<org_name( [$org_name] )>
@@ -75,8 +81,8 @@ Accepts an optional org_name, always return the current org_name.
 
 sub org_name {
     my ( $self, $org_name ) = @_;
-    $self->{org_name} = $org_name if defined $org_name;
-    return $self->{org_name};
+
+    return $self->_single_attribute_setget( 'org_name', $org_name );
 }
 
 =head2 B<org_type( [$org_type] )>
@@ -93,8 +99,8 @@ Registries, and OTHER for all other organisations.
 
 sub org_type {
     my ( $self, $org_type ) = @_;
-    $self->{org_type} = $org_type if defined $org_type;
-    return $self->{org_type};
+
+    return $self->_single_attribute_setget( 'org_type', $org_type );
 }
 
 =head2 B<org( [$org] )>
@@ -106,8 +112,8 @@ Accepts an optional org, always return the current org.
 
 sub org {
     my ( $self, $org ) = @_;
-    $self->{org} = $role if defined $role;
-    return $self->{org};
+
+    return $self->_single_attribute_setget( 'org', $org );
 }
 
 =head2 B<address( [$address] )>
@@ -120,8 +126,8 @@ always return the current address array.
 
 sub address {
     my ( $self, $address ) = @_;
-    push @{ $self->{address} }, $address if defined $address;
-    return \@{ $self->{address} };
+
+    return $self->_multiple_attribute_setget( 'address', $address );
 }
 
 =head2 B<phone( [$phone] )>
@@ -134,8 +140,8 @@ always return the current phone array.
 
 sub phone {
     my ( $self, $phone ) = @_;
-    push @{ $self->{phone} }, $phone if defined $phone;
-    return \@{ $self->{phone} };
+
+    return $self->_multiple_attribute_setget( 'phone', $phone );
 }
 
 =head2 B<fax_no( [$fax_no] )>
@@ -148,8 +154,8 @@ always return the current fax_no array.
 
 sub fax_no {
     my ( $self, $fax_no ) = @_;
-    push @{ $self->{fax_no} }, $fax_no if defined $fax_no;
-    return \@{ $self->{fax_no} };
+
+    return $self->_multiple_attribute_setget( 'fax_no', $fax_no );
 }
 
 =head2 B<e_mail( [$e_mail] )>
@@ -162,8 +168,8 @@ always return the current e_mail array.
 
 sub e_mail {
     my ( $self, $e_mail ) = @_;
-    push @{ $self->{e_mail} }, $e_mail if defined $e_mail;
-    return \@{ $self->{e_mail} };
+
+    return $self->_multiple_attribute_setget( 'e_mail', $e_mail );
 }
 
 =head2 B<admin_c( [$contact] )>
@@ -176,8 +182,8 @@ always return the current admin_c array.
 
 sub admin_c {
     my ( $self, $contact ) = @_;
-    push @{ $self->{admin_c} }, $contact if defined $contact;
-    return \@{ $self->{admin_c} };
+
+    return $self->_multiple_attribute_setget( 'admin_c', $contact );
 }
 
 =head2 B<tech_c( [$contact] )>
@@ -190,8 +196,8 @@ always return the current tech_c array.
 
 sub tech_c {
     my ( $self, $contact ) = @_;
-    push @{ $self->{tech_c} }, $contact if defined $contact;
-    return \@{ $self->{tech_c} };
+
+    return $self->_multiple_attribute_setget( 'tech_c', $contact );
 }
 
 =head2 B<descr( [$descr] )>
@@ -204,8 +210,8 @@ always return the current descr array.
 
 sub descr {
     my ( $self, $descr ) = @_;
-    push @{ $self->{descr} }, $descr if defined $descr;
-    return \@{ $self->{descr} };
+
+    return $self->_multiple_attribute_setget( 'descr', $descr );
 }
 
 =head2 B<remarks( [$remark] )>
@@ -217,9 +223,9 @@ always return the current remarks array.
 =cut
 
 sub remarks {
-    my ( $self, $remarks ) = @_;
-    push @{ $self->{remarks} }, $remarks if defined $remarks;
-    return \@{ $self->{remarks} };
+    my ( $self, $remark ) = @_;
+
+    return $self->_multiple_attribute_setget( 'remarks', $remark );
 }
 
 =head2 B<notify( [$notify] )>
@@ -232,8 +238,8 @@ always return the current notify array.
 
 sub notify {
     my ( $self, $notify ) = @_;
-    push @{ $self->{notify} }, $notify if defined $notify;
-    return \@{ $self->{notify} };
+
+    return $self->_multiple_attribute_setget( 'notify', $notify );
 }
 
 =head2 B<mnt_by( [$mnt_by] )>
@@ -246,8 +252,8 @@ always return the current mnt_by array.
 
 sub mnt_by {
     my ( $self, $mnt_by ) = @_;
-    push @{ $self->{mnt_by} }, $mnt_by if defined $mnt_by;
-    return \@{ $self->{mnt_by} };
+
+    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
 }
 
 =head2 B<changed( [$changed] )>
@@ -260,8 +266,8 @@ always return the current changed array.
 
 sub changed {
     my ( $self, $changed ) = @_;
-    push @{ $self->{changed} }, $changed if defined $changed;
-    return \@{ $self->{changed} };
+
+    return $self->_multiple_attribute_setget( 'changed', $changed );
 }
 
 =head2 B<source( [$source] )>
@@ -273,8 +279,8 @@ Accepts an optional source, always return the current source.
 
 sub source {
     my ( $self, $source ) = @_;
-    $self->{source} = $source if defined $source;
-    return $self->{source};
+
+    return $self->_single_attribute_setget( 'source', $source );
 }
 
 =head2 B<ref_nfy( [$ref_nfy] )>
@@ -287,10 +293,9 @@ always return the current ref_nfy array.
 
 sub ref_nfy {
     my ( $self, $ref_nfy ) = @_;
-    push @{ $self->{ref_nfy} }, $ref_nfy if defined $ref_nfy;
-    return \@{ $self->{ref_nfy} };
-}
 
+    return $self->_multiple_attribute_setget( 'ref_nfy', $ref_nfy );
+}
 
 =head2 B<mnt_ref( [$mnt_ref] )>
 
@@ -302,8 +307,8 @@ always return the current mnt_ref array.
 
 sub mnt_ref {
     my ( $self, $mnt_ref ) = @_;
-    push @{ $self->{mnt_ref} }, $mnt_ref if defined $mnt_ref;
-    return \@{ $self->{mnt_ref} };
+
+    return $self->_multiple_attribute_setget( 'mnt_ref', $mnt_ref );
 }
 
 1;

@@ -5,7 +5,7 @@ use base qw/Net::Whois::Object/;
 # http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-22
 # APNIC ??
 #
-# 
+#
 # poetic-form:  [mandatory]     [single]    [primary/look-up key]
 # descr:        [optional]      [multiple]  [ ]
 # admin-c:      [mandatory]     [multiple]  [inverse key]
@@ -42,7 +42,26 @@ sub new {
         $self->$key( $options{$key} );
     }
 
+    $self->attributes( 'primary', ['poetic_form'] );
+    $self->attributes( 'mandatory', [ 'poetic_form', 'admin_c', 'mnt_by', 'changed', 'source' ] );
+    $self->attributes( 'optionnal', [ 'descr', 'remarks', 'notify' ] );
+    $self->attributes( 'single', [ 'poetic_form', 'source' ] );
+    $self->attributes( 'multiple', [ 'descr', 'admin_c', 'remarks', 'notify', 'mnt_by', 'changed' ] );
+
     return $self;
+}
+
+=head2 B<poetic_form( [$poetic_form] )>
+
+Accessor to the poetic_form attribute.
+Accepts an optional poetic_form, always return the current poetic_form.
+
+=cut
+
+sub poetic_form {
+    my ( $self, $poetic_form ) = @_;
+
+    return $self->_single_attribute_setget( 'poetic_form', $poetic_form );
 }
 
 =head2 B<descr( [$descr] )>
@@ -55,8 +74,8 @@ always return the current descr array.
 
 sub descr {
     my ( $self, $descr ) = @_;
-    push @{ $self->{descr} }, $descr if defined $descr;
-    return \@{ $self->{descr} };
+
+    return $self->_multiple_attribute_setget( 'descr', $descr );
 }
 
 =head2 B<admin_c( [$contact] )>
@@ -68,9 +87,9 @@ always return the current admin_c array.
 =cut
 
 sub admin_c {
-    my ( $self, $admin_c ) = @_;
-    push @{ $self->{admin_c} }, $admin_c if defined $admin_c;
-    return \@{ $self->{admin_c} };
+    my ( $self, $contact ) = @_;
+
+    return $self->_multiple_attribute_setget( 'admin_c', $contact );
 }
 
 =head2 B<remarks( [$remark] )>
@@ -82,9 +101,9 @@ always return the current remarks array.
 =cut
 
 sub remarks {
-    my ( $self, $remarks ) = @_;
-    push @{ $self->{remarks} }, $remarks if defined $remarks;
-    return \@{ $self->{remarks} };
+    my ( $self, $remark ) = @_;
+
+    return $self->_multiple_attribute_setget( 'remarks', $remark );
 }
 
 =head2 B<notify( [$notify] )>
@@ -97,8 +116,8 @@ always return the current notify array.
 
 sub notify {
     my ( $self, $notify ) = @_;
-    push @{ $self->{notify} }, $notify if defined $notify;
-    return \@{ $self->{notify} };
+
+    return $self->_multiple_attribute_setget( 'notify', $notify );
 }
 
 =head2 B<mnt_by( [$mnt_by] )>
@@ -111,8 +130,8 @@ always return the current mnt_by array.
 
 sub mnt_by {
     my ( $self, $mnt_by ) = @_;
-    push @{ $self->{mnt_by} }, $mnt_by if defined $mnt_by;
-    return \@{ $self->{mnt_by} };
+
+    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
 }
 
 =head2 B<changed( [$changed] )>
@@ -125,8 +144,8 @@ always return the current changed array.
 
 sub changed {
     my ( $self, $changed ) = @_;
-    push @{ $self->{changed} }, $changed if defined $changed;
-    return \@{ $self->{changed} };
+
+    return $self->_multiple_attribute_setget( 'changed', $changed );
 }
 
 =head2 B<source( [$source] )>
@@ -138,8 +157,8 @@ Accepts an optional source, always return the current source.
 
 sub source {
     my ( $self, $source ) = @_;
-    $self->{source} = $source if defined $source;
-    return $self->{source};
+
+    return $self->_single_attribute_setget( 'source', $source );
 }
 
 1;

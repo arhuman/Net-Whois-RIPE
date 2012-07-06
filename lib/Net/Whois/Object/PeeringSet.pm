@@ -21,7 +21,6 @@ use base qw/Net::Whois::Object/;
 # mp-peering:     [optional]   [multiple]   [ ]
 # mnt-lower:      [optional]   [multiple]   [inverse key]
 
-
 =head1 NAME
 
 Net::Whois::Object::PeeringSet - an object representation of the RPSL PeeringSet block
@@ -49,6 +48,12 @@ sub new {
         $self->$key( $options{$key} );
     }
 
+    $self->attributes( 'primary', ['peering_set'] );
+    $self->attributes( 'mandatory', [ 'peering_set', 'descr', 'peering', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
+    $self->attributes( 'optionnal', [ 'remarks',     'notify' ] );
+    $self->attributes( 'single',    [ 'peering_set', 'source' ] );
+    $self->attributes( 'multiple',  [ 'descr',       'peering', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'remarks', 'notify' ] );
+
     return $self;
 }
 
@@ -63,8 +68,8 @@ The peering_set must begin with 'PRNG-'.
 
 sub peering_set {
     my ( $self, $peering_set ) = @_;
-    $self->{peering_set} = $peering_set if defined $peering_set;
-    return $self->{peering_set};
+
+    return $self->_single_attribute_setget( 'peering_set', $peering_set );
 }
 
 =head2 B<descr( [$descr] )>
@@ -77,8 +82,8 @@ always return the current descr array.
 
 sub descr {
     my ( $self, $descr ) = @_;
-    push @{ $self->{descr} }, $descr if defined $descr;
-    return \@{ $self->{descr} };
+
+    return $self->_multiple_attribute_setget( 'descr', $descr );
 }
 
 =head2 B<peering( [$peering] )>
@@ -91,8 +96,8 @@ always return the current peering array.
 
 sub peering {
     my ( $self, $peering ) = @_;
-    push @{ $self->{peering} }, $peering if defined $peering;
-    return \@{ $self->{peering} };
+
+    return $self->_multiple_attribute_setget( 'peering', $peering );
 }
 
 =head2 B<remarks( [$remark] )>
@@ -105,8 +110,8 @@ always return the current remarks array.
 
 sub remarks {
     my ( $self, $remark ) = @_;
-    push @{ $self->{remarks} }, $remark if defined $remark;
-    return \@{ $self->{remarks} };
+
+    return $self->_multiple_attribute_setget( 'remarks', $remark );
 }
 
 =head2 B<tech_c( [$contact] )>
@@ -119,8 +124,8 @@ always return the current tech_c array.
 
 sub tech_c {
     my ( $self, $contact ) = @_;
-    push @{ $self->{tech_c} }, $contact if defined $contact;
-    return \@{ $self->{tech_c} };
+
+    return $self->_multiple_attribute_setget( 'tech_c', $contact );
 }
 
 =head2 B<admin_c( [$contact] )>
@@ -133,8 +138,8 @@ always return the current admin_c array.
 
 sub admin_c {
     my ( $self, $contact ) = @_;
-    push @{ $self->{admin_c} }, $contact if defined $contact;
-    return \@{ $self->{admin_c} };
+
+    return $self->_multiple_attribute_setget( 'admin_c', $contact );
 }
 
 =head2 B<notify( [$notify] )>
@@ -147,8 +152,8 @@ always return the current notify array.
 
 sub notify {
     my ( $self, $notify ) = @_;
-    push @{ $self->{notify} }, $notify if defined $notify;
-    return \@{ $self->{notify} };
+
+    return $self->_multiple_attribute_setget( 'notify', $notify );
 }
 
 =head2 B<mnt_by( [$mnt_by] )>
@@ -161,8 +166,8 @@ Accepts an optional mnt_by value to be added to the mnt_by array,
 
 sub mnt_by {
     my ( $self, $mnt_by ) = @_;
-    push @{ $self->{mnt_by} }, $mnt_by if defined $mnt_by;
-    return \@{ $self->{mnt_by} };
+
+    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
 }
 
 =head2 B<changed( [$changed] )>
@@ -175,8 +180,8 @@ always return the current changed array.
 
 sub changed {
     my ( $self, $changed ) = @_;
-    push @{ $self->{changed} }, $changed if defined $changed;
-    return \@{ $self->{changed} };
+
+    return $self->_multiple_attribute_setget( 'changed', $changed );
 }
 
 =head2 B<source( [$source] )>
@@ -188,8 +193,8 @@ Accepts an optional source, always return the current source.
 
 sub source {
     my ( $self, $source ) = @_;
-    $self->{source} = $source if defined $source;
-    return $self->{source};
+
+    return $self->_single_attribute_setget( 'source', $source );
 }
 
 =head2 B<mp_peering( [$mp_peering] )>
@@ -202,8 +207,8 @@ always return the current mp_peering array.
 
 sub mp_peering {
     my ( $self, $mp_peering ) = @_;
-    push @{ $self->{mp_peering} }, $mp_peering if defined $mp_peering;
-    return \@{ $self->{mp_peering} };
+
+    return $self->_multiple_attribute_setget( 'mp_peering', $mp_peering );
 }
 
 =head2 B<mnt_lower( [$mnt_lower] )>
@@ -216,8 +221,8 @@ always return the current mnt_lower array.
 
 sub mnt_lower {
     my ( $self, $mnt_lower ) = @_;
-    push @{ $self->{mnt_lower} }, $mnt_lower if defined $mnt_lower;
-    return \@{ $self->{mnt_lower} };
+
+    return $self->_multiple_attribute_setget( 'mnt_lower', $mnt_lower );
 }
 
 1;

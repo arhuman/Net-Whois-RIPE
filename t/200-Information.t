@@ -9,30 +9,36 @@ STDOUT->autoflush(1);
 STDERR->autoflush(1);
 
 our $class;
-BEGIN { $class = 'Net::Whois::Object'; use_ok $class; }
+BEGIN { $class = 'Net::Whois::Object::Information'; use_ok $class; }
 
-my  @lines = <DATA>; 
-my $object = (Net::Whois::Object->new(@lines))[0];
+my %tested;
 
-isa_ok $object, "Net::Whois::Object::Information";
+my @lines  = <DATA>;
+my $object = ( Net::Whois::Object->new(@lines) )[0];
 
-# Inherited method from Net::Whois::Object;
-can_ok $object,
+isa_ok $object, $class;
 
-    # Constructor
-    qw( new ),
-
-    # OO Support
-    qw( query_filter filtered_attributes displayed_attributes );
-
+# Non-inherited methods
 can_ok $object, qw( comment );
 
-ok( !$object->can('bogusmethod'), "No AUTOLOAD interference with Net::Whois::Object::Information tests" );
+# Check if typed attributes are correct
+can_ok $object, $object->attributes('mandatory');
+
+# Test 'comment'
+$tested{'comment'}++;
+is_deeply( $object->comment(), [ 'This is the RIPE Database query service.', 'The objects are in RPSL format.' ], 'comment properly parsed' );
+
+# Do cause issue with lexicals
+eval `cat t/common.pl`;
+ok( !$!, "Can read t/common.pl ($!)" );
+ok( !$@, "Can evaluate t/common.pl ($@)" );
+
+# Do cause issue with lexicals
+eval `cat t/common.pl`;
+ok( !$!, "Can read t/common.pl ($!)" );
+ok( !$@, "Can evaluate t/common.pl ($@)" );
 
 __DATA__
 % This is the RIPE Database query service.
 % The objects are in RPSL format.
-%
-% The RIPE Database is subject to Terms and Conditions.
-% See http://www.ripe.net/db/support/db-terms-conditions.pdf
 

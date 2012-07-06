@@ -25,7 +25,6 @@ use base qw/Net::Whois::Object/;
 # changed:       [mandatory]  [multiple]   [ ]
 # source:        [mandatory]  [single]     [ ]
 
-
 =head1 NAME
 
 Net::Whois::Object::AutNum - an object representation of a RPSL AutNum block
@@ -56,6 +55,12 @@ sub new {
         $self->$key( $options{$key} );
     }
 
+    $self->attributes( 'primary',   ['aut_num'] );
+    $self->attributes( 'mandatory', [ 'aut_num', 'as_name', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
+    $self->attributes( 'optionnal', [ 'member_of', 'import', 'mp_import', 'export', 'mp_export', 'default', 'mp_default', 'remarks', 'notify', 'mnt_lower', 'mnt_routes' ] );
+    $self->attributes( 'single', [ 'aut_num', 'as_name', 'source' ] );
+    $self->attributes( 'multiple', [ 'descr', 'member_of', 'import', 'mp_import', 'export', 'mp_export', 'default', 'mp_default', 'remarks', 'admin_c', 'tech_c', 'notify', 'mnt_lower', 'mnt_routes', 'mnt_by', 'changed' ] );
+
     return $self;
 }
 
@@ -77,12 +82,10 @@ sub aut_num {
     my ( $self, $aut_num ) = @_;
 
     if ( $aut_num and $aut_num !~ /^AS\d+/ ) {
-        warn "Illegal aut-num ($aut_num) : should be ASn, n being a 32 bit
-        number with no leading 0";
+        warn "Illegal aut-num ($aut_num) : should be ASn, n being a 32 bit number with no leading 0";
     }
 
-    $self->{aut_num} = $aut_num if defined $aut_num;
-    return $self->{aut_num};
+    return $self->_single_attribute_setget( 'aut_num', $aut_num );
 }
 
 =head2 B<as_name( [$as_name] )>
@@ -96,8 +99,8 @@ The as-name attribute is a symbolic name of the AS.
 
 sub as_name {
     my ( $self, $as_name ) = @_;
-    $self->{as_name} = $as_name if defined $as_name;
-    return $self->{as_name};
+
+    return $self->_single_attribute_setget( 'as_name', $as_name );
 }
 
 =head2 B<descr( [$descr] )>
@@ -109,8 +112,8 @@ Accepts an optional descr value to be added to the descr array, always return th
 
 sub descr {
     my ( $self, $descr ) = @_;
-    push @{ $self->{descr} }, $descr if defined $descr;
-    return \@{ $self->{descr} };
+
+    return $self->_multiple_attribute_setget( 'descr', $descr );
 }
 
 =head2 B<member_of( [$mbr_of] )>
@@ -135,8 +138,8 @@ and/or list the AS number in the members attribute
 
 sub member_of {
     my ( $self, $member_of ) = @_;
-    push @{ $self->{member_of} }, $member_of if defined $member_of;
-    return \@{ $self->{member_of} };
+
+    return $self->_multiple_attribute_setget( 'member_of', $member_of );
 }
 
 =head2 B<import( [$import] )>
@@ -151,8 +154,8 @@ The inbound IPv4 routing policy of the AS.
 
 sub import {
     my ( $self, $import ) = @_;
-    push @{ $self->{import} }, $import if defined $import;
-    return \@{ $self->{import} };
+
+    return $self->_multiple_attribute_setget( 'import', $import );
 }
 
 =head2 B<mp_import( [$import] )>
@@ -167,8 +170,8 @@ The inbound IPv6 routing policy of the AS.
 
 sub mp_import {
     my ( $self, $mp_import ) = @_;
-    push @{ $self->{mp_import} }, $import if defined $import;
-    return \@{ $self->{mp_import} };
+
+    return $self->_multiple_attribute_setget( 'mp_import', $mp_import );
 }
 
 =head2 B<export( [$export] )>
@@ -183,8 +186,8 @@ The outbound routing policy of the AS.
 
 sub export {
     my ( $self, $export ) = @_;
-    push @{ $self->{export} }, $export if defined $export;
-    return \@{ $self->{export} };
+
+    return $self->_multiple_attribute_setget( 'export', $export );
 }
 
 =head2 B<mp_export( [$mp_export] )>
@@ -199,8 +202,8 @@ The outbound IPv6 routing policy of the AS.
 
 sub mp_export {
     my ( $self, $mp_export ) = @_;
-    push @{ $self->{mp_export} }, $mp_export if defined $mp_export;
-    return \@{ $self->{mp_export} };
+
+    return $self->_multiple_attribute_setget( 'mp_export', $mp_export );
 }
 
 =head2 B<default( [$default] )>
@@ -216,8 +219,8 @@ more-specific information on where to send the traffic.
 
 sub default {
     my ( $self, $default ) = @_;
-    push @{ $self->{default} }, $default if defined $default;
-    return \@{ $self->{default} };
+
+    return $self->_multiple_attribute_setget( 'default', $default );
 }
 
 =head2 B<mp_default( [$mp_default] )>
@@ -234,8 +237,8 @@ specified.
 
 sub mp_default {
     my ( $self, $mp_default ) = @_;
-    push @{ $self->{mp_default} }, $mp_default if defined $mp_default;
-    return \@{ $self->{mp_default} };
+
+    return $self->_multiple_attribute_setget( 'mp_default', $mp_default );
 }
 
 =head2 B<remarks( [$remark] )>
@@ -251,8 +254,8 @@ include a URL or email address.
 
 sub remarks {
     my ( $self, $remark ) = @_;
-    push @{ $self->{remarks} }, $remark if defined $remark;
-    return \@{ $self->{remarks} };
+
+    return $self->_multiple_attribute_setget( 'remark', $remark );
 }
 
 =head2 B<admin_c( [$contact] )>
@@ -271,8 +274,8 @@ located at the site of the network.
 
 sub admin_c {
     my ( $self, $contact ) = @_;
-    push @{ $self->{admin_c} }, $contact if defined $contact;
-    return \@{ $self->{admin_c} };
+
+    return $self->_multiple_attribute_setget( 'admin_c', $contact );
 }
 
 =head2 B<tech_c( [$contact] )>
@@ -293,8 +296,8 @@ physically located at the site of the network.
 
 sub tech_c {
     my ( $self, $contact ) = @_;
-    push @{ $self->{tech_c} }, $contact if defined $contact;
-    return \@{ $self->{tech_c} };
+
+    return $self->_multiple_attribute_setget( 'tech_c', $contact );
 }
 
 =head2 B<notify( [$notify] )>
@@ -307,8 +310,8 @@ always return the current notify array.
 
 sub notify {
     my ( $self, $notify ) = @_;
-    push @{ $self->{notify} }, $notify if defined $notify;
-    return \@{ $self->{notify} };
+
+    return $self->_multiple_attribute_setget( 'notify', $notify );
 }
 
 =head2 B<mnt_lower( [$mnt_lower] )>
@@ -321,8 +324,8 @@ always return the current mnt_lower array.
 
 sub mnt_lower {
     my ( $self, $mnt_lower ) = @_;
-    push @{ $self->{mnt_lower} }, $mnt_lower if defined $mnt_lower;
-    return \@{ $self->{mnt_lower} };
+
+    return $self->_multiple_attribute_setget( 'mnt_lower', $mnt_lower );
 }
 
 =head2 B<mnt_routes( [$mnt_routes] )>
@@ -335,8 +338,8 @@ always return the current mnt_routes array.
 
 sub mnt_routes {
     my ( $self, $mnt_routes ) = @_;
-    push @{ $self->{mnt_routes} }, $mnt_routes if defined $mnt_routes;
-    return \@{ $self->{mnt_routes} };
+
+    return $self->_multiple_attribute_setget( 'mnt_route', $mnt_route );
 }
 
 =head2 B<mnt_by( [$mnt_by] )>
@@ -349,8 +352,8 @@ always return the current mnt_by array.
 
 sub mnt_by {
     my ( $self, $mnt_by ) = @_;
-    push @{ $self->{mnt_by} }, $mnt_by if defined $mnt_by;
-    return \@{ $self->{mnt_by} };
+
+    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
 }
 
 =head2 B<changed( [$changed] )>
@@ -363,8 +366,8 @@ always return the current changed array.
 
 sub changed {
     my ( $self, $changed ) = @_;
-    push @{ $self->{changed} }, $changed if defined $changed;
-    return \@{ $self->{changed} };
+
+    return $self->_multiple_attribute_setget( 'changed', $changed );
 }
 
 =head2 B<source( [$source] )>
@@ -378,8 +381,8 @@ The database where the object is registered.
 
 sub source {
     my ( $self, $source ) = @_;
-    $self->{source} = $source if defined $source;
-    return $self->{source};
+
+    return $self->_single_attribute_setget( 'source', $source );
 }
 
 =head2 B<org( [$org] )>
@@ -394,8 +397,8 @@ This is to ensure only one organisation is responsible for this resource.
 
 sub org {
     my ( $self, $org ) = @_;
-    $self->{org} = $org if defined $org;
-    return $self->{org};
+
+    return $self->_single_attribute_setget( 'org', $org );
 }
 
 1;

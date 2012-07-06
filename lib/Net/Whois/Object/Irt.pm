@@ -54,7 +54,14 @@ sub new {
         $self->$key( $options{$key} );
     }
 
+    $self->attributes( 'primary', ['irt'] );
+    $self->attributes( 'mandatory', [ 'irt', 'address', 'e_mail', 'abuse_mailbox', 'tech_c', 'admin_c', 'auth', 'mnt_by', 'changed', 'source' ] );
+    $self->attributes( 'optionnal', [ 'phone', 'fax_no', 'signature', 'encryption', 'org', 'remarks', 'irt_nfy', 'notify' ] );
+    $self->attributes( 'single', [ 'irt', 'source' ] );
+    $self->attributes( 'multiple', [ 'address', 'phone', 'fax_no', 'e_mail', 'abuse_mailbox', 'signature', 'encryption', 'org', 'auth', 'remarks', 'tech_c', 'admin_c', 'irt_nfy', 'notify', 'mnt_by', 'changed' ] );
+
     return $self;
+
 }
 
 =head2 B<irt( [$irt] )>
@@ -71,8 +78,7 @@ sub irt {
     if ( $irt and $irt !~ /^IRT-/i ) {
         warn "Irt name not valid ($irt) : Should start with 'IRT-'";
     }
-    $self->{irt} = $irt if defined $irt;
-    return $self->{irt};
+    return $self->_single_attribute_setget( 'irt', $irt );
 }
 
 =head2 B<address( [$address] )>
@@ -90,8 +96,8 @@ More than one line can be used.
 
 sub address {
     my ( $self, $address ) = @_;
-    push @{ $self->{address} }, $address if defined $address;
-    return \@{ $self->{address} };
+
+    return $self->_multiple_attribute_setget( 'address', $address );
 }
 
 =head2 B<phone( [$phone] )>
@@ -113,8 +119,8 @@ A contact telephone number.
 
 sub phone {
     my ( $self, $phone ) = @_;
-    push @{ $self->{phone} }, $phone if defined $phone;
-    return \@{ $self->{phone} };
+
+    return $self->_multiple_attribute_setget( 'phone', $phone );
 }
 
 =head2 B<fax_no( [$fax_no] )>
@@ -131,8 +137,8 @@ A contact fax number.
 
 sub fax_no {
     my ( $self, $fax_no ) = @_;
-    push @{ $self->{fax_no} }, $fax_no if defined $fax_no;
-    return \@{ $self->{fax_no} };
+
+    return $self->_multiple_attribute_setget( 'fax_no', $fax_no );
 }
 
 =head2 B<e_mail( [$e_mail] )>
@@ -147,8 +153,8 @@ A contact email address for non-abuse/technical incidents.
 
 sub e_mail {
     my ( $self, $e_mail ) = @_;
-    push @{ $self->{e_mail} }, $e_mail if defined $e_mail;
-    return \@{ $self->{e_mail} };
+
+    return $self->_multiple_attribute_setget( 'e_mail', $e_mail );
 }
 
 =head2 B<abuse_mailbox( [$abuse_mailbox] )>
@@ -163,8 +169,8 @@ Specifies the email address to which abuse complaints should be sent.
 
 sub abuse_mailbox {
     my ( $self, $abuse_mailbox ) = @_;
-    push @{ $self->{abuse_mailbox} }, $abuse_mailbox if defined $abuse_mailbox;
-    return \@{ $self->{abuse_mailbox} };
+
+    return $self->_multiple_attribute_setget( 'abuse_mailbox', $abuse_mailbox );
 }
 
 =head2 B<signature( [$signature] )>
@@ -180,8 +186,8 @@ team to sign their correspondence.
 
 sub signature {
     my ( $self, $signature ) = @_;
-    push @{ $self->{signature} }, $signature if defined $signature;
-    return \@{ $self->{signature} };
+
+    return $self->_multiple_attribute_setget( 'signature', $signature );
 }
 
 =head2 B<encryption( [$encryption] )>
@@ -197,8 +203,8 @@ correspondence sent to the CSIRT.
 
 sub encryption {
     my ( $self, $encryption ) = @_;
-    push @{ $self->{encryption} }, $encryption if defined $encryption;
-    return \@{ $self->{encryption} };
+
+    return $self->_multiple_attribute_setget( 'encryption', $encryption );
 }
 
 =head2 B<org( [$org] )>
@@ -213,8 +219,8 @@ The organisation responsible for this resource.
 
 sub org {
     my ( $self, $org ) = @_;
-    push @{ $self->{org} }, $org if defined $org;
-    return \@{ $self->{org} };
+
+    return $self->_multiple_attribute_setget( 'org', $org );
 }
 
 =head2 B<auth( [$auth] )>
@@ -230,8 +236,8 @@ authentication schemes used by the RIPE Database are allowed.
 
 sub auth {
     my ( $self, $auth ) = @_;
-    push @{ $self->{auth} }, $auth if defined $auth;
-    return \@{ $self->{auth} };
+
+    return $self->_multiple_attribute_setget( 'auth', $auth );
 }
 
 =head2 B<admin_c( [$contact] )>
@@ -250,8 +256,8 @@ located at the site of the network.
 
 sub admin_c {
     my ( $self, $contact ) = @_;
-    push @{ $self->{admin_c} }, $contact if defined $contact;
-    return \@{ $self->{admin_c} };
+
+    return $self->_multiple_attribute_setget( 'admin_c', $contact );
 }
 
 =head2 B<tech_c( [$contact] )>
@@ -271,8 +277,8 @@ physically located at the site of the network.
 
 sub tech_c {
     my ( $self, $contact ) = @_;
-    push @{ $self->{tech_c} }, $contact if defined $contact;
-    return \@{ $self->{tech_c} };
+
+    return $self->_multiple_attribute_setget( 'tech_c', $contact );
 }
 
 =head2 B<remarks( [$remark] )>
@@ -286,9 +292,9 @@ Information about the object that cannot be stated in other attributes.
 =cut
 
 sub remarks {
-    my ( $self, $remarks ) = @_;
-    push @{ $self->{remarks} }, $remarks if defined $remarks;
-    return \@{ $self->{remarks} };
+    my ( $self, $remark ) = @_;
+
+    return $self->_multiple_attribute_setget( 'remarks', $remark );
 }
 
 =head2 B<notify( [$notify] )>
@@ -304,8 +310,8 @@ be sent.
 
 sub notify {
     my ( $self, $notify ) = @_;
-    push @{ $self->{notify} }, $notify if defined $notify;
-    return \@{ $self->{notify} };
+
+    return $self->_multiple_attribute_setget( 'notify', $notify );
 }
 
 =head2 B<mnt_by( [$mnt_by] )>
@@ -321,8 +327,8 @@ this object.
 
 sub mnt_by {
     my ( $self, $mnt_by ) = @_;
-    push @{ $self->{mnt_by} }, $mnt_by if defined $mnt_by;
-    return \@{ $self->{mnt_by} };
+
+    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
 }
 
 =head2 B<changed( [$changed] )>
@@ -344,8 +350,8 @@ format using one of the following two formats: YYYYMMDD or YYMMDD.
 
 sub changed {
     my ( $self, $changed ) = @_;
-    push @{ $self->{changed} }, $changed if defined $changed;
-    return \@{ $self->{changed} };
+
+    return $self->_multiple_attribute_setget( 'changed', $changed );
 }
 
 =head2 B<source( [$source] )>
@@ -359,8 +365,8 @@ The database where the object is registered.
 
 sub source {
     my ( $self, $source ) = @_;
-    $self->{source} = $source if defined $source;
-    return $self->{source};
+
+    return $self->_single_attribute_setget( 'source', $source );
 }
 
 =head2 B<irt_nfy( [$irt_nfy] )>
@@ -376,8 +382,8 @@ reference to the irt object is added or removed.
 
 sub irt_nfy {
     my ( $self, $irt_nfy ) = @_;
-    push @{ $self->{irt_nfy} }, $irt_nfy if defined $irt_nfy;
-    return \@{ $self->{irt_nfy} };
+
+    return $self->_multiple_attribute_setget( 'irt_nfy', $irt_nfy );
 }
 
 1;

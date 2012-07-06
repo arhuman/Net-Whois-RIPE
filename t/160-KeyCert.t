@@ -9,68 +9,106 @@ STDOUT->autoflush(1);
 STDERR->autoflush(1);
 
 our $class;
-BEGIN { $class = 'Net::Whois::Object'; use_ok $class; }
+BEGIN { $class = 'Net::Whois::Object::KeyCert'; use_ok $class; }
 
-my  @lines = <DATA>; 
-my $object = (Net::Whois::Object->new(@lines))[0];
+my %tested;
 
-isa_ok $object, "Net::Whois::Object::KeyCert";
+my @lines  = <DATA>;
+my $object = ( Net::Whois::Object->new(@lines) )[0];
 
-# Inherited method from Net::Whois::Object;
-can_ok $object,
+isa_ok $object, $class;
 
-    # Constructor
-    qw( new ),
-
-    # OO Support
-    qw( query_filter filtered_attributes displayed_attributes );
-
+# Non-inherited methods
 can_ok $object, qw( key_cert method owner fingerpr remarks org certif notify
-admin_c tech_c mnt_by changed source);
+    admin_c tech_c mnt_by changed source);
 
-ok( !$object->can('bogusmethod'), "No AUTOLOAD interference with Net::Whois::Object::KeyCert tests" );
+# Check if typed attributes are correct
+can_ok $object, $object->attributes('mandatory');
+can_ok $object, $object->attributes('optionnal');
 
-is ($object->key_cert(),'PGPKEY-4E17C667','key_cert properly parsed');
+# Test 'key_cert'
+$tested{'key_cert'}++;
+is( $object->key_cert(), 'PGPKEY-4E17C667', 'key_cert properly parsed' );
 $object->key_cert('PGPKEY-4E17C668');
-is ($object->key_cert(),'PGPKEY-4E17C668','key_cert properly set');
+is( $object->key_cert(), 'PGPKEY-4E17C668', 'key_cert properly set' );
 
-is ($object->method(),'PGP','method properly parsed');
+# Test 'method'
+$tested{'method'}++;
+is( $object->method(), 'PGP', 'method properly parsed' );
 $object->method('PGP2');
-is ($object->method(),'PGP2','method properly set');
+is( $object->method(), 'PGP2', 'method properly set' );
 
-is_deeply ($object->owner(),['KEY-OWNER Arhuman'],'owner properly parsed');
+# Test 'owner'
+$tested{'owner'}++;
+is_deeply( $object->owner(), ['KEY-OWNER Arhuman'], 'owner properly parsed' );
 $object->owner('Added owner');
-is ($object->owner()->[1],'Added owner','owner properly added');
+is( $object->owner()->[1], 'Added owner', 'owner properly added' );
 
-is ($object->fingerpr(),'8B33 C463 2555 F669 EEEB  105A 68BA 54F3 4E17 C667','fingerpr properly parsed');
+# Test 'fingerpr'
+$tested{'fingerpr'}++;
+is( $object->fingerpr(), '8B33 C463 2555 F669 EEEB  105A 68BA 54F3 4E17 C667', 'fingerpr properly parsed' );
 $object->fingerpr('8B33 C463 2555 F669 EEEB  105A 68BA 54F3 4E17 FFFF');
-is ($object->fingerpr(),'8B33 C463 2555 F669 EEEB  105A 68BA 54F3 4E17 FFFF','fingerpr properly set');
+is( $object->fingerpr(), '8B33 C463 2555 F669 EEEB  105A 68BA 54F3 4E17 FFFF', 'fingerpr properly set' );
 
-is_deeply ($object->remarks(),[ 'Arhuman\'s key' ],'remarks properly parsed');
+# Test 'remarks'
+$tested{'remarks'}++;
+is_deeply( $object->remarks(), ['Arhuman\'s key'], 'remarks properly parsed' );
 $object->remarks('Added remarks');
-is ($object->remarks()->[1],'Added remarks','remarks properly added');
+is( $object->remarks()->[1], 'Added remarks', 'remarks properly added' );
 
-is ($object->certif()->[0],'-----BEGIN PGP PUBLIC KEY BLOCK-----','certif[0] properly parsed');
-is ($object->certif()->[3],'mQGiBERfPw4RBACuTDkgkfCGFAgKeShm0FgozRsLkjccsV/Ua5Y0fs6Ay8agueTj','certif[3] properly parsed');
-is ($object->certif()->[28],'=opxg','certif[28] properly parsed');
+# Test 'certif'
+$tested{'certif'}++;
+is( $object->certif()->[0],  '-----BEGIN PGP PUBLIC KEY BLOCK-----',                             'certif[0] properly parsed' );
+is( $object->certif()->[3],  'mQGiBERfPw4RBACuTDkgkfCGFAgKeShm0FgozRsLkjccsV/Ua5Y0fs6Ay8agueTj', 'certif[3] properly parsed' );
+is( $object->certif()->[28], '=opxg',                                                            'certif[28] properly parsed' );
 $object->certif('Added certif');
-is ($object->certif()->[30],'Added certif','certif properly added');
+is( $object->certif()->[30], 'Added certif', 'certif properly added' );
 
-is_deeply ($object->notify(),[ 'watcher@somewhere.com' ],'notify properly parsed');
+# Test 'notify'
+$tested{'notify'}++;
+is_deeply( $object->notify(), ['watcher@somewhere.com'], 'notify properly parsed' );
 $object->notify('watcher@elsewhere.com');
-is ($object->notify()->[1],'watcher@elsewhere.com','notify properly added');
+is( $object->notify()->[1], 'watcher@elsewhere.com', 'notify properly added' );
 
-is_deeply ($object->mnt_by(),[ 'MAINT-EXAMPLECOM' ],'mnt_by properly parsed');
+# Test 'mnt_by'
+$tested{'mnt_by'}++;
+is_deeply( $object->mnt_by(), ['MAINT-EXAMPLECOM'], 'mnt_by properly parsed' );
 $object->mnt_by('MAINT2-EXAMPLECOM');
-is ($object->mnt_by()->[1],'MAINT2-EXAMPLECOM','mnt_by properly added');
+is( $object->mnt_by()->[1], 'MAINT2-EXAMPLECOM', 'mnt_by properly added' );
 
-is_deeply ($object->changed(),[ 'abc@somewhere.com 20120131' ],'changed properly parsed');
+# Test 'admin_c'
+$tested{'admin_c'}++;
+is_deeply( $object->admin_c(), ['FR123-AP'], 'admin_c properly parsed' );
+$object->admin_c('FR456-AP');
+is( $object->admin_c()->[1], 'FR456-AP', 'admin_c properly added' );
+
+# Test 'tech_c'
+$tested{'tech_c'}++;
+is_deeply( $object->tech_c(), ['FR123-AP'], 'tech_c properly parsed' );
+$object->tech_c('FR456-AP');
+is( $object->tech_c()->[1], 'FR456-AP', 'tech_c properly added' );
+
+# Test 'changed'
+$tested{'changed'}++;
+is_deeply( $object->changed(), ['abc@somewhere.com 20120131'], 'changed properly parsed' );
 $object->changed('def@somewhere.com 20120228');
-is ($object->changed()->[1],'def@somewhere.com 20120228','changed properly added');
+is( $object->changed()->[1], 'def@somewhere.com 20120228', 'changed properly added' );
 
-is ($object->source(),'RIPE','source properly parsed');
+# Test 'source'
+$tested{'source'}++;
+is( $object->source(), 'RIPE', 'source properly parsed' );
 $object->source('APNIC');
-is ($object->source(),'APNIC','source properly set');
+is( $object->source(), 'APNIC', 'source properly set' );
+
+# Test 'org'
+$tested{'org'}++;
+
+# TODO
+
+# Do cause issue with lexicals
+eval `cat t/common.pl`;
+ok( !$!, "Can read t/common.pl ($!)" );
+ok( !$@, "Can evaluate t/common.pl ($@)" );
 
 __DATA__
 key-cert:       PGPKEY-4E17C667
@@ -110,6 +148,8 @@ certif:         =opxg
 certif:         -----END PGP PUBLIC KEY BLOCK-----
 notify:         watcher@somewhere.com
 mnt-by:         MAINT-EXAMPLECOM
+admin-c:        FR123-AP
+tech-c:         FR123-AP
 changed:        abc@somewhere.com 20120131
 source:         RIPE
 

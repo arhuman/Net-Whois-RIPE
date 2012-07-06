@@ -9,70 +9,97 @@ STDOUT->autoflush(1);
 STDERR->autoflush(1);
 
 our $class;
-BEGIN { $class = 'Net::Whois::Object'; use_ok $class; }
+BEGIN { $class = 'Net::Whois::Object::Person'; use_ok $class; }
 
-my  @lines = <DATA>; 
-my $object = (Net::Whois::Object->new(@lines))[0];
+my %tested;
 
-isa_ok $object, "Net::Whois::Object::Person";
+my @lines  = <DATA>;
+my $object = ( Net::Whois::Object->new(@lines) )[0];
 
-# Inherited method from Net::Whois::Object;
-can_ok $object,
+isa_ok $object, $class;
 
-    # Constructor
-    qw( new ),
-
-    # OO Support
-    qw( query_filter filtered_attributes displayed_attributes );
-
+# Non-inherited methods
 can_ok $object, qw( person address phone fax_no e_mail nic_hdl remarks notify
-mnt_by changed source);
+    mnt_by changed source);
 
-ok( !$object->can('bogusmethod'), "No AUTOLOAD interference with Net::Whois::Object::Person tests" );
+# Check if typed attributes are correct
+can_ok $object, $object->attributes('mandatory');
+can_ok $object, $object->attributes('optionnal');
 
-is ($object->person(),'COMPANY Contact','person properly parsed');
+# Test 'person'
+$tested{'person'}++;
+is( $object->person(), 'COMPANY Contact', 'person properly parsed' );
 $object->person('PERSON');
-is ($object->person(),'PERSON','person properly set');
+is( $object->person(), 'PERSON', 'person properly set' );
 
-is_deeply ($object->address(),
-        [
-            'The Company',
-            '2 Rue de la Gare',
-            '75001 PARIS',
-        ],'address properly parsed');
+# Test 'address'
+$tested{'address'}++;
+is_deeply( $object->address(), [ 'The Company', '2 Rue de la Gare', '75001 PARIS', ], 'address properly parsed' );
 $object->address('Added address');
-is ($object->address()->[3],'Added address','address properly added');
+is( $object->address()->[3], 'Added address', 'address properly added' );
 
-is_deeply ($object->phone(),[ '+33 1 72 44 01 00' ],'phone properly parsed');
+# Test 'phone'
+$tested{'phone'}++;
+is_deeply( $object->phone(), ['+33 1 72 44 01 00'], 'phone properly parsed' );
 $object->phone('Added phone');
-is ($object->phone()->[1],'Added phone','phone properly added');
+is( $object->phone()->[1], 'Added phone', 'phone properly added' );
 
-is_deeply ($object->fax_no(),[ '+33 1 72 44 01 46' ],'fax_no properly parsed');
+# Test 'fax_no'
+$tested{'fax_no'}++;
+is_deeply( $object->fax_no(), ['+33 1 72 44 01 46'], 'fax_no properly parsed' );
 $object->fax_no('Added fax_no');
-is ($object->fax_no()->[1],'Added fax_no','fax_no properly added');
+is( $object->fax_no()->[1], 'Added fax_no', 'fax_no properly added' );
 
-is_deeply ($object->e_mail(),['xxx@somewhere.com'],'e_mail properly parsed');
+# Test 'e_mail'
+$tested{'e_mail'}++;
+is_deeply( $object->e_mail(), ['xxx@somewhere.com'], 'e_mail properly parsed' );
 $object->e_mail('Added e_mail');
-is ($object->e_mail()->[1],'Added e_mail','e_mail properly added');
+is( $object->e_mail()->[1], 'Added e_mail', 'e_mail properly added' );
 
-is ($object->nic_hdl(),'NC123-RIPE','nic_hdl properly parsed');
+# Test 'nic_hdl'
+$tested{'nic_hdl'}++;
+is( $object->nic_hdl(), 'NC123-RIPE', 'nic_hdl properly parsed' );
 $object->nic_hdl('NIC-HDL');
-is ($object->nic_hdl(),'NIC-HDL','nic_hdl properly set');
+is( $object->nic_hdl(), 'NIC-HDL', 'nic_hdl properly set' );
 
-is_deeply ($object->mnt_by(),['MAIN-FR-MNT'],'mnt_by properly parsed');
+# Test 'mnt_by'
+$tested{'mnt_by'}++;
+is_deeply( $object->mnt_by(), ['MAIN-FR-MNT'], 'mnt_by properly parsed' );
 $object->mnt_by('Added mnt_by');
-is ($object->mnt_by()->[1],'Added mnt_by','mnt_by properly added');
+is( $object->mnt_by()->[1], 'Added mnt_by', 'mnt_by properly added' );
 
-is_deeply ($object->changed(),[ 'xxx@somewhere.com 20121016' ],'changed properly parsed');
+# Test 'notify'
+$tested{'notify'}++;
+is_deeply( $object->notify(), ['MAIN-FR-MNT'], 'notify properly parsed' );
+$object->notify('Added notify');
+is( $object->notify()->[1], 'Added notify', 'notify properly added' );
+
+# Test 'remarks'
+$tested{'remarks'}++;
+is_deeply( $object->remarks(), ['Simple person object'], 'remarks properly parsed' );
+$object->remarks('Added remarks');
+is( $object->remarks()->[1], 'Added remarks', 'remarks properly added' );
+
+# Test 'changed'
+$tested{'changed'}++;
+is_deeply( $object->changed(), ['xxx@somewhere.com 20121016'], 'changed properly parsed' );
 $object->changed('Added changed');
-is ($object->changed()->[1],'Added changed','changed properly added');
+is( $object->changed()->[1], 'Added changed', 'changed properly added' );
 
-is ($object->source(),'RIPE # Filtered','source properly parsed');
+# Test 'source'
+$tested{'source'}++;
+is( $object->source(), 'RIPE # Filtered', 'source properly parsed' );
 $object->source('APNIC');
-is ($object->source(),'APNIC','source properly set');
+is( $object->source(), 'APNIC', 'source properly set' );
+
+# Do cause issue with lexicals
+eval `cat t/common.pl`;
+ok( !$!, "Can read t/common.pl ($!)" );
+ok( !$@, "Can evaluate t/common.pl ($@)" );
 
 __DATA__
 person:       COMPANY Contact
+remarks:      Simple person object
 address:      The Company
 address:      2 Rue de la Gare
 address:      75001 PARIS
@@ -81,6 +108,7 @@ fax-no:       +33 1 72 44 01 46
 e-mail:       xxx@somewhere.com
 nic-hdl:      NC123-RIPE
 mnt-by:       MAIN-FR-MNT
+notify:       MAIN-FR-MNT
 changed:      xxx@somewhere.com 20121016
 source:       RIPE # Filtered
 

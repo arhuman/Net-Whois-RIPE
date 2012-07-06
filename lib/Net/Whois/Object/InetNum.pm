@@ -23,7 +23,6 @@ use base qw/Net::Whois::Object/;
 # changed:       [mandatory]  [multiple]   [ ]
 # source:        [mandatory]  [single]     [ ]
 
-
 # From  http://www.apnic.net/apnic-info/whois_search/using-whois/guide/inetnum?view=text-only
 #
 # mnt-irt:        [mandatory]  [multiple]   [inverse key]
@@ -55,6 +54,12 @@ sub new {
         $self->$key( $options{$key} );
     }
 
+    $self->attributes( 'primary', ['inetnum'] );
+    $self->attributes( 'mandatory', [ 'inetnum', 'netname', 'descr', 'country', 'tech_c', 'admin_c', 'status', 'mnt_by', 'changed', 'source' ] );
+    $self->attributes( 'optionnal', [ 'org', 'remarks', 'notify', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt' ] );
+    $self->attributes( 'single', [ 'inetnum', 'netname', 'org', 'status', 'source' ] );
+    $self->attributes( 'multiple', [ 'descr', 'country', 'tech_c', 'admin_c', 'remarks', 'notify', 'mnt_by', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt', 'changed' ] );
+
     return $self;
 }
 
@@ -67,8 +72,8 @@ Accepts an optional inetnum value, always return the current inetnum value.
 
 sub inetnum {
     my ( $self, $inetnum ) = @_;
-    $self->{inetnum} = $inetnum if defined $inetnum;
-    return $self->{inetnum};
+
+    return $self->_single_attribute_setget( 'inetnum', $inetnum );
 }
 
 =head2 B<netname( [$netname] )>
@@ -80,8 +85,8 @@ Accepts an optional netname, always return the current netname.
 
 sub netname {
     my ( $self, $netname ) = @_;
-    $self->{netname} = $netname if defined $netname;
-    return $self->{netname};
+
+    return $self->_single_attribute_setget( 'netname', $netname );
 }
 
 =head2 B<descr( [$descr] )>
@@ -94,8 +99,8 @@ always return the current descr array.
 
 sub descr {
     my ( $self, $descr ) = @_;
-    push @{ $self->{descr} }, $descr if defined $descr;
-    return \@{ $self->{descr} };
+
+    return $self->_multiple_attribute_setget( 'descr', $descr );
 }
 
 =head2 B<country( [$country] )>
@@ -108,8 +113,8 @@ always return the current country array.
 
 sub country {
     my ( $self, $country ) = @_;
-    push @{ $self->{country} }, $country if defined $country;
-    return \@{ $self->{country} };
+
+    return $self->_multiple_attribute_setget( 'country', $country );
 }
 
 =head2 B<org( [$org] )>
@@ -124,8 +129,8 @@ This is to ensure only one organisation is responsible for this resource.
 
 sub org {
     my ( $self, $org ) = @_;
-    $self->{org} = $org if defined $org;
-    return $self->{org};
+
+    return $self->_single_attribute_setget( 'org', $org );
 }
 
 =head2 B<admin_c( [$contact] )>
@@ -144,8 +149,8 @@ located at the site of the network.
 
 sub admin_c {
     my ( $self, $contact ) = @_;
-    push @{ $self->{admin_c} }, $contact if defined $contact;
-    return \@{ $self->{admin_c} };
+
+    return $self->_multiple_attribute_setget( 'admin_c', $contact );
 }
 
 =head2 B<tech_c( [$contact] )>
@@ -166,8 +171,8 @@ physically located at the site of the network.
 
 sub tech_c {
     my ( $self, $contact ) = @_;
-    push @{ $self->{tech_c} }, $contact if defined $contact;
-    return \@{ $self->{tech_c} };
+
+    return $self->_multiple_attribute_setget( 'tech_c', $contact );
 }
 
 =head2 B<status( [$status] )>
@@ -210,8 +215,8 @@ Status can have one of these values:
 
 sub status {
     my ( $self, $status ) = @_;
-    $self->{status} = $status if defined $status;
-    return $self->{status};
+
+    return $self->_single_attribute_setget( 'status', $status );
 }
 
 =head2 B<remarks( [$remark] )>
@@ -227,8 +232,8 @@ complaints.
 
 sub remarks {
     my ( $self, $remark ) = @_;
-    push @{ $self->{remarks} }, $remark if defined $remark;
-    return \@{ $self->{remarks} };
+
+    return $self->_multiple_attribute_setget( 'remarks', $remark );
 }
 
 =head2 B<notify( [$notify] )>
@@ -244,8 +249,8 @@ sent.
 
 sub notify {
     my ( $self, $notify ) = @_;
-    push @{ $self->{notify} }, $notify if defined $notify;
-    return \@{ $self->{notify} };
+
+    return $self->_multiple_attribute_setget( 'notify', $notify );
 }
 
 =head2 B<mnt_by( [$mnt_by] )>
@@ -261,8 +266,8 @@ object.
 
 sub mnt_by {
     my ( $self, $mnt_by ) = @_;
-    push @{ $self->{mnt_by} }, $mnt_by if defined $mnt_by;
-    return \@{ $self->{mnt_by} };
+
+    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
 }
 
 =head2 B<mnt_lower( [$mnt_lower] )>
@@ -278,8 +283,8 @@ used as well as mnt_by.
 
 sub mnt_lower {
     my ( $self, $mnt_lower ) = @_;
-    push @{ $self->{mnt_lower} }, $mnt_lower if defined $mnt_lower;
-    return \@{ $self->{mnt_lower} };
+
+    return $self->_multiple_attribute_setget( 'mnt_lower', $mnt_lower );
 }
 
 =head2 B<mnt_routes( [$mnt_route] )>
@@ -296,8 +301,8 @@ object.
 
 sub mnt_routes {
     my ( $self, $mnt_route ) = @_;
-    push @{ $self->{mnt_routes} }, $mnt_route if defined $mnt_route;
-    return \@{ $self->{mnt_routes} };
+
+    return $self->_multiple_attribute_setget( 'mnt_route', $mnt_route );
 }
 
 =head2 B<mnt_domains( [$mnt_domain] )>
@@ -314,8 +319,8 @@ object.
 
 sub mnt_domains {
     my ( $self, $mnt_domain ) = @_;
-    push @{ $self->{mnt_domains} }, $mnt_domain if defined $mnt_domain;
-    return \@{ $self->{mnt_domains} };
+
+    return $self->_multiple_attribute_setget( 'mnt_domain', $mnt_domain );
 }
 
 =head2 B<changed( [$changed] )>
@@ -337,8 +342,8 @@ format using one of the following two formats: YYYYMMDD or YYMMDD.
 
 sub changed {
     my ( $self, $changed ) = @_;
-    push @{ $self->{changed} }, $changed if defined $changed;
-    return \@{ $self->{changed} };
+
+    return $self->_multiple_attribute_setget( 'changed', $changed );
 }
 
 =head2 B<source( [$source] )>
@@ -352,8 +357,8 @@ The database where the object is registered.
 
 sub source {
     my ( $self, $source ) = @_;
-    $self->{source} = $source if defined $source;
-    return $self->{source};
+
+    return $self->_single_attribute_setget( 'source', $source );
 }
 
 =head2 B<mnt_irt( [$mnt_irt] )>
@@ -369,8 +374,8 @@ about a Computer Security Incident Response Team (CSIRT).
 
 sub mnt_irt {
     my ( $self, $mnt_irt ) = @_;
-    push @{ $self->{mnt_irt} }, $mnt_irt if defined $mnt_irt;
-    return \@{ $self->{mnt_irt} };
+
+    return $self->_multiple_attribute_setget( 'mnt_irt', $mnt_irt );
 }
 
 1;

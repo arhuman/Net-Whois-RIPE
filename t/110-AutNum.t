@@ -2,6 +2,7 @@ use strict;
 use warnings;
 use Test::More qw( no_plan );
 use Test::Exception;
+use Net::Whois::Object;
 
 # synchronizes the {error,standard} output of this test.
 use IO::Handle;
@@ -9,67 +10,139 @@ STDOUT->autoflush(1);
 STDERR->autoflush(1);
 
 our $class;
-BEGIN { $class = 'Net::Whois::Object'; use_ok $class; }
 
-my  @lines = <DATA>; 
-my $object = (Net::Whois::Object->new(@lines))[0];
+BEGIN {
+    $class = 'Net::Whois::Object::AutNum';
 
-isa_ok $object, "Net::Whois::Object::AutNum";
+    # use_ok $class;
+}
 
-# Inherited method from Net::Whois::Object;
-can_ok $object,
+my %tested;
 
-    # Constructor
-    qw( new ),
+my @lines  = <DATA>;
+my $object = ( Net::Whois::Object->new(@lines) )[0];
 
-    # OO Support
-    qw( query_filter filtered_attributes displayed_attributes );
+isa_ok $object, $class;
 
-can_ok $object, qw( aut_num as_name descr member_of import mp_import export
-mp_export default mp_default remarks admin_c tech_c notify mnt_lower mnt_routes mnt_by changed source);
-
-can_ok $object, qw( mp_import mp_export );
-
-ok( !$object->can('bogusmethod'), "No AUTOLOAD interference with Net::Whois::Object::AutNum tests" );
-
-is ($object->aut_num(),'AS00007','aut_num properly parsed');
+# Test 'aut_num'
+$tested{'aut_num'}++;
+is( $object->aut_num(), 'AS7', 'aut_num properly parsed' );
 $object->aut_num('AS1');
-is ($object->aut_num(),'AS1','aut_num properly set');
+is( $object->aut_num(), 'AS1', 'aut_num properly set' );
 
-is ($object->as_name(),'FR-COMPANY','as_name properly parsed');
+# Test 'remarks'
+$tested{'remarks'}++;
+is_deeply( $object->remarks(), ['AS number 7'], 'remarks properly parsed' );
+$object->remarks('Added remarks');
+is( $object->remarks()->[1], 'Added remarks', 'remarks properly added' );
+
+# Test 'as_name'
+$tested{'as_name'}++;
+is( $object->as_name(), 'FR-COMPANY', 'as_name properly parsed' );
 $object->as_name('FR-C');
-is ($object->as_name(),'FR-C','as_name properly set');
+is( $object->as_name(), 'FR-C', 'as_name properly set' );
 
-is_deeply ($object->descr(),[ 'French Company', 'FRANCE' ],'descr properly parsed');
+# Test 'descr'
+$tested{'descr'}++;
+is_deeply( $object->descr(), [ 'French Company', 'FRANCE' ], 'descr properly parsed' );
 $object->descr('Added descr');
-is ($object->descr()->[2],'Added descr','descr properly added');
+is( $object->descr()->[2], 'Added descr', 'descr properly added' );
 
-is ($object->org(),'ORG-MISC01-RIPE','org properly parsed');
+# Test 'org'
+$tested{'org'}++;
+is( $object->org(), 'ORG-MISC01-RIPE', 'org properly parsed' );
 $object->org('ORG-MOD');
-is ($object->org(),'ORG-MOD','org properly set');
+is( $object->org(), 'ORG-MOD', 'org properly set' );
 
-is_deeply ($object->admin_c(),[ 'NC123-RIPE'],'admin_c properly parsed');
+# Test 'admin_c'
+$tested{'admin_c'}++;
+is_deeply( $object->admin_c(), ['NC123-RIPE'], 'admin_c properly parsed' );
 $object->admin_c('Added admin_c');
-is ($object->admin_c()->[1],'Added admin_c','admin_c properly added');
+is( $object->admin_c()->[1], 'Added admin_c', 'admin_c properly added' );
 
-is_deeply ($object->tech_c(),[ 'NC345-RIPE'],'tech_c properly parsed');
+# Test 'tech_c'
+$tested{'tech_c'}++;
+is_deeply( $object->tech_c(), ['NC345-RIPE'], 'tech_c properly parsed' );
 $object->tech_c('Added tech_c');
-is ($object->tech_c()->[1],'Added tech_c','tech_c properly added');
+is( $object->tech_c()->[1], 'Added tech_c', 'tech_c properly added' );
 
-is_deeply ($object->mnt_by(),
-        [
-            'RIPE-NCC-END-MNT',
-            'MAIN-FR-MNT'
-        ],'mnt_by properly parsed');
+# Test 'mnt_by'
+$tested{'mnt_by'}++;
+is_deeply( $object->mnt_by(), [ 'RIPE-NCC-END-MNT', 'MAIN-FR-MNT' ], 'mnt_by properly parsed' );
 $object->mnt_by('Added mnt_by');
-is ($object->mnt_by()->[2],'Added mnt_by','mnt_by properly added');
+is( $object->mnt_by()->[2], 'Added mnt_by', 'mnt_by properly added' );
 
-is ($object->source(),'RIPE # Filtered','source properly parsed');
+# Test 'source'
+$tested{'source'}++;
+is( $object->source(), 'RIPE # Filtered', 'source properly parsed' );
 $object->source('ANIC');
-is ($object->source(),'ANIC','source properly set');
+is( $object->source(), 'ANIC', 'source properly set' );
+
+# Test 'notify'
+$tested{'notify'}++;
+is_deeply( $object->notify(), ['MAIN-FR-MNT'], 'notify properly parsed' );
+$object->notify('Added notify');
+is( $object->notify()->[1], 'Added notify', 'notify properly added' );
+
+# Test 'changed'
+$tested{'changed'}++;
+is_deeply( $object->changed(), ['arhuman@gmail.com 20120701'], 'changed properly parsed' );
+$object->changed('Added changed');
+is( $object->changed()->[1], 'Added changed', 'changed properly added' );
+
+# Test 'import'
+$tested{'import'}++;
+
+# TODO
+
+# Test 'mp_import'
+$tested{'mp_import'}++;
+
+# TODO
+
+# Test 'export'
+$tested{'export'}++;
+
+# TODO
+
+# Test 'mp_export'
+$tested{'mp_export'}++;
+
+# TODO
+
+# Test 'default'
+$tested{'default'}++;
+
+# TODO
+
+# Test 'mp_default'
+$tested{'mp_default'}++;
+
+# TODO
+
+# Test 'mnt_routes'
+$tested{'mnt_routes'}++;
+
+# TODO
+
+# Test 'member_of'
+$tested{'member_of'}++;
+
+# TODO
+
+# Test 'mnt_lower'
+$tested{'mnt_lower'}++;
+
+# TODO
+
+# Do cause issue with lexicals
+eval `cat t/common.pl`;
+ok( !$!, "Can read t/common.pl ($!)" );
+ok( !$@, "Can evaluate t/common.pl ($@)" );
 
 __DATA__
-aut-num:         AS00007
+aut-num:         AS7
+remarks:         AS number 7
 as-name:         FR-COMPANY
 descr:           French Company
 descr:           FRANCE
@@ -78,6 +151,8 @@ admin-c:         NC123-RIPE
 tech-c:          NC345-RIPE
 mnt-by:          RIPE-NCC-END-MNT
 mnt-by:          MAIN-FR-MNT
+notify:          MAIN-FR-MNT
 mnt-routes:      MAIN-FR-MNT
+changed:         arhuman@gmail.com 20120701
 source:          RIPE # Filtered
 

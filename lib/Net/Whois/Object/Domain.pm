@@ -50,6 +50,12 @@ sub new {
         $self->$key( $options{$key} );
     }
 
+    $self->attributes( 'primary',   ['domain'] );
+    $self->attributes( 'mandatory', [ 'domain', 'descr', 'tech_c', 'admin_c', 'zone_c', 'changed', 'source' ] );
+    $self->attributes( 'optionnal', [ 'org', 'nserver', 'ds_rdata', 'sub_dom', 'dom_net', 'remarks', 'notify', 'mnt_by', 'mnt_lower', 'refer' ] );
+    $self->attributes( 'single', [ 'domain', 'refer', 'source' ] );
+    $self->attributes( 'multiple', [ 'descr', 'org', 'admin_c', 'tech_c', 'zone_c', 'nserver', 'ds_rdata', 'sub_dom', 'dom_net', 'remarks', 'notify', 'mnt_by', 'mnt_lower', 'changed' ] );
+
     return $self;
 }
 
@@ -69,8 +75,7 @@ sub domain {
     # Enforce the format
     $domain =~ s/\.$// if $domain;
 
-    $self->{domain} = $domain if defined $domain;
-    return $self->{domain};
+    return $self->_single_attribute_setget( 'domain', $domain );
 }
 
 =head2 B<descr( [$descr] )>
@@ -86,8 +91,8 @@ describe the use of the IP range described in the domain object.
 
 sub descr {
     my ( $self, $descr ) = @_;
-    push @{ $self->{descr} }, $descr if defined $descr;
-    return \@{ $self->{descr} };
+
+    return $self->_multiple_attribute_setget( 'descr', $descr );
 }
 
 =head2 B<org( [$org] )>
@@ -102,8 +107,8 @@ The organisation responsible for this domain.
 
 sub org {
     my ( $self, $org ) = @_;
-    push @{ $self->{org} }, $org if defined $org;
-    return \@{ $self->{org} };
+
+    return $self->_multiple_attribute_setget( 'org', $org );
 }
 
 =head2 B<admin_c( [$contact] )>
@@ -122,8 +127,8 @@ located at the site of the network.
 
 sub admin_c {
     my ( $self, $contact ) = @_;
-    push @{ $self->{admin_c} }, $contact if defined $contact;
-    return \@{ $self->{admin_c} };
+
+    return $self->_multiple_attribute_setget( 'admin_c', $contact );
 }
 
 =head2 B<tech_c( [$contact] )>
@@ -144,8 +149,8 @@ physically located at the site of the network.
 
 sub tech_c {
     my ( $self, $contact ) = @_;
-    push @{ $self->{tech_c} }, $contact if defined $contact;
-    return \@{ $self->{tech_c} };
+
+    return $self->_multiple_attribute_setget( 'tech_c', $contact );
 }
 
 =head2 B<zone_c( [$contact] )>
@@ -160,8 +165,8 @@ The NIC-handle of a 'person' or 'role' object with authority over a zone.
 
 sub zone_c {
     my ( $self, $contact ) = @_;
-    push @{ $self->{zone_c} }, $contact if defined $contact;
-    return \@{ $self->{zone_c} };
+
+    return $self->_multiple_attribute_setget( 'zone_c', $contact );
 }
 
 =head2 B<nserver( [$server] )>
@@ -177,8 +182,8 @@ mandatory.
 
 sub nserver {
     my ( $self, $server ) = @_;
-    push @{ $self->{nserver} }, $server if defined $server;
-    return \@{ $self->{nserver} };
+
+    return $self->_multiple_attribute_setget( 'nserver', $server );
 }
 
 =head2 B<ds_rdata( [$server] )>
@@ -194,8 +199,8 @@ for DNSSEC (short for DNS Security Extensions)
 
 sub ds_rdata {
     my ( $self, $server ) = @_;
-    push @{ $self->{ds_rdata} }, $server if defined $server;
-    return \@{ $self->{ds_rdata} };
+
+    return $self->_multiple_attribute_setget( 'ds_data', $server );
 }
 
 =head2 B<sub_dom( [$dom] )>
@@ -212,8 +217,8 @@ contains this attribute
 
 sub sub_dom {
     my ( $self, $dom ) = @_;
-    push @{ $self->{sub_dom} }, $dom if defined $dom;
-    return \@{ $self->{sub_dom} };
+
+    return $self->_multiple_attribute_setget( 'sub_dom', $dom );
 }
 
 =head2 B<dom_net( [$dom_net] )>
@@ -228,8 +233,8 @@ The dom_net attribute contains a list of IP networks in a domain.
 
 sub dom_net {
     my ( $self, $dom_net ) = @_;
-    push @{ $self->{dom_net} }, $dom_net if defined $dom_net;
-    return \@{ $self->{dom_net} };
+
+    return $self->_multiple_attribute_setget( 'dom_net', $dom_net );
 }
 
 =head2 B<remarks( [$remark] )>
@@ -244,8 +249,8 @@ General remarks. May include a URL or email address.
 
 sub remarks {
     my ( $self, $remark ) = @_;
-    push @{ $self->{remarks} }, $remark if defined $remark;
-    return \@{ $self->{remarks} };
+
+    return $self->_multiple_attribute_setget( 'remarks', $remark );
 }
 
 =head2 B<notify( [$notify] )>
@@ -261,8 +266,8 @@ sent.
 
 sub notify {
     my ( $self, $notify ) = @_;
-    push @{ $self->{notify} }, $notify if defined $notify;
-    return \@{ $self->{notify} };
+
+    return $self->_multiple_attribute_setget( 'notify', $notify );
 }
 
 =head2 B<mnt_by( [$mnt_by] )>
@@ -278,8 +283,8 @@ this object.
 
 sub mnt_by {
     my ( $self, $mnt_by ) = @_;
-    push @{ $self->{mnt_by} }, $mnt_by if defined $mnt_by;
-    return \@{ $self->{mnt_by} };
+
+    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
 }
 
 =head2 B<mnt_lower( [$mnt_lower] )>
@@ -296,8 +301,8 @@ object.
 
 sub mnt_lower {
     my ( $self, $mnt_lower ) = @_;
-    push @{ $self->{mnt_lower} }, $mnt_lower if defined $mnt_lower;
-    return \@{ $self->{mnt_lower} };
+
+    return $self->_multiple_attribute_setget( 'mnt_lower', $mnt_lower );
 }
 
 =head2 B<refer( [$refer] )>
@@ -314,8 +319,8 @@ removed and may be deprecated.
 
 sub refer {
     my ( $self, $refer ) = @_;
-    $self->{refer} = $refer if defined $refer;
-    return $self->{refer};
+
+    return $self->_single_attribute_setget( 'refer', $refer );
 }
 
 =head2 B<changed( [$changed] )>
@@ -337,8 +342,8 @@ format using one of the following two formats: YYYYMMDD or YYMMDD.
 
 sub changed {
     my ( $self, $changed ) = @_;
-    push @{ $self->{changed} }, $changed if defined $changed;
-    return \@{ $self->{changed} };
+
+    return $self->_multiple_attribute_setget( 'changed', $changed );
 }
 
 =head2 B<source( [$source] )>
@@ -352,8 +357,8 @@ The database where the object is registered.
 
 sub source {
     my ( $self, $source ) = @_;
-    $self->{source} = $source if defined $source;
-    return $self->{source};
+
+    return $self->_single_attribute_setget( 'source', $source );
 }
 
 1;

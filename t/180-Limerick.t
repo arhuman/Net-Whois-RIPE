@@ -9,67 +9,88 @@ STDOUT->autoflush(1);
 STDERR->autoflush(1);
 
 our $class;
-BEGIN { $class = 'Net::Whois::Object'; use_ok $class; }
+BEGIN { $class = 'Net::Whois::Object::Limerick'; use_ok $class; }
 
-my  @lines = <DATA>; 
-my $object = (Net::Whois::Object->new(@lines))[0];
+my %tested;
 
-isa_ok $object, "Net::Whois::Object::Limerick";
+my @lines  = <DATA>;
+my $object = ( Net::Whois::Object->new(@lines) )[0];
 
-# Inherited method from Net::Whois::Object;
-can_ok $object,
+isa_ok $object, $class;
 
-    # Constructor
-    qw( new ),
-
-    # OO Support
-    qw( query_filter filtered_attributes displayed_attributes );
-
+# Non-inherited methods
 can_ok $object, qw( limerick descr text admin_c author remarks notify mnt_by
-changed source );
+    changed source );
 
-ok( !$object->can('bogusmethod'), "No AUTOLOAD interference with Net::Whois::Object::Limerick tests" );
+# Check if typed attributes are correct
+can_ok $object, $object->attributes('mandatory');
+can_ok $object, $object->attributes('optionnal');
 
-is ($object->limerick(),'LIMERICK-DEMO','limerick properly parsed');
+# Test 'limerick'
+$tested{'limerick'}++;
+is( $object->limerick(), 'LIMERICK-DEMO', 'limerick properly parsed' );
 $object->limerick('LIMERICK2-DEMO');
-is ($object->limerick(),'LIMERICK2-DEMO','limerick properly set');
+is( $object->limerick(), 'LIMERICK2-DEMO', 'limerick properly set' );
 
-is_deeply ($object->descr(),[ 'Limerick example' ],'descr properly parsed');
+# Test 'descr'
+$tested{'descr'}++;
+is_deeply( $object->descr(), ['Limerick example'], 'descr properly parsed' );
 $object->descr('Added descr');
-is ($object->descr()->[1],'Added descr','descr properly added');
+is( $object->descr()->[1], 'Added descr', 'descr properly added' );
 
-is ($object->text()->[0],'This won\'t be an ode','text[0] properly parsed');
-is ($object->text()->[4],'I should have used POD','text[4] properly parsed');
+# Test 'text'
+$tested{'text'}++;
+is( $object->text()->[0], 'This won\'t be an ode',  'text[0] properly parsed' );
+is( $object->text()->[4], 'I should have used POD', 'text[4] properly parsed' );
 $object->text('Added text');
-is ($object->text()->[5],'Added text','text properly added');
+is( $object->text()->[5], 'Added text', 'text properly added' );
 
-is_deeply ($object->admin_c(),[ 'ADM-CTCT' ],'admin_c properly parsed');
+# Test 'admin_c'
+$tested{'admin_c'}++;
+is_deeply( $object->admin_c(), ['ADM-CTCT'], 'admin_c properly parsed' );
 $object->admin_c('ADM2-CTCT');
-is ($object->admin_c()->[1],'ADM2-CTCT','admin_c properly added');
+is( $object->admin_c()->[1], 'ADM2-CTCT', 'admin_c properly added' );
 
-is_deeply ($object->author(),['GEEK-01'],'author properly parsed');
+# Test 'author'
+$tested{'author'}++;
+is_deeply( $object->author(), ['GEEK-01'], 'author properly parsed' );
 $object->author('GEEK-02');
-is ($object->author()->[1],'GEEK-02','author properly added');
+is( $object->author()->[1], 'GEEK-02', 'author properly added' );
 
-is_deeply ($object->remarks(),[ 'No remarks' ],'remarks properly parsed');
+# Test 'remarks'
+$tested{'remarks'}++;
+is_deeply( $object->remarks(), ['No remarks'], 'remarks properly parsed' );
 $object->remarks('Added remarks');
-is ($object->remarks()->[1],'Added remarks','remarks properly added');
+is( $object->remarks()->[1], 'Added remarks', 'remarks properly added' );
 
-is_deeply ($object->notify(),[ 'watcher@somewhere.com' ],'notify properly parsed');
+# Test 'notify'
+$tested{'notify'}++;
+is_deeply( $object->notify(), ['watcher@somewhere.com'], 'notify properly parsed' );
 $object->notify('watcher@elsewhere.com');
-is ($object->notify()->[1],'watcher@elsewhere.com','notify properly added');
+is( $object->notify()->[1], 'watcher@elsewhere.com', 'notify properly added' );
 
-is_deeply ($object->mnt_by(),[ 'MAINT-EXAMPLECOM' ],'mnt_by properly parsed');
+# Test 'mnt_by'
+$tested{'mnt_by'}++;
+is_deeply( $object->mnt_by(), ['MAINT-EXAMPLECOM'], 'mnt_by properly parsed' );
 $object->mnt_by('MAINT2-EXAMPLECOM');
-is ($object->mnt_by()->[1],'MAINT2-EXAMPLECOM','mnt_by properly added');
+is( $object->mnt_by()->[1], 'MAINT2-EXAMPLECOM', 'mnt_by properly added' );
 
-is_deeply ($object->changed(),[ 'abc@somewhere.com 20120131' ],'changed properly parsed');
+# Test 'changed'
+$tested{'changed'}++;
+is_deeply( $object->changed(), ['abc@somewhere.com 20120131'], 'changed properly parsed' );
 $object->changed('abc@somewhere.com 20120228');
-is ($object->changed()->[1],'abc@somewhere.com 20120228','changed properly added');
+is( $object->changed()->[1], 'abc@somewhere.com 20120228', 'changed properly added' );
 
-is ($object->source(),'RIPE','source properly parsed');
+# Test 'source'
+$tested{'source'}++;
+is( $object->source(), 'RIPE', 'source properly parsed' );
 $object->source('APNIC');
-is ($object->source(),'APNIC','source properly set');
+is( $object->source(), 'APNIC', 'source properly set' );
+
+# Do cause issue with lexicals
+eval `cat t/common.pl`;
+ok( !$!, "Can read t/common.pl ($!)" );
+ok( !$@, "Can evaluate t/common.pl ($@)" );
 
 __DATA__
 limerick:       LIMERICK-DEMO

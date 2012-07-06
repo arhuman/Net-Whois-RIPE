@@ -46,6 +46,12 @@ sub new {
         $self->$key( $options{$key} );
     }
 
+    $self->attributes( 'primary',   ['key_cert'] );
+    $self->attributes( 'mandatory', [ 'key_cert', 'certif', 'mnt_by', 'changed', 'source' ] );
+    $self->attributes( 'optionnal', [ 'org', 'remarks', 'notify', 'admin_c', 'tech_c' ] );
+    $self->attributes( 'single', [ 'key_cert', 'method', 'fingerpr', 'source' ] );
+    $self->attributes( 'multiple', [ 'owner', 'certif', 'org', 'remarks', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'changed' ] );
+
     return $self;
 }
 
@@ -67,8 +73,8 @@ recreate it with the same name.
 
 sub key_cert {
     my ( $self, $key_cert ) = @_;
-    $self->{key_cert} = $key_cert if defined $key_cert;
-    return $self->{key_cert};
+
+    return $self->_single_attribute_setget( 'key_cert', $key_cert );
 }
 
 =head2 B<method( [$method] )>
@@ -86,8 +92,8 @@ value. In this case a warning is returned to the user.
 
 sub method {
     my ( $self, $method ) = @_;
-    $self->{method} = $method if defined $method;
-    return $self->{method};
+
+    return $self->_single_attribute_setget( 'method', $method );
 }
 
 =head2 B<owner( [$owner] )>
@@ -106,8 +112,8 @@ value. In this case a warning is returned to the user.
 
 sub owner {
     my ( $self, $owner ) = @_;
-    push @{ $self->{owner} }, $owner if defined $owner;
-    return \@{ $self->{owner} };
+
+    return $self->_multiple_attribute_setget( 'owner', $owner );
 }
 
 =head2 B<fingerpr( [$fingerpr] )>
@@ -125,8 +131,8 @@ value. In this case a warning is returned to the user.
 
 sub fingerpr {
     my ( $self, $fingerpr ) = @_;
-    $self->{fingerpr} = $fingerpr if defined $fingerpr;
-    return $self->{fingerpr};
+
+    return $self->_single_attribute_setget( 'fingerpr', $fingerpr );
 }
 
 =head2 B<certif( [$certif] )>
@@ -149,8 +155,8 @@ from the key body.
 
 sub certif {
     my ( $self, $certif ) = @_;
-    push @{ $self->{certif} }, $certif if defined $certif;
-    return \@{ $self->{certif} };
+
+    return $self->_multiple_attribute_setget( 'certif', $certif );
 }
 
 =head2 B<remarks( [$remark] )>
@@ -165,8 +171,8 @@ General remarks. May include a URL or email address.
 
 sub remarks {
     my ( $self, $remark ) = @_;
-    push @{ $self->{remarks} }, $remark if defined $remark;
-    return \@{ $self->{remarks} };
+
+    return $self->_multiple_attribute_setget( 'remarks', $remark );
 }
 
 =head2 B<org( [$org] )>
@@ -181,8 +187,8 @@ The organisation entity this object is bound to.
 
 sub org {
     my ( $self, $org ) = @_;
-    push @{ $self->{org} }, $org if defined $org;
-    return \@{ $self->{org} };
+
+    return $self->_multiple_attribute_setget( 'org', $org );
 }
 
 =head2 B<notify( [$notify] )>
@@ -198,14 +204,14 @@ sent.
 
 sub notify {
     my ( $self, $notify ) = @_;
-    push @{ $self->{notify} }, $notify if defined $notify;
-    return \@{ $self->{notify} };
+
+    return $self->_multiple_attribute_setget( 'notify', $notify );
 }
 
-=head2 B<admin_c( [$admin_c] )>
+=head2 B<admin_c( [$contact] )>
 
 Accessor to the admin_c attribute.
-Accepts an optional admin_c value to be added to the admin_c array,
+Accepts an optional contact to be added to the admin_c array,
 always return the current admin_c array.
 
 The NIC-handle of an on-site contact Person object. As more than one person
@@ -217,15 +223,15 @@ located at the site of the network.
 =cut
 
 sub admin_c {
-    my ( $self, $admin_c ) = @_;
-    push @{ $self->{admin_c} }, $admin_c if defined $admin_c;
-    return \@{ $self->{admin_c} };
+    my ( $self, $contact ) = @_;
+
+    return $self->_multiple_attribute_setget( 'admin_c', $contact );
 }
 
-=head2 B<tech_c( [$tech_c] )>
+=head2 B<tech_c( [$contact] )>
 
 Accessor to the tech_c attribute.
-Accepts an optional tech_c value to be added to the tech_c array,
+Accepts an optional contact to be added to the tech_c array,
 always return the current tech_c array.
 
 The NIC-handle of a technical contact Person or Role object.  As more than
@@ -239,9 +245,9 @@ physically located at the site of the network.
 =cut
 
 sub tech_c {
-    my ( $self, $tech_c ) = @_;
-    push @{ $self->{tech_c} }, $tech_c if defined $tech_c;
-    return \@{ $self->{tech_c} };
+    my ( $self, $contact ) = @_;
+
+    return $self->_multiple_attribute_setget( 'tech_c', $contact );
 }
 
 =head2 B<mnt_by( [$mnt_by] )>
@@ -257,8 +263,8 @@ object.
 
 sub mnt_by {
     my ( $self, $mnt_by ) = @_;
-    push @{ $self->{mnt_by} }, $mnt_by if defined $mnt_by;
-    return \@{ $self->{mnt_by} };
+
+    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
 }
 
 =head2 B<changed( [$changed] )>
@@ -280,8 +286,8 @@ format using one of the following two formats: YYYYMMDD or YYMMDD.
 
 sub changed {
     my ( $self, $changed ) = @_;
-    push @{ $self->{changed} }, $changed if defined $changed;
-    return \@{ $self->{changed} };
+
+    return $self->_multiple_attribute_setget( 'changed', $changed );
 }
 
 =head2 B<source( [$source] )>
@@ -295,8 +301,8 @@ The database where the object is registered.
 
 sub source {
     my ( $self, $source ) = @_;
-    $self->{source} = $source if defined $source;
-    return $self->{source};
+
+    return $self->_single_attribute_setget( 'source', $source );
 }
 
 1;

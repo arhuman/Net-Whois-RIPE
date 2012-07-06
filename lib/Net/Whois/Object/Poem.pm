@@ -44,6 +44,12 @@ sub new {
         $self->$key( $options{$key} );
     }
 
+    $self->attributes( 'primary', ['poem'] );
+    $self->attributes( 'mandatory', [ 'poem', 'form', 'text', 'author', 'admin_c', 'mnt_by', 'changed', 'source' ] );
+    $self->attributes( 'optionnal', [ 'descr', 'remarks', 'notify' ] );
+    $self->attributes( 'single',    [ 'poem',  'form',    'source' ] );
+    $self->attributes( 'multiple',  [ 'descr', 'text',    'admin_c', 'author', 'remarks', 'notify', 'mnt_by', 'changed' ] );
+
     return $self;
 }
 
@@ -57,8 +63,8 @@ always return the current descr array.
 
 sub descr {
     my ( $self, $descr ) = @_;
-    push @{ $self->{descr} }, $descr if defined $descr;
-    return \@{ $self->{descr} };
+
+    return $self->_multiple_attribute_setget( 'descr', $descr );
 }
 
 =head2 B<text( [$text] )>
@@ -71,8 +77,8 @@ always return the current text array.
 
 sub text {
     my ( $self, $text ) = @_;
-    push @{ $self->{text} }, $text if defined $text;
-    return \@{ $self->{text} };
+
+    return $self->_multiple_attribute_setget( 'text', $text );
 }
 
 =head2 B<admin_c( [$contact] )>
@@ -84,9 +90,9 @@ always return the current admin_c array.
 =cut
 
 sub admin_c {
-    my ( $self, $admin_c ) = @_;
-    push @{ $self->{admin_c} }, $admin_c if defined $admin_c;
-    return \@{ $self->{admin_c} };
+    my ( $self, $contact ) = @_;
+
+    return $self->_multiple_attribute_setget( 'admin_c', $contact );
 }
 
 =head2 B<author( [$author] )>
@@ -99,8 +105,8 @@ always return the current author array.
 
 sub author {
     my ( $self, $author ) = @_;
-    push @{ $self->{author} }, $author if defined $author;
-    return \@{ $self->{author} };
+
+    return $self->_multiple_attribute_setget( 'author', $author );
 }
 
 =head2 B<remarks( [$remark] )>
@@ -112,9 +118,9 @@ always return the current remarks array.
 =cut
 
 sub remarks {
-    my ( $self, $remarks ) = @_;
-    push @{ $self->{remarks} }, $remarks if defined $remarks;
-    return \@{ $self->{remarks} };
+    my ( $self, $remark ) = @_;
+
+    return $self->_multiple_attribute_setget( 'remarks', $remark );
 }
 
 =head2 B<notify( [$notify] )>
@@ -127,8 +133,8 @@ always return the current notify array.
 
 sub notify {
     my ( $self, $notify ) = @_;
-    push @{ $self->{notify} }, $notify if defined $notify;
-    return \@{ $self->{notify} };
+
+    return $self->_multiple_attribute_setget( 'notify', $notify );
 }
 
 =head2 B<mnt_by( [$mnt_by] )>
@@ -141,8 +147,8 @@ always return the current mnt_by array.
 
 sub mnt_by {
     my ( $self, $mnt_by ) = @_;
-    push @{ $self->{mnt_by} }, $mnt_by if defined $mnt_by;
-    return \@{ $self->{mnt_by} };
+
+    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
 }
 
 =head2 B<changed( [$changed] )>
@@ -155,8 +161,8 @@ always return the current changed array.
 
 sub changed {
     my ( $self, $changed ) = @_;
-    push @{ $self->{changed} }, $changed if defined $changed;
-    return \@{ $self->{changed} };
+
+    return $self->_multiple_attribute_setget( 'changed', $changed );
 }
 
 =head2 B<source( [$source] )>
@@ -168,8 +174,8 @@ Accepts an optional source, always return the current source.
 
 sub source {
     my ( $self, $source ) = @_;
-    $self->{source} = $source if defined $source;
-    return $self->{source};
+
+    return $self->_single_attribute_setget( 'source', $source );
 }
 
 =head2 B<form( [$form] )>
@@ -182,8 +188,8 @@ This attribute specifies the identifier of a registered poem type.
 
 sub form {
     my ( $self, $form ) = @_;
-    $self->{form} = $form if defined $form;
-    return $self->{form};
+
+    return $self->_single_attribute_setget( 'form', $form );
 }
 
 =head2 B<poem( [$poem] )>
@@ -195,8 +201,8 @@ Accepts an optional poem, always return the current poem.
 
 sub poem {
     my ( $self, $poem ) = @_;
-    $self->{poem} = $poem if defined $poem;
-    return $self->{poem};
+
+    return $self->_single_attribute_setget( 'poem', $poem );
 }
 
 1;

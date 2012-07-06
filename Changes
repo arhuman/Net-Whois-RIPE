@@ -1,5 +1,19 @@
 Revision history for net-whois-ripe
 
+
+2.00013     06 Jun 2012
+            - Add RIPE SyncUpdates prototype implementation (Create, Update, Delete)
+            - Add type on attributes and the following methods :
+                attributes()
+                attribute_is()
+            - Add the dump() method
+            - Add the class() method
+            - Remove query_filter(), filering is to be done through the class() method
+            - Now accept Iterator as argument of Net::Whois::Object->new()
+            - More tests
+            - Complete the documentation, with some examples
+
+
 2.00012     05 Jun 2012
             Fix previous broken release (merge goof)
             Fix some tests

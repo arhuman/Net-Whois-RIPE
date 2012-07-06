@@ -9,77 +9,99 @@ STDOUT->autoflush(1);
 STDERR->autoflush(1);
 
 our $class;
-BEGIN { $class = 'Net::Whois::Object'; use_ok $class; }
+BEGIN { $class = 'Net::Whois::Object::RtrSet'; use_ok $class; }
 
-my  @lines = <DATA>; 
-my $object = (Net::Whois::Object->new(@lines))[0];
+my %tested;
 
-isa_ok $object, "Net::Whois::Object::RtrSet";
+my @lines  = <DATA>;
+my $object = ( Net::Whois::Object->new(@lines) )[0];
 
-# Inherited method from Net::Whois::Object;
-can_ok $object,
+isa_ok $object, $class;
 
-    # Constructor
-    qw( new ),
-
-    # OO Support
-    qw( query_filter filtered_attributes displayed_attributes );
-
+# Non-inherited methods
 can_ok $object, qw(rtr_set descr members mp_members mbrs_by_ref
-admin_c tech_c mnt_by notify changed remarks source);
+    admin_c tech_c mnt_by notify changed remarks source);
 
-ok( !$object->can('bogusmethod'), "No AUTOLOAD interference with Net::Whois::Object::RtrSet tests" );
+# Check if typed attributes are correct
+can_ok $object, $object->attributes('mandatory');
+can_ok $object, $object->attributes('optionnal');
 
-is ($object->rtr_set(),'RTRS-EXAMPLENET','rtr_set properly parsed');
+# Test 'rtr_set'
+$tested{'rtr_set'}++;
+is( $object->rtr_set(), 'RTRS-EXAMPLENET', 'rtr_set properly parsed' );
 $object->rtr_set('RTRS2-EXAMPLENET');
-is ($object->rtr_set(),'RTRS2-EXAMPLENET','rtr_set properly set');
+is( $object->rtr_set(), 'RTRS2-EXAMPLENET', 'rtr_set properly set' );
 
-is_deeply ($object->descr(),[ 'Router set for', 'the company Example' ],'descr properly parsed');
+# Test 'descr'
+$tested{'descr'}++;
+is_deeply( $object->descr(), [ 'Router set for', 'the company Example' ], 'descr properly parsed' );
 $object->descr('Added descr');
-is ($object->descr()->[2],'Added descr','descr properly added');
+is( $object->descr()->[2], 'Added descr', 'descr properly added' );
 
-is_deeply ($object->members(),[ 'INET-RTR1', 'RTRS-SET3' ],'members properly parsed');
+# Test 'members'
+$tested{'members'}++;
+is_deeply( $object->members(), [ 'INET-RTR1', 'RTRS-SET3' ], 'members properly parsed' );
 $object->members('RTRS-SET4');
-is ($object->members()->[2],'RTRS-SET4','members properly added');
+is( $object->members()->[2], 'RTRS-SET4', 'members properly added' );
 
-is_deeply ($object->mp_members(),[ '192.168.1.1',
-        '2001:db8:85a3:8d3:1319:8a2e:370:7348',
-        'INET-RTRV6',
-        'RTRS-SET1'],'mp_members properly parsed');
+# Test 'mp_members'
+$tested{'mp_members'}++;
+is_deeply( $object->mp_members(), [ '192.168.1.1', '2001:db8:85a3:8d3:1319:8a2e:370:7348', 'INET-RTRV6', 'RTRS-SET1' ], 'mp_members properly parsed' );
 $object->mp_members('RTRS-SET2');
-is ($object->mp_members()->[4],'RTRS-SET2','mp_members properly added');
+is( $object->mp_members()->[4], 'RTRS-SET2', 'mp_members properly added' );
 
-is_deeply ($object->mbrs_by_ref(),[ 'CPNY-MNTNER'],'mbrs_by_ref properly parsed');
+# Test 'mbrs_by_ref'
+$tested{'mbrs_by_ref'}++;
+is_deeply( $object->mbrs_by_ref(), ['CPNY-MNTNER'], 'mbrs_by_ref properly parsed' );
 $object->mbrs_by_ref('CPY2-MNTNER');
-is ($object->mbrs_by_ref()->[1],'CPY2-MNTNER','mbrs_by_ref properly added');
+is( $object->mbrs_by_ref()->[1], 'CPY2-MNTNER', 'mbrs_by_ref properly added' );
 
-is_deeply ($object->admin_c(),[ 'FR123-AP'],'admin_c properly parsed');
+# Test 'admin_c'
+$tested{'admin_c'}++;
+is_deeply( $object->admin_c(), ['FR123-AP'], 'admin_c properly parsed' );
 $object->admin_c('FR456-AP');
-is ($object->admin_c()->[1],'FR456-AP','admin_c properly added');
+is( $object->admin_c()->[1], 'FR456-AP', 'admin_c properly added' );
 
-is_deeply ($object->tech_c(),[ 'FR123-AP'],'tech_c properly parsed');
+# Test 'tech_c'
+$tested{'tech_c'}++;
+is_deeply( $object->tech_c(), ['FR123-AP'], 'tech_c properly parsed' );
 $object->tech_c('FR456-AP');
-is ($object->tech_c()->[1],'FR456-AP','tech_c properly added');
+is( $object->tech_c()->[1], 'FR456-AP', 'tech_c properly added' );
 
-is_deeply ($object->mnt_by(),[ 'MAINT-EXAMPLENET-AP'],'mnt_by properly parsed');
+# Test 'mnt_by'
+$tested{'mnt_by'}++;
+is_deeply( $object->mnt_by(), ['MAINT-EXAMPLENET-AP'], 'mnt_by properly parsed' );
 $object->mnt_by('MAINT2-EXAMPLENET-AP');
-is ($object->mnt_by()->[1],'MAINT2-EXAMPLENET-AP','mnt_by properly added');
+is( $object->mnt_by()->[1], 'MAINT2-EXAMPLENET-AP', 'mnt_by properly added' );
 
-is_deeply ($object->notify(),[ 'watcher@example.com'],'notify properly parsed');
+# Test 'notify'
+$tested{'notify'}++;
+is_deeply( $object->notify(), ['watcher@example.com'], 'notify properly parsed' );
 $object->notify('watcher2@example.com');
-is ($object->notify()->[1],'watcher2@example.com','notify properly added');
+is( $object->notify()->[1], 'watcher2@example.com', 'notify properly added' );
 
-is_deeply ($object->changed(),[ 'abc@examplenet.com 20101231'],'changed properly parsed');
+# Test 'changed'
+$tested{'changed'}++;
+is_deeply( $object->changed(), ['abc@examplenet.com 20101231'], 'changed properly parsed' );
 $object->changed('abc@examplenet.com 20121231');
-is ($object->changed()->[1],'abc@examplenet.com 20121231','changed properly added');
+is( $object->changed()->[1], 'abc@examplenet.com 20121231', 'changed properly added' );
 
-is_deeply ($object->remarks(),[ 'No remarks'],'remarks properly parsed');
+# Test 'remarks'
+$tested{'remarks'}++;
+is_deeply( $object->remarks(), ['No remarks'], 'remarks properly parsed' );
 $object->remarks('Added remarks');
-is ($object->remarks()->[1],'Added remarks','remarks properly added');
+is( $object->remarks()->[1], 'Added remarks', 'remarks properly added' );
 
-is ($object->source(),'RIPE','source properly parsed');
+# Test 'source'
+$tested{'source'}++;
+is( $object->source(), 'RIPE', 'source properly parsed' );
 $object->source('APNIC');
-is ($object->source(),'APNIC','source properly set');
+is( $object->source(), 'APNIC', 'source properly set' );
+
+# Do cause issue with lexicals
+eval `cat t/common.pl`;
+ok( !$!, "Can read t/common.pl ($!)" );
+ok( !$@, "Can evaluate t/common.pl ($@)" );
 
 __DATA__
 rtr-set:        RTRS-EXAMPLENET

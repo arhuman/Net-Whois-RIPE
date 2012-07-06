@@ -11,34 +11,35 @@ STDERR->autoflush(1);
 our $class;
 BEGIN { $class = 'Net::Whois::Object'; use_ok $class; }
 
-can_ok $class,
-
-    # Constructor
-    qw( new ),
-
-    # OO Support
-    qw( query_filter filtered_attributes displayed_attributes );
-
-{
-    my @lines = <DATA>;
-    my @o     = Net::Whois::Object->new(@lines);
-    for my $object (@o) {
-        isa_ok $object, $class;
-    }
-    isa_ok $o[0], $class . "::Information";
-    can_ok $o[0], qw( comment );
-    ok( !$o[0]->can('source'), "No AUTOLOAD interference with ${class}::Information tests" );
-
-    isa_ok $o[3], $class . "::AsBlock";
-    can_ok $o[3], qw( as_block org source ), qw( descr remarks tech_c admin_c notify mnt_lower mnt_by changed);
-    ok( !$o[3]->can('bogusmethod'), "No AUTOLOAD interference with ${class}::AsBlock tests" );
-
-    isa_ok $o[5], $class . "::AutNum";
-    can_ok $o[5], qw( aut_num as_name org source ), qw( descr member_of import mp_import export mp_export
-        default remarks tech_c admin_c notify
-        mnt_lower mnt_by mnt_routes changed);
-    ok( !$o[5]->can('bogusmethod'), "No AUTOLOAD interference with ${class}::AutNum tests" );
+my @lines = <DATA>;
+my @o     = Net::Whois::Object->new(@lines);
+for my $object (@o) {
+    isa_ok $object, $class;
 }
+isa_ok $o[0], $class . "::Information";
+can_ok $o[0], qw( comment );
+ok( !$o[0]->can('source'), "No AUTOLOAD interference with ${class}::Information tests" );
+
+isa_ok $o[3], $class . "::AsBlock";
+can_ok $o[3], qw( as_block org source ), qw( descr remarks tech_c admin_c notify mnt_lower mnt_by changed);
+ok( !$o[3]->can('bogusmethod'), "No AUTOLOAD interference with ${class}::AsBlock tests" );
+
+isa_ok $o[5], $class . "::AutNum";
+can_ok $o[5], qw( aut_num as_name org source ), qw( descr member_of import mp_import export mp_export
+    default remarks tech_c admin_c notify
+    mnt_lower mnt_by mnt_routes changed);
+ok( !$o[5]->can('bogusmethod'), "No AUTOLOAD interference with ${class}::AutNum tests" );
+
+is_deeply( [ $o[0]->attributes('mandatory') ], ['comment'] );
+
+is_deeply( [ $o[0]->attributes('optionnal') ], [] );
+$o[0]->attributes( 'optionnal', [ 'opt1', 'opt2', 'opt3' ] );
+is_deeply( [ $o[0]->attributes('optionnal') ], [ 'opt1', 'opt2', 'opt3' ] );
+
+is_deeply( [ $o[0]->attributes('all') ], [ 'comment', 'opt1', 'opt2', 'opt3' ] );
+is_deeply( [ $o[0]->attributes() ],      [ 'comment', 'opt1', 'opt2', 'opt3' ] );
+
+is( $o[2]->dump, "% Information related to 'AS30720 - AS30895'\n" );
 
 __DATA__
 % This is the RIPE Database query service.

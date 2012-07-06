@@ -60,6 +60,12 @@ sub new {
         $self->$key( $options{$key} );
     }
 
+    $self->attributes( 'primary',   ['route'] );
+    $self->attributes( 'mandatory', [ 'route', 'origin', 'descr', 'mnt_by', 'changed', 'source' ] );
+    $self->attributes( 'optionnal', [ 'holes', 'member_of', 'inject', 'aggr_mtd', 'aggr_bndry', 'export_comps', 'components', 'remarks', 'cross_mnt', 'cross_nfy', 'notify', 'mnt_lower', 'mnt_routes' ] );
+    $self->attributes( 'single', [ 'route', 'origin', 'aggr_mtd', 'aggr_bndry', 'export_comps', 'components', 'source' ] );
+    $self->attributes( 'multiple', [ 'descr', 'mnt_by', 'changed', 'holes', 'member_of', 'inject', 'remarks', 'cross_mnt', 'cross_nfy', 'notify', 'mnt_lower', 'mnt_routes' ] );
+
     return $self;
 }
 
@@ -72,8 +78,8 @@ Accepts an optional route, always return the current route.
 
 sub route {
     my ( $self, $route ) = @_;
-    $self->{route} = $route if defined $route;
-    return $self->{route};
+
+    return $self->_single_attribute_setget( 'route', $route );
 }
 
 =head2 B<descr( [$descr] )>
@@ -86,8 +92,8 @@ always return the current descr array.
 
 sub descr {
     my ( $self, $descr ) = @_;
-    push @{ $self->{descr} }, $descr if defined $descr;
-    return \@{ $self->{descr} };
+
+    return $self->_multiple_attribute_setget( 'descr', $descr );
 }
 
 =head2 B<origin( [$origin] )>
@@ -99,8 +105,8 @@ Accepts an optional origin, always return the current origin.
 
 sub origin {
     my ( $self, $origin ) = @_;
-    $self->{origin} = $origin if defined $origin;
-    return $self->{origin};
+
+    return $self->_single_attribute_setget( 'origin', $origin );
 }
 
 =head2 B<holes( [$hole] )>
@@ -113,8 +119,8 @@ always return the current holes array.
 
 sub holes {
     my ( $self, $hole ) = @_;
-    push @{ $self->{holes} }, $hole if defined $hole;
-    return \@{ $self->{holes} };
+
+    return $self->_multiple_attribute_setget( 'holes', $hole );
 }
 
 =head2 B<member_of( [$member_of] )>
@@ -127,8 +133,8 @@ always return the current member_of array.
 
 sub member_of {
     my ( $self, $member_of ) = @_;
-    push @{ $self->{member_of} }, $member_of if defined $member_of;
-    return \@{ $self->{member_of} };
+
+    return $self->_multiple_attribute_setget( 'member_of', $member_of );
 }
 
 =head2 B<inject( [$inject] )>
@@ -141,8 +147,8 @@ always return the current inject array.
 
 sub inject {
     my ( $self, $inject ) = @_;
-    push @{ $self->{inject} }, $inject if defined $inject;
-    return \@{ $self->{inject} };
+
+    return $self->_multiple_attribute_setget( 'inject', $inject );
 }
 
 =head2 B<aggr_mtd( [$aggr_mtd] )>
@@ -155,8 +161,8 @@ always return the current aggr_mtd.
 
 sub aggr_mtd {
     my ( $self, $aggr_mtd ) = @_;
-    $self->{aggr_mtd} = $aggr_mtd if defined $aggr_mtd;
-    return $self->{aggr_mtd};
+
+    return $self->_single_attribute_setget( 'aggr_mtd', $aggr_mtd );
 }
 
 =head2 B<aggr_bndry( [$aggr_bndry] )>
@@ -169,8 +175,8 @@ always return the current aggr_bndry.
 
 sub aggr_bndry {
     my ( $self, $aggr_bndry ) = @_;
-    $self->{aggr_bndry} = $aggr_bndry if defined $aggr_bndry;
-    return $self->{aggr_bndry};
+
+    return $self->_single_attribute_setget( 'aggr_bndry', $aggr_bndry );
 }
 
 =head2 B<export_comps( [$export_comp] )>
@@ -183,8 +189,8 @@ always return the current export_comps.
 
 sub export_comps {
     my ( $self, $export_comp ) = @_;
-    $self->{export_comps} = $export_comp if defined $export_comp;
-    return $self->{export_comps};
+
+    return $self->_single_attribute_setget( 'export_comps', $export_comp );
 }
 
 =head2 B<components( [$component] )>
@@ -197,8 +203,8 @@ always return the current components.
 
 sub components {
     my ( $self, $components ) = @_;
-    $self->{components} = $components if defined $components;
-    return $self->{components};
+
+    return $self->_single_attribute_setget( 'components', $components );
 }
 
 =head2 B<remarks( [$remark] )>
@@ -211,8 +217,8 @@ always return the current 'remarks' array.
 
 sub remarks {
     my ( $self, $remark ) = @_;
-    push @{ $self->{remarks} }, $remark if defined $remark;
-    return \@{ $self->{remarks} };
+
+    return $self->_multiple_attribute_setget( 'remarks', $remark );
 }
 
 =head2 B<cross_mnt( [$cross_mnt] )>
@@ -225,8 +231,8 @@ always return the current cross_mnt array.
 
 sub cross_mnt {
     my ( $self, $cross_mnt ) = @_;
-    push @{ $self->{cross_mnt} }, $cross_mnt if defined $cross_mnt;
-    return \@{ $self->{cross_mnt} };
+
+    return $self->_multiple_attribute_setget( 'cross_mnt', $cross_mnt );
 }
 
 =head2 B<cross_nfy( [$cross_nfy] )>
@@ -239,8 +245,8 @@ always return the current cross_nfy array.
 
 sub cross_nfy {
     my ( $self, $cross_nfy ) = @_;
-    push @{ $self->{cross_nfy} }, $cross_nfy if defined $cross_nfy;
-    return \@{ $self->{cross_nfy} };
+
+    return $self->_multiple_attribute_setget( 'cross_nfy', $cross_nfy );
 }
 
 =head2 B<notify( [$notify] )>
@@ -253,8 +259,8 @@ always return the current notify array.
 
 sub notify {
     my ( $self, $notify ) = @_;
-    push @{ $self->{notify} }, $notify if defined $notify;
-    return \@{ $self->{notify} };
+
+    return $self->_multiple_attribute_setget( 'notify', $notify );
 }
 
 =head2 B<mnt_lower( [$mnt_lower] )>
@@ -267,8 +273,8 @@ always return the current mnt_lower array.
 
 sub mnt_lower {
     my ( $self, $mnt_lower ) = @_;
-    push @{ $self->{mnt_lower} }, $mnt_lower if defined $mnt_lower;
-    return \@{ $self->{mnt_lower} };
+
+    return $self->_multiple_attribute_setget( 'mnt_lower', $mnt_lower );
 }
 
 =head2 B<mnt_routes( [$mnt_route] )>
@@ -281,8 +287,8 @@ always return the current mnt_routes array.
 
 sub mnt_routes {
     my ( $self, $mnt_routes ) = @_;
-    push @{ $self->{mnt_routes} }, $mnt_routes if defined $mnt_routes;
-    return \@{ $self->{mnt_routes} };
+
+    return $self->_multiple_attribute_setget( 'mnt_routes', $mnt_routes );
 }
 
 =head2 B<mnt_by( [$mnt_by] )>
@@ -295,8 +301,8 @@ always return the current mnt_by array.
 
 sub mnt_by {
     my ( $self, $mnt_by ) = @_;
-    push @{ $self->{mnt_by} }, $mnt_by if defined $mnt_by;
-    return \@{ $self->{mnt_by} };
+
+    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
 }
 
 =head2 B<changed( [$changed] )>
@@ -309,8 +315,8 @@ always return the current changed array.
 
 sub changed {
     my ( $self, $changed ) = @_;
-    push @{ $self->{changed} }, $changed if defined $changed;
-    return \@{ $self->{changed} };
+
+    return $self->_multiple_attribute_setget( 'changed', $changed );
 }
 
 =head2 B<source( [$source] )>
@@ -322,8 +328,8 @@ Accepts an optional source, always return the current source.
 
 sub source {
     my ( $self, $source ) = @_;
-    $self->{source} = $source if defined $source;
-    return $self->{source};
+
+    return $self->_single_attribute_setget( 'source', $source );
 }
 
 =head2 B<country( [$country] )>
@@ -338,8 +344,8 @@ Please use UPPERCASE letters.
 
 sub country {
     my ( $self, $country ) = @_;
-    $self->{country} = $country if defined $country;
-    return $self->{country};
+
+    return $self->_single_attribute_setget( 'country', $country );
 }
 
 1;

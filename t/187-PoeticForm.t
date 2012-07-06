@@ -9,74 +9,83 @@ STDOUT->autoflush(1);
 STDERR->autoflush(1);
 
 our $class;
-BEGIN { $class = 'Net::Whois::Object'; use_ok $class; }
+BEGIN { $class = 'Net::Whois::Object::PoeticForm'; use_ok $class; }
 
-my  @lines = <DATA>; 
-my $object = (Net::Whois::Object->new(@lines))[0];
+my %tested;
 
-isa_ok $object, "Net::Whois::Object::Poem";
+my @lines  = <DATA>;
+my $object = ( Net::Whois::Object->new(@lines) )[0];
 
-# Inherited method from Net::Whois::Object;
-can_ok $object,
+isa_ok $object, $class;
 
-    # Constructor
-    qw( new ),
+# Check if typed attributes are correct
+can_ok $object, $object->attributes('mandatory');
+can_ok $object, $object->attributes('optionnal');
 
-    # OO Support
-    qw( query_filter filtered_attributes displayed_attributes );
+# Test 'poetic_form'
+$tested{'poetic_form'}++;
+is( $object->poetic_form(), 'POEM-EXAMPLE', 'poetic_form properly parsed' );
+$object->poetic_form('POEM-EXAMPLE2');
+is( $object->poetic_form(), 'POEM-EXAMPLE2', 'poetic_form properly set' );
 
-can_ok $object, qw( poem descr form text admin_c author remarks notify mnt_by
-changed source);
+# Test 'remarks'
+$tested{'remarks'}++;
+is_deeply( $object->remarks(), ['I hope nobody ever read this text'], 'remarks properly parsed' );
+$object->remarks('Added remark');
+is( $object->remarks()->[1], 'Added remark', 'remarks properly added' );
 
-ok( !$object->can('bogusmethod'), "No AUTOLOAD interference with Net::Whois::Object::Poem tests" );
-
-is ($object->poem(),'POEM-EXAMPLE','poem properly parsed');
-$object->poem('POEM-EXAMPLE2');
-is ($object->poem(),'POEM-EXAMPLE2','poem properly set');
-
-is ($object->form(),'FORM-PROSE','form properly parsed');
-$object->form('FORM-UNKNOWN');
-is ($object->form(),'FORM-UNKNOWN','form properly set');
-
-is_deeply ($object->descr(),[ 'An example of poem' ],'descr properly parsed');
+# Test 'descr'
+$tested{'descr'}++;
+is_deeply( $object->descr(), [ 'line 1 is funny', 'line 2 is easy', 'line 3 is boring', 'I\'d stick with coding', '' ], 'descr properly parsed' );
 $object->descr('Added descr');
-is ($object->descr()->[1],'Added descr','descr properly added');
+is( $object->descr()->[5], 'Added descr', 'descr properly added' );
 
-is_deeply ($object->text(),[ 'line 1 is funny',
-                                'line 2 is easy',
-                                'line 3 is boring',
-                                'I\'d stick with coding',
-                                ''],'text properly parsed');
-$object->text('Added text');
-is ($object->text()->[5],'Added text','text properly added');
-
-is_deeply ($object->author(),['GEEK-01'],'author properly parsed');
-$object->author('GEEK-02');
-is ($object->author()->[1],'GEEK-02','author properly added');
-
-is_deeply ($object->admin_c(),[ 'CPNY-ADM' ],'admin_c properly parsed');
+# Test 'admin_c'
+$tested{'admin_c'}++;
+is_deeply( $object->admin_c(), ['CPNY-ADM'], 'admin_c properly parsed' );
 $object->admin_c('CPNY-ADM2');
-is ($object->admin_c()->[1],'CPNY-ADM2','admin_c properly added');
+is( $object->admin_c()->[1], 'CPNY-ADM2', 'admin_c properly added' );
 
-is_deeply ($object->mnt_by(),[ 'CPNY-MNT' ],'mnt_by properly parsed');
+# Test 'mnt_by'
+$tested{'mnt_by'}++;
+is_deeply( $object->mnt_by(), ['CPNY-MNT'], 'mnt_by properly parsed' );
 $object->mnt_by('CPNY-MNT2');
-is ($object->mnt_by()->[1],'CPNY-MNT2','mnt_by properly added');
+is( $object->mnt_by()->[1], 'CPNY-MNT2', 'mnt_by properly added' );
 
-is ($object->source(),'RIPE #Filtered','source properly parsed');
+# Test 'notify'
+$tested{'notify'}++;
+is_deeply( $object->notify(), ['CPNY-MNT'], 'notify properly parsed' );
+$object->notify('CPNY-MNT2');
+is( $object->notify()->[1], 'CPNY-MNT2', 'notify properly added' );
+
+# Test 'changed'
+$tested{'changed'}++;
+is_deeply( $object->changed(), ['arhuman@gmail.com 20120623'], 'changed properly parsed' );
+$object->changed('arhuman@gmail.com 20120624');
+is( $object->changed()->[1], 'arhuman@gmail.com 20120624', 'changed properly added' );
+
+# Test 'source'
+$tested{'source'}++;
+is( $object->source(), 'RIPE #Filtered', 'source properly parsed' );
 $object->source('APNIC');
-is ($object->source(),'APNIC','source properly set');
+is( $object->source(), 'APNIC', 'source properly set' );
+
+# Do cause issue with lexicals
+eval `cat t/common.pl`;
+ok( !$!, "Can read t/common.pl ($!)" );
+ok( !$@, "Can evaluate t/common.pl ($@)" );
 
 __DATA__
-poem:           POEM-EXAMPLE
-form:           FORM-PROSE
-descr:          An example of poem
-text:           line 1 is funny
-text:           line 2 is easy
-text:           line 3 is boring
-text:           I'd stick with coding
-text:           
-author:         GEEK-01
+poetic_form:    POEM-EXAMPLE
+remarks:        I hope nobody ever read this text
+descr:          line 1 is funny
+descr:          line 2 is easy
+descr:          line 3 is boring
+descr:          I'd stick with coding
+descr:           
 admin-c:        CPNY-ADM
 mnt-by:         CPNY-MNT
+notify:         CPNY-MNT
+changed:        arhuman@gmail.com 20120623
 source:         RIPE #Filtered
 
