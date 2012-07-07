@@ -3,9 +3,19 @@ use strict;
 use warnings;
 
 use Carp;
-use WWW::Mechanize;
+#use WWW::Mechanize;
 use Net::Whois::RIPE;
 use Data::Dumper;
+
+our $MECHANIZED;
+BEGIN {
+    $MECHANIZED    = do {
+        eval {
+            require WWW::Mechanize;
+        };
+        ($@) ? 0 : 1;
+    };
+}
 
 =head1 NAME
 
@@ -71,6 +81,8 @@ RIPE provides several web interfaces
 
 Although not the latest one, this simple interface is the first to be wrapped
 by this module.
+
+B<CAUTION: SyncUpdates features require WWW::Mechanize to be installed.>
 
 =head4 Create
 
@@ -548,6 +560,8 @@ Return the HTML code of the returned page.
 
 sub _syncupdates_submit {
     my ( $self, $text, $password ) = @_;
+
+    croak "WWW::Mechanize required for updates"     unless $MECHANIZED;    
 
     $text .= "password: $password\n" if $password;
 

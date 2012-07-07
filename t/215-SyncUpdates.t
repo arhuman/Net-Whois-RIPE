@@ -6,9 +6,23 @@ use Net::Whois::RIPE;
 use Net::Whois::Object;
 use Data::Dumper;
 
+our $MECHANIZED;
+BEGIN {
+    $MECHANIZED = do {
+        eval {
+            require WWW::Mechanize;
+        };
+        ($@) ? 0 : 1;
+    };
+}
+
 unless ( $ENV{TEST_MNTNER} && $ENV{TEST_MNTNER_PASSWORD} ) {
     warn("\n\nSet TEST_MNTNER, TEST_MNTNER_PASSWORD environment vars for live testing\n    TEST_MNTNER being a maintener's nic-hdl in the RIPE test database\n    TEST_MNTNER_PASSWORD being its password\n\n");
     plan skip_all => ' Set environment vars for server testing';
+}
+
+unless ($MECHANIZED) {
+    plan skip_all => 'WWW::Mechanize installation required for update';
 }
 
 plan tests => 5;
