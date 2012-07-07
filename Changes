@@ -1,7 +1,10 @@
 Revision history for net-whois-ripe
 
 
-2.00013     06 Jun 2012
+2.00014     07 Jul 2012
+            - Add missing optional dependency to WWW::Mechanize for update features
+
+2.00013     06 Jul 2012
             - Add RIPE SyncUpdates prototype implementation (Create, Update, Delete)
             - Add type on attributes and the following methods :
                 attributes()

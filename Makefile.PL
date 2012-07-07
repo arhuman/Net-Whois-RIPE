@@ -15,6 +15,9 @@ WriteMakefile(
                    'Iterator::Util' => 0,
     },
     META_MERGE => {
+        recommends => {
+                    'WWW::Mechanize' => 0,
+        },
         resources => { 
                         repository => 'https://github.com/arhuman/Net-Whois-RIPE',
                         bugtracker => 'https://github.com/arhuman/Net-Whois-RIPE/issues'
