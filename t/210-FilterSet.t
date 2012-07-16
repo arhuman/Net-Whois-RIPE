@@ -100,12 +100,11 @@ is( $object->source(), 'APNIC', 'source properly set' );
 
 # Test 'org'
 $tested{'org'}++;
-
 # TODO
 
 # Do cause issue with lexicals
 eval `cat t/common.pl`;
-ok( !$!, "Can read t/common.pl ($!)" );
+ok( $tested{common_loaded}, "t/common.pl properly loaded" );
 ok( !$@, "Can evaluate t/common.pl ($@)" );
 
 __DATA__

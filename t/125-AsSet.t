@@ -94,7 +94,7 @@ is( $object->source(), 'RIPE', 'source properly set' );
 
 # Do cause issue with lexicals
 eval `cat t/common.pl`;
-ok( !$!, "Can read t/common.pl ($!)" );
+ok( $tested{common_loaded}, "t/common.pl properly loaded" );
 ok( !$@, "Can evaluate t/common.pl ($@)" );
 
 __DATA__

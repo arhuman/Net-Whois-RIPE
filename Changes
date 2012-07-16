@@ -1,5 +1,8 @@
 Revision history for net-whois-ripe
 
+            
+            - Change the way to test t/common.pl loading
+              (remove improper $! checking)
 
 2.00014     07 Jul 2012
             - Add missing optional dependency to WWW::Mechanize for update features

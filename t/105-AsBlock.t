@@ -4,9 +4,9 @@ use Test::More qw( no_plan );
 use Test::Exception;
 
 # synchronizes the {error,standard} output of this test.
-use IO::Handle;
-STDOUT->autoflush(1);
-STDERR->autoflush(1);
+# use IO::Handle;
+# STDOUT->autoflush(1);
+# STDERR->autoflush(1);
 
 our $class;
 BEGIN { $class = 'Net::Whois::Object::AsBlock'; use_ok $class; }
@@ -94,12 +94,7 @@ is( $object->source(), 'APNIC', 'source properly set' );
 
 # Do cause issue with lexicals
 eval `cat t/common.pl`;
-ok( !$!, "Can read t/common.pl ($!)" );
-ok( !$@, "Can evaluate t/common.pl ($@)" );
-
-# Do cause issue with lexicals
-eval `cat t/common.pl`;
-ok( !$!, "Can read t/common.pl ($!)" );
+ok( $tested{common_loaded}, "t/common.pl properly loaded" );
 ok( !$@, "Can evaluate t/common.pl ($@)" );
 
 __DATA__

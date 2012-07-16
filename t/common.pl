@@ -1,3 +1,4 @@
+$tested {common_loaded} = 1;
 can_ok $class,
 
     # Constructor

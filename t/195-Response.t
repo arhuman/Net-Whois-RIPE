@@ -34,7 +34,7 @@ is_deeply( $object->comment(), [ '', 'No entries found in source TEST.' ], 'comm
 
 # Do cause issue with lexicals
 eval `cat t/common.pl`;
-ok( !$!, "Can read t/common.pl ($!)" );
+ok( $tested{common_loaded}, "t/common.pl properly loaded" );
 ok( !$@, "Can evaluate t/common.pl ($@)" );
 
 __DATA__
