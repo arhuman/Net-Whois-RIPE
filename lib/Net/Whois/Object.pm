@@ -110,7 +110,7 @@ The only parameter being the associated maintener's password.
     ...
     $object->syncupdates_update($password);
 
-=head4 Update
+=head4 Delete
 
 An object existing in the RIPE database, can be retrived, and deleted in
 the databased through the syncupdates_delete() method.
@@ -238,6 +238,7 @@ sub new {
 
 Accessor to the attributes of the object. 
 $type can be 
+
     'primary'   Primary/Lookup key
     'mandatory' Required for update creation
     'optionnal' Optionnal for update/creation
@@ -526,8 +527,6 @@ sub _single_attribute_setget {
 
 Generic setter/getter for multivalue attribute.
 
-=end UNDOCUMENTED
-
 =cut
 
 sub _multiple_attribute_setget {
@@ -555,6 +554,7 @@ The database used is chosen based on the 'source' attribute.
 Return the HTML code of the returned page.
 (This will change in a near future)
 
+=end UNDOCUMENTED
 
 =cut
 
@@ -573,8 +573,7 @@ sub _syncupdates_submit {
 
     if ( $self->source() eq 'RIPE' ) {
 
-        # TODO bogus value during tests to prevent "leaks"
-        $mech->set_fields( 'rpslBox:postRpsl:sourceRadioSelect' => 'AARIPE_NCC' );
+        $mech->set_fields( 'rpslBox:postRpsl:sourceRadioSelect' => 'RIPE_NCC' );
     }
     else {
         $mech->set_fields( 'rpslBox:postRpsl:sourceRadioSelect' => 'TEST' );
@@ -599,8 +598,7 @@ sub _syncupdates_submit {
 
 =head1 TODO
 
-The update part (RIPE database) is still missing, but I'm planning to offer a way
-to do it in a near future (through email generation or webupdate)
+The update part (in RIPE database) still needs a lot of work.
 
 =head1 AUTHOR
 
