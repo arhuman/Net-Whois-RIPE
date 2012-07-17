@@ -1,10 +1,14 @@
+$tested {common_loaded} = 1;
+
 can_ok $class,
 
     # Constructor
     qw( new ),
 
     # OO Support
-    qw( dump attributes attribute_is filtered_attributes displayed_attributes );
+    qw( attributes attribute_is filtered_attributes displayed_attributes dump
+    syncupdates_update syncupdates_delete syncupdates_create _object_factory
+    _single_attribute_setget _multiple_attribute_setget _syncupdates_submit );
 
 ok( !$object->can('bogusmethod'), "No AUTOLOAD interference with $class tests" );
 

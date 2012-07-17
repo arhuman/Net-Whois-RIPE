@@ -129,7 +129,7 @@ is( $object->mnt_routes()->[1], 'RTES-MNT2', 'mnt_routes properly added' );
 
 # Do cause issue with lexicals
 eval `cat t/common.pl`;
-ok( !$!, "Can read t/common.pl ($!)" );
+ok( $tested{common_loaded}, "t/common.pl properly loaded" );
 ok( !$@, "Can evaluate t/common.pl ($@)" );
 
 __DATA__

@@ -1,5 +1,11 @@
 Revision history for net-whois-ripe
 
+            
+2.00015     17 Jul 2012
+            - Change the way to test if t/common.pl was well loaded
+              (remove $! checking which caused issue with old Perl versions)
+            - Minor fix in pod documentation
+            - Enable RIPE database update (and not only RIPE TEST database)
 
 2.00014     07 Jul 2012
             - Add missing optional dependency to WWW::Mechanize for update features
