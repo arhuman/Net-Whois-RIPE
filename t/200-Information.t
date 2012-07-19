@@ -11,10 +11,10 @@ STDERR->autoflush(1);
 our $class;
 BEGIN { $class = 'Net::Whois::Object::Information'; use_ok $class; }
 
-my %tested;
+our %tested;
 
 my @lines  = <DATA>;
-my $object = ( Net::Whois::Object->new(@lines) )[0];
+our $object = ( Net::Whois::Object->new(@lines) )[0];
 
 isa_ok $object, $class;
 
@@ -28,8 +28,8 @@ can_ok $object, $object->attributes('mandatory');
 $tested{'comment'}++;
 is_deeply( $object->comment(), [ 'This is the RIPE Database query service.', 'The objects are in RPSL format.' ], 'comment properly parsed' );
 
-# Do cause issue with lexicals
-eval `cat t/common.pl`;
+# Common tests
+do 't/common.pl';
 ok( $tested{common_loaded}, "t/common.pl properly loaded" );
 ok( !$@, "Can evaluate t/common.pl ($@)" );
 

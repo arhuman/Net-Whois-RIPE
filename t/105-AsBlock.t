@@ -11,10 +11,10 @@ use Test::Exception;
 our $class;
 BEGIN { $class = 'Net::Whois::Object::AsBlock'; use_ok $class; }
 
-my %tested;
+our %tested;
 
 my @lines  = <DATA>;
-my $object = ( Net::Whois::Object->new(@lines) )[0];
+our $object = ( Net::Whois::Object->new(@lines) )[0];
 
 isa_ok $object, $class;
 
@@ -92,8 +92,8 @@ is( $object->source(), 'RIPE # Filtered', 'source properly parsed' );
 $object->source('APNIC');
 is( $object->source(), 'APNIC', 'source properly set' );
 
-# Do cause issue with lexicals
-eval `cat t/common.pl`;
+# Common tests
+do 't/common.pl';
 ok( $tested{common_loaded}, "t/common.pl properly loaded" );
 ok( !$@, "Can evaluate t/common.pl ($@)" );
 
