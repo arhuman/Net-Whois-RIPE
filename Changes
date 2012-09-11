@@ -1,5 +1,6 @@
 Revision history for net-whois-ripe
 
+            - Depend on LWP::UserAgent instead of WWW::Mechanize
             
 2.00015     17 Jul 2012
             - Change the way to test if t/common.pl was well loaded

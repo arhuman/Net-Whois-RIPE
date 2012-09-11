@@ -16,7 +16,7 @@ WriteMakefile(
     },
     META_MERGE => {
         recommends => {
-                    'WWW::Mechanize' => 0,
+                    'LWP::UserAgent' => 0,
         },
         resources => { 
                         repository => 'https://github.com/arhuman/Net-Whois-RIPE',
