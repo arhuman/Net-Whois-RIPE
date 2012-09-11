@@ -3,15 +3,14 @@ use strict;
 use warnings;
 
 use Carp;
-#use WWW::Mechanize;
 use Net::Whois::RIPE;
 use Data::Dumper;
 
-our $MECHANIZED;
+our $LWP;
 BEGIN {
-    $MECHANIZED    = do {
+    $LWP    = do {
         eval {
-            require WWW::Mechanize;
+            require LWP::UserAgent;
         };
         ($@) ? 0 : 1;
     };
@@ -82,7 +81,7 @@ RIPE provides several web interfaces
 Although not the latest one, this simple interface is the first to be wrapped
 by this module.
 
-B<CAUTION: SyncUpdates features require WWW::Mechanize to be installed.>
+B<CAUTION: SyncUpdates features require LWP::UserAgent to be installed.>
 
 =head4 Create
 
@@ -561,39 +560,24 @@ Return the HTML code of the returned page.
 sub _syncupdates_submit {
     my ( $self, $text, $password ) = @_;
 
-    croak "WWW::Mechanize required for updates"     unless $MECHANIZED;    
+    croak "LWP::UserAgent required for updates" unless $LWP;    
+
+    my $url = $self->source eq 'RIPE'
+            ? 'http://syncupdates.db.ripe.net/'
+            : 'http://syncupdates-test.db.ripe.net';
 
     $text .= "password: $password\n" if $password;
 
-    my $mech = WWW::Mechanize->new();
+    my $ua = LWP::UserAgent->new;
 
-    $mech->get('https://apps.db.ripe.net/syncupdates/simple-rpsl.html');
+    my $response      = $ua->post($url, { DATA => $text  });
+    my $response_text = $response->decoded_content;
 
-    my $form = $mech->form_number(2);
-
-    if ( $self->source() eq 'RIPE' ) {
-
-        $mech->set_fields( 'rpslBox:postRpsl:sourceRadioSelect' => 'RIPE_NCC' );
-    }
-    else {
-        $mech->set_fields( 'rpslBox:postRpsl:sourceRadioSelect' => 'TEST' );
+    unless ($response->is_success) {
+        croak "Can't sync object with RIPE database: $response_text" 
     }
 
-    $mech->set_fields( 'rpslBox:postRpsl:sourceRadioSelect' => 'TEST' );
-    $mech->set_fields( 'rpslBox:postRpsl:rpslObject'        => "$text\n" );
-
-    my $r = $mech->click_button( value => 'Update' );
-
-    croak "Can't submit to syncupdates : " . $mech->response()->status_linel unless $mech->success;
-
-    my $page = $mech->response()->content;
-
-    if ( $page !~ /Number of objects processed successfully:  1/s ) {
-
-        # carp "Syncupdate failed :\n$page\n";
-    }
-
-    return $page;
+    return $response_text;
 }
 
 =head1 TODO
