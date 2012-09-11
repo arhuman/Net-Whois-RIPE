@@ -11,10 +11,10 @@ STDERR->autoflush(1);
 our $class;
 BEGIN { $class = 'Net::Whois::Object::InetNum'; use_ok $class; }
 
-my %tested;
+our %tested;
 
 my @lines  = <DATA>;
-my $object = ( Net::Whois::Object->new(@lines) )[0];
+our $object = ( Net::Whois::Object->new(@lines) )[0];
 
 isa_ok $object, $class;
 
@@ -127,8 +127,8 @@ is_deeply( $object->mnt_routes(), ['RTES-MNT'], 'mnt_routes properly parsed' );
 $object->mnt_routes('RTES-MNT2');
 is( $object->mnt_routes()->[1], 'RTES-MNT2', 'mnt_routes properly added' );
 
-# Do cause issue with lexicals
-eval `cat t/common.pl`;
+# Common tests
+do 't/common.pl';
 ok( $tested{common_loaded}, "t/common.pl properly loaded" );
 ok( !$@, "Can evaluate t/common.pl ($@)" );
 

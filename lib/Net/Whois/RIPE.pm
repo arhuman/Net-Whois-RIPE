@@ -33,7 +33,7 @@ Version 2.00_015 - BETA
 
 =cut
 
-our $VERSION = 2.00_015;
+our $VERSION = 2.00_016;
 
 =head1 SYNOPSIS
 
@@ -598,6 +598,8 @@ Thanks to RIPE NCC for allowing me to work on this during some of my office
 hours.
 
 Thanks to Carlos Fuentes for the nice patch with bugfixes for version 2.00_008.
+
+Thanks to Moritz Lenz for his contribution to versio 2.00_016 
 
 =head1 COPYRIGHT & LICENSE
 

@@ -13,7 +13,7 @@ BEGIN { $class = 'Net::Whois::Object'; use_ok $class; }
 
 my @lines = <DATA>;
 my @o     = Net::Whois::Object->new(@lines);
-for my $object (@o) {
+for our $object (@o) {
     isa_ok $object, $class;
 }
 isa_ok $o[0], $class . "::Information";
