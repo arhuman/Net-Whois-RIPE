@@ -6,11 +6,11 @@ use Net::Whois::RIPE;
 use Net::Whois::Object;
 use Data::Dumper;
 
-our $MECHANIZED;
+our $LWP;
 BEGIN {
-    $MECHANIZED = do {
+    $LWP = do {
         eval {
-            require WWW::Mechanize;
+            require LWP::UserAgent;
         };
         ($@) ? 0 : 1;
     };
@@ -21,8 +21,8 @@ unless ( $ENV{TEST_MNTNER} && $ENV{TEST_MNTNER_PASSWORD} ) {
     plan skip_all => ' Set environment vars for server testing';
 }
 
-unless ($MECHANIZED) {
-    plan skip_all => 'WWW::Mechanize installation required for update';
+unless ($LWP) {
+    plan skip_all => 'LWP::UserAgent installation required for update';
 }
 
 plan tests => 5;
