@@ -5,6 +5,7 @@ use warnings;
 use Carp;
 use Net::Whois::RIPE;
 use Data::Dumper;
+use IPC::Open2 qw/open2/;
 
 our $LWP;
 BEGIN {
@@ -87,12 +88,20 @@ B<CAUTION: SyncUpdates features require LWP::UserAgent to be installed.>
 
 Once the object has been modified, locally, you can create it in the database
 calling the syncupdates_create() method.
-The only parameter being the associated maintener's password.
-(Certificates are planned to be used in a near future)
+The only parameter being the associated maintener's authentication
+as a password or pgp key:
 
     $object->person('John Doe');
     ...
-    my $primary_key = $object->syncupdates_create($password);
+    my $primary_key = $object->syncupdates_create({ password => $password });
+    # or
+    my $primary_key = $object->syncupdates_create({ pgpkey   => $pgpkey   });
+
+The pgp key must be an eight digit hexadecimal key ID known to the local
+C<gpg> executable.
+
+For backwards compatibility, the password can be passed directly without
+using a a hash reference, C<< $object->syncupdates_create($password) >>.
 
 The primary key of the object created is returned.
 The attribute used as primary key can be obtained through 
@@ -102,25 +111,25 @@ $object->attribute('primary')
 
 An object existing in the RIPE database, can be retrived, modified locally
 and the updated through the syncupdates_update() method.
-The only parameter being the associated maintener's password.
-(Certificates are planned to be used in a near future)
+The only parameter being the associated maintener's authentication.
+See L</Create> for more information on the authentication methods.
 
     $object->person('John Doe');
     ...
-    $object->syncupdates_update($password);
+    $object->syncupdates_update($auth);
 
 =head4 Delete
 
 An object existing in the RIPE database, can be retrived, and deleted in
 the databased through the syncupdates_delete() method.
-The only required parameter being the associated maintener's password.
-(Certificates are planned to be used in a near future)
+The only required parameter being the associated maintener's authentication.
+See L</Create> for more information on the authentication methods.
 
-    $object->syncupdates_update($password);
+    $object->syncupdates_update($auth);
 
 An additional parameter can be used as a reason for the deletion.
 
-    $object->syncupdates_update($password,'Obsoleted by XXX');
+    $object->syncupdates_update($auth,'Obsoleted by XXX');
 
 If no reason is provided, a default one ('Not needed anymore') is used.
     
@@ -368,12 +377,12 @@ Use the password passed as parameter to authenticate.
 =cut
 
 sub syncupdates_update {
-    my ( $self, $password ) = @_;
+    my ( $self, $auth ) = @_;
 
     my ($key)  = $self->attributes('primary');
     my $value = $self->_single_attribute_setget($key);
 
-    my $html = $self->_syncupdates_submit( $self->dump(), $password );
+    my $html = $self->_syncupdates_submit( $self->dump(), $auth );
     
     if ( $html =~ /Modify SUCCEEDED:.*$value/m ) {
         return $value;
@@ -392,7 +401,7 @@ The optionnal parmeter reason is used to explain why the object is deleted.
 =cut
 
 sub syncupdates_delete {
-    my ( $self, $password, $reason ) = @_;
+    my ( $self, $auth, $reason) = @_;
 
     my ($key)  = $self->attributes('primary');
     my $value = $self->_single_attribute_setget($key);
@@ -401,7 +410,7 @@ sub syncupdates_delete {
     $reason = 'Not needed anymore' unless $reason;
     $text .= "delete: $reason\n";
 
-    my $html = $self->_syncupdates_submit( $text, $password );
+    my $html = $self->_syncupdates_submit( $text, $auth );
 
     if ( $html =~ /Delete SUCCEEDED:.*$value/m ) {
         return $value;
@@ -411,21 +420,21 @@ sub syncupdates_delete {
     }
 }
 
-=head2 B<syncupdates_create( $password )>
+=head2 B<syncupdates_create( $auth )>
 
 Create an object in the the RIPE database through the web syncupdates interface.
-Use the password passed as parameter to authenticate.
+See L</Create> for possible values of C<$auth>.
 
 Return the primary key of the object created.
 
 =cut
 
 sub syncupdates_create {
-    my ( $self, $password ) = @_;
+    my ( $self, $auth ) = @_;
 
     my ($key)  = $self->attributes('primary');
 
-    my $html = $self->_syncupdates_submit( $self->dump(), $password );
+    my $html = $self->_syncupdates_submit( $self->dump(), $auth );
 
     if ( $html =~ /\*\*\*Info:\s+Authorisation for\s+\[.+\]\s+(\S+)\s*$/m ) {
         my $value = $1;
@@ -543,7 +552,7 @@ sub _multiple_attribute_setget {
     return $self->{$attribute};
 }
 
-=head2 B<_syncupdates_submit( $text, $password )>
+=head2 B<_syncupdates_submit( $text, $auth )>
 
 Interact with the RIPE database through the web syncupdates interface.
 Submit the text passed as parameter.
@@ -553,12 +562,28 @@ The database used is chosen based on the 'source' attribute.
 Return the HTML code of the returned page.
 (This will change in a near future)
 
-=end UNDOCUMENTED
-
 =cut
 
 sub _syncupdates_submit {
-    my ( $self, $text, $password ) = @_;
+    my ( $self, $text, $auth ) = @_;
+
+    if ( $auth && !ref $auth) {
+        # preserve backwards compatiblity
+        $auth = { password => $auth };
+    }
+    $auth ||= {};
+
+    if ( exists $auth->{pgpkey} ) {
+        my $key_id   = $auth->{pgpkey};
+        $text = $self->_pgp_sign($text, $key_id);
+    }
+    elsif ( exists $auth->{password} ) {
+        my $password = $auth->{password};
+        chomp $password;
+        croak( "Passwords containing newlines are not supported" )
+            if $password =~ /\n/;
+        $text .= "password: $password\n" 
+    }
 
     croak "LWP::UserAgent required for updates" unless $LWP;    
 
@@ -566,7 +591,6 @@ sub _syncupdates_submit {
             ? 'http://syncupdates.db.ripe.net/'
             : 'http://syncupdates-test.db.ripe.net';
 
-    $text .= "password: $password\n" if $password;
 
     my $ua = LWP::UserAgent->new;
 
@@ -579,6 +603,37 @@ sub _syncupdates_submit {
 
     return $response_text;
 }
+
+=head2 B<_pgp_sign( $text, $key_id )>
+
+Sign the C<$text> with the C<gpg> command and key id C<$key_id>.
+Returns the signed text.
+
+=end UNDOCUMENTED
+
+=cut
+
+sub _pgp_sign {
+    my ( $self, $text, $key_id ) = @_;
+    $key_id =~ s/^0x//;
+    my $pid = open2(my $child_out, my $child_in,
+          'gpg', "--local-user=$key_id", '--clearsign');
+    print { $child_in } $text;
+    close $child_in;
+
+    $text = do { local $/; <$child_out> };
+    close $child_out;
+
+    waitpid( $pid, 0 );
+    my $child_exit_status = $? >> 8;
+    if ($child_exit_status != 0) {
+        croak "Error while launching gpg for signing the message: "
+            . "child prcoess exited with status $child_exit_status";
+    }
+
+    return $text;
+}
+
 
 =head1 TODO
 
