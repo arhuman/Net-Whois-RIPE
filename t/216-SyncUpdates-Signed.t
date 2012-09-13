@@ -56,7 +56,7 @@ my $iterator = $whois->query($person_id);
 is_deeply( $person->e_mail(), [$email_before], "Same name from previous" );
 my $email_after = $person->e_mail('arhuman2@gmail.com');
 
-$person->syncupdates_update( { pgpgkey => $PGPKEY } );
+$person->syncupdates_update( { pgpkey => $PGPKEY } );
 
 $iterator = $whois->query($person_id);
 ($person) = grep { ( $_->class() eq 'Person' ) and ( $_->nic_hdl eq $person_id ) } Net::Whois::Object->new($iterator);
@@ -65,7 +65,7 @@ is_deeply( $person->e_mail(), $email_after, "Same as set name" );
 
 isa_ok( $person, 'Net::Whois::Object::Person', 'Found a Person' );
 
-$person->syncupdates_delete( { pgpgkey => $PGPKEY } );
+$person->syncupdates_delete( { pgpkey => $PGPKEY } );
 
 $whois = Net::Whois::RIPE->new( hostname => 'whois-test.ripe.net' );
 $iterator = $whois->query($person_id);
