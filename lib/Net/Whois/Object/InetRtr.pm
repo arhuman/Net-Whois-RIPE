@@ -33,20 +33,17 @@ The inet-rtr object specifies routers.
 
 =head1 METHODS
 
-=head2 new ( %options )
+=head2 new ( @options )
 
 Constructor for the Net::Whois::Object::InetRtr class
 
 =cut
 
 sub new {
-    my ( $class, %options ) = @_;
+    my ( $class, @options ) = @_;
 
     my $self = bless {}, $class;
-
-    for my $key ( keys %options ) {
-        $self->$key( $options{$key} );
-    }
+    $self->_init(@options);
 
     $self->attributes( 'primary', ['inet_rtr'] );
     $self->attributes( 'mandatory', [ 'inet_rtr', 'descr', 'local_as', 'ifaddr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );

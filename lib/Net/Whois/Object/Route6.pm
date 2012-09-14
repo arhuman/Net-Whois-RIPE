@@ -49,13 +49,10 @@ Constructor for the Net::Whois::Object::Route6 class
 =cut
 
 sub new {
-    my ( $class, %options ) = @_;
+    my ( $class, @options ) = @_;
 
     my $self = bless {}, $class;
-
-    for my $key ( keys %options ) {
-        $self->$key( $options{$key} );
-    }
+    $self->_init(@options);
 
     $self->attributes( 'primary',   ['route6'] );
     $self->attributes( 'mandatory', [ 'route6', 'origin', 'descr', 'mnt_by', 'changed', 'source' ] );

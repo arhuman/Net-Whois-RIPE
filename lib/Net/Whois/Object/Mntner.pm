@@ -48,13 +48,10 @@ Constructor for the Net::Whois::Object::Mntner class
 =cut
 
 sub new {
-    my ( $class, %options ) = @_;
+    my ( $class, @options ) = @_;
 
     my $self = bless {}, $class;
-
-    for my $key ( keys %options ) {
-        $self->$key( $options{$key} );
-    }
+    $self->_init(@options);
 
     $self->attributes( 'primary', ['mntner'] );
     $self->attributes( 'mandatory', [ 'mntner', 'descr', 'admin_c', 'auth', 'mnt_by', 'referral_by', 'changed', 'source' ] );

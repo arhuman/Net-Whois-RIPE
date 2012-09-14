@@ -28,20 +28,17 @@ It defines a group of Autonomous Systems with the same routing policies.
 
 =head1 METHODS
 
-=head2 new ( %options )
+=head2 new ( @options )
 
 Constructor for the Net::Whois::Object::AsSet class
 
 =cut
 
 sub new {
-    my ( $class, %options ) = @_;
+    my ( $class, @options ) = @_;
 
     my $self = bless {}, $class;
-
-    for my $key ( keys %options ) {
-        $self->$key( $options{$key} );
-    }
+    $self->_init(@options);
 
     $self->attributes( 'primary', ['as_set'] );
     $self->attributes( 'mandatory', [ 'as_set', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );

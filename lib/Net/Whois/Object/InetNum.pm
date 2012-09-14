@@ -39,20 +39,18 @@ of IPv4 address space.
 
 =head1 METHODS
 
-=head2 new ( %options )
+=head2 new ( @options )
 
 Constructor for the Net::Whois::Object::InetNum class
 
 =cut
 
 sub new {
-    my ( $class, %options ) = @_;
+    my ( $class, @options ) = @_;
 
     my $self = bless {}, $class;
 
-    for my $key ( keys %options ) {
-        $self->$key( $options{$key} );
-    }
+    $self->_init(@options);
 
     $self->attributes( 'primary', ['inetnum'] );
     $self->attributes( 'mandatory', [ 'inetnum', 'netname', 'descr', 'country', 'tech_c', 'admin_c', 'status', 'mnt_by', 'changed', 'source' ] );

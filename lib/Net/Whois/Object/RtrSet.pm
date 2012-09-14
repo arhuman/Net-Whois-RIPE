@@ -41,13 +41,10 @@ Constructor for the Net::Whois::Object::RtrSet class
 =cut
 
 sub new {
-    my ( $class, %options ) = @_;
+    my ( $class, @options ) = @_;
 
     my $self = bless {}, $class;
-
-    for my $key ( keys %options ) {
-        $self->$key( $options{$key} );
-    }
+    $self->_init(@options);
 
     $self->attributes( 'primary', ['rtr_set'] );
     $self->attributes( 'mandatory', [ 'rtr_set', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );

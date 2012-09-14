@@ -46,13 +46,10 @@ Constructor for the Net::Whois::Object::Irt class
 =cut
 
 sub new {
-    my ( $class, %options ) = @_;
+    my ( $class, @options ) = @_;
 
     my $self = bless {}, $class;
-
-    for my $key ( keys %options ) {
-        $self->$key( $options{$key} );
-    }
+    $self->_init(@options);
 
     $self->attributes( 'primary', ['irt'] );
     $self->attributes( 'mandatory', [ 'irt', 'address', 'e_mail', 'abuse_mailbox', 'tech_c', 'admin_c', 'auth', 'mnt_by', 'changed', 'source' ] );

@@ -40,13 +40,10 @@ Constructor for the Net::Whois::Object::AsBlock class
 =cut
 
 sub new {
-    my ( $class, %options ) = @_;
+    my ( $class, @options ) = @_;
 
     my $self = bless {}, $class;
-
-    for my $key ( keys %options ) {
-        $self->$key( $options{$key} );
-    }
+    $self->_init(@options);
 
     $self->attributes( 'primary', ['as_block'] );
     $self->attributes( 'mandatory', [ 'as_block', 'admin_c', 'tech_c', 'mnt_by', 'changed', 'source' ] );

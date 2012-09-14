@@ -543,6 +543,21 @@ sub _multiple_attribute_setget {
     return $self->{$attribute};
 }
 
+=head2 B<_init( @options )>
+
+Initialize self with C<@options>
+
+=cut
+
+sub _init {
+    my ($self, @options) = @_;
+
+    while (my ($key, $val ) = splice(@options, 0, 2)) {
+        $self->$key( $val );
+    }
+}
+
+
 =head2 B<_syncupdates_submit( $text, $password )>
 
 Interact with the RIPE database through the web syncupdates interface.

@@ -27,13 +27,10 @@ Constructor for the Net::Whois::Object::Response class
 =cut
 
 sub new {
-    my ( $class, %options ) = @_;
+    my ( $class, @options ) = @_;
 
     my $self = bless {}, $class;
-
-    for my $key ( keys %options ) {
-        $self->$key( $options{$key} );
-    }
+    $self->_init(@options);
 
     $self->attributes( 'mandatory', ['response'] );
     $self->attributes( 'optional', ['comment'] );

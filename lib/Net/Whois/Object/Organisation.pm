@@ -42,13 +42,10 @@ Constructor for the Net::Whois::Object::Organisation class
 =cut
 
 sub new {
-    my ( $class, %options ) = @_;
+    my ( $class, @options ) = @_;
 
     my $self = bless {}, $class;
-
-    for my $key ( keys %options ) {
-        $self->$key( $options{$key} );
-    }
+    $self->_init(@options);
 
     $self->attributes( 'primary',   ['organisation'] );
     $self->attributes( 'mandatory', [ 'organisation', 'org_name', 'org_type', 'address', 'e_mail', 'mnt_ref', 'mnt_by', 'changed', 'source' ] );

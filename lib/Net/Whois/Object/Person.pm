@@ -37,13 +37,10 @@ Constructor for the Net::Whois::Object::Person class
 =cut
 
 sub new {
-    my ( $class, %options ) = @_;
+    my ( $class, @options ) = @_;
 
     my $self = bless {}, $class;
-
-    for my $key ( keys %options ) {
-        $self->$key( $options{$key} );
-    }
+    $self->_init(@options);
 
     $self->attributes( 'primary', ['nic_hdl'] );
     $self->attributes( 'mandatory', [ 'person', 'address', 'phone', 'nic_hdl', 'changed', 'source' ] );

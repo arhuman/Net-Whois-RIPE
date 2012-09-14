@@ -21,20 +21,17 @@ information.
 
 =head1 METHODS
 
-=head2 new ( %options )
+=head2 new ( @options )
 
 Constructor for the Net::Whois::Object::Information class
 
 =cut
 
 sub new {
-    my ( $class, %options ) = @_;
+    my ( $class, @options ) = @_;
 
     my $self = bless {}, $class;
-
-    for my $key ( keys %options ) {
-        $self->$key( $options{$key} );
-    }
+    $self->_init(@options);
 
     $self->attributes( 'mandatory', ['comment'] );
     $self->attributes( 'optional', [] );
