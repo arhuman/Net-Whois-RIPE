@@ -100,6 +100,11 @@ as a password or pgp key:
 The pgp key must be an eight digit hexadecimal key ID known to the local
 C<gpg> executable.
 
+If the C<pgpkey> key is present in the hash reference passed to
+syncupdates_create, you can also pass in the C<pgpexec> key to chose a program
+to execute for signing (C<gpg> by default), and C<pgpopts>, which must be an
+array reference of additional options to pass to the signing binary.
+
 For backwards compatibility, the password can be passed directly without
 using a a hash reference, C<< $object->syncupdates_create($password) >>.
 
@@ -574,8 +579,7 @@ sub _syncupdates_submit {
     $auth ||= {};
 
     if ( exists $auth->{pgpkey} ) {
-        my $key_id   = $auth->{pgpkey};
-        $text = $self->_pgp_sign($text, $key_id);
+        $text = $self->_pgp_sign($text, $auth);
     }
     elsif ( exists $auth->{password} ) {
         my $password = $auth->{password};
@@ -604,9 +608,9 @@ sub _syncupdates_submit {
     return $response_text;
 }
 
-=head2 B<_pgp_sign( $text, $key_id )>
+=head2 B<_pgp_sign( $text, $auth )>
 
-Sign the C<$text> with the C<gpg> command and key id C<$key_id>.
+Sign the C<$text> with the C<gpg> command and gpg information in C<$auth>
 Returns the signed text.
 
 =end UNDOCUMENTED
@@ -614,10 +618,13 @@ Returns the signed text.
 =cut
 
 sub _pgp_sign {
-    my ( $self, $text, $key_id ) = @_;
+    my ( $self, $text, $auth ) = @_;
+    my $binary = $auth->{pgpexec} || 'gpg';
+    my $key_id = $auth->{pgpkey};
+    my @opts   = @{ $auth->{pgpopts} || [] };
     $key_id =~ s/^0x//;
     my $pid = open2(my $child_out, my $child_in,
-          'gpg', "--local-user=$key_id", '--clearsign');
+          $binary, "--local-user=$key_id", '--clearsign', @opts);
     print { $child_in } $text;
     close $child_in;
 
@@ -627,7 +634,7 @@ sub _pgp_sign {
     waitpid( $pid, 0 );
     my $child_exit_status = $? >> 8;
     if ($child_exit_status != 0) {
-        croak "Error while launching gpg for signing the message: "
+        croak "Error while launching $binary for signing the message: "
             . "child prcoess exited with status $child_exit_status";
     }
 
