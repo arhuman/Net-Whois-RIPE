@@ -23,7 +23,7 @@ can_ok $object, qw( inetnum netname descr country org admin_c tech_c status rema
 
 # Check if typed attributes are correct
 can_ok $object, $object->attributes('mandatory');
-can_ok $object, $object->attributes('optionnal');
+can_ok $object, $object->attributes('optional');
 
 # Test 'inetnum'
 $tested{'inetnum'}++;

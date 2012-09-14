@@ -55,7 +55,7 @@ sub new {
 
     $self->attributes( 'primary',   ['inet6num'] );
     $self->attributes( 'mandatory', [ 'inet6num', 'netname', 'status', 'source' ] );
-    $self->attributes( 'optionnal', [ 'org', 'remarks', 'notify', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt' ] );
+    $self->attributes( 'optional', [ 'org', 'remarks', 'notify', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt' ] );
     $self->attributes( 'single', [ 'inet6num', 'netname', 'org', 'status', 'source' ] );
     $self->attributes( 'multiple', [ 'descr', 'country', 'tech_c', 'admin_c', 'remarks', 'notify', 'mnt_by', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt', 'changed' ] );
 

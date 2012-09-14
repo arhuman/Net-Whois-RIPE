@@ -47,7 +47,7 @@ sub new {
 
     $self->attributes( 'primary', ['nic_hdl'] );
     $self->attributes( 'mandatory', [ 'person', 'address', 'phone', 'nic_hdl', 'changed', 'source' ] );
-    $self->attributes( 'optionnal', [ 'fax_no', 'e_mail', 'remarks', 'notify', 'mnt_by' ] );
+    $self->attributes( 'optional', [ 'fax_no', 'e_mail', 'remarks', 'notify', 'mnt_by' ] );
     $self->attributes( 'single', [ 'person', 'nic_hdl', 'source' ] );
     $self->attributes( 'multiple', [ 'address', 'phone', 'changed', 'fax_no', 'e_mail', 'remarks', 'notify', 'mnt_by' ] );
 

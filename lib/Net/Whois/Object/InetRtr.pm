@@ -50,7 +50,7 @@ sub new {
 
     $self->attributes( 'primary', ['inet_rtr'] );
     $self->attributes( 'mandatory', [ 'inet_rtr', 'descr', 'local_as', 'ifaddr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optionnal', [ 'alias', 'interface', 'peer', 'mp_peer', 'member_of', 'remarks', 'org', 'notify' ] );
+    $self->attributes( 'optional', [ 'alias', 'interface', 'peer', 'mp_peer', 'member_of', 'remarks', 'org', 'notify' ] );
     $self->attributes( 'single', [ 'inet_rtr', 'local_as', 'source' ] );
     $self->attributes( 'multiple', [ 'descr', 'remarks', 'alias', 'ifaddr', 'interface', 'peer', 'mp_peer', 'member_of', 'org', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'changed' ] );
 

@@ -32,9 +32,9 @@ ok( !$o[5]->can('bogusmethod'), "No AUTOLOAD interference with ${class}::AutNum 
 
 is_deeply( [ $o[0]->attributes('mandatory') ], ['comment'] );
 
-is_deeply( [ $o[0]->attributes('optionnal') ], [] );
-$o[0]->attributes( 'optionnal', [ 'opt1', 'opt2', 'opt3' ] );
-is_deeply( [ $o[0]->attributes('optionnal') ], [ 'opt1', 'opt2', 'opt3' ] );
+is_deeply( [ $o[0]->attributes('optional') ], [] );
+$o[0]->attributes( 'optional', [ 'opt1', 'opt2', 'opt3' ] );
+is_deeply( [ $o[0]->attributes('optional') ], [ 'opt1', 'opt2', 'opt3' ] );
 
 is_deeply( [ $o[0]->attributes('all') ], [ 'comment', 'opt1', 'opt2', 'opt3' ] );
 is_deeply( [ $o[0]->attributes() ],      [ 'comment', 'opt1', 'opt2', 'opt3' ] );

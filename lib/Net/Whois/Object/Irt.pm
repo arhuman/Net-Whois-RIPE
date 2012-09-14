@@ -56,7 +56,7 @@ sub new {
 
     $self->attributes( 'primary', ['irt'] );
     $self->attributes( 'mandatory', [ 'irt', 'address', 'e_mail', 'abuse_mailbox', 'tech_c', 'admin_c', 'auth', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optionnal', [ 'phone', 'fax_no', 'signature', 'encryption', 'org', 'remarks', 'irt_nfy', 'notify' ] );
+    $self->attributes( 'optional', [ 'phone', 'fax_no', 'signature', 'encryption', 'org', 'remarks', 'irt_nfy', 'notify' ] );
     $self->attributes( 'single', [ 'irt', 'source' ] );
     $self->attributes( 'multiple', [ 'address', 'phone', 'fax_no', 'e_mail', 'abuse_mailbox', 'signature', 'encryption', 'org', 'auth', 'remarks', 'tech_c', 'admin_c', 'irt_nfy', 'notify', 'mnt_by', 'changed' ] );
 

@@ -62,7 +62,7 @@ sub new {
 
     $self->attributes( 'primary',   ['route'] );
     $self->attributes( 'mandatory', [ 'route', 'origin', 'descr', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optionnal', [ 'holes', 'member_of', 'inject', 'aggr_mtd', 'aggr_bndry', 'export_comps', 'components', 'remarks', 'cross_mnt', 'cross_nfy', 'notify', 'mnt_lower', 'mnt_routes' ] );
+    $self->attributes( 'optional', [ 'holes', 'member_of', 'inject', 'aggr_mtd', 'aggr_bndry', 'export_comps', 'components', 'remarks', 'cross_mnt', 'cross_nfy', 'notify', 'mnt_lower', 'mnt_routes' ] );
     $self->attributes( 'single', [ 'route', 'origin', 'aggr_mtd', 'aggr_bndry', 'export_comps', 'components', 'source' ] );
     $self->attributes( 'multiple', [ 'descr', 'mnt_by', 'changed', 'holes', 'member_of', 'inject', 'remarks', 'cross_mnt', 'cross_nfy', 'notify', 'mnt_lower', 'mnt_routes' ] );
 

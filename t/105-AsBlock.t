@@ -23,7 +23,7 @@ can_ok $object, qw( as_block descr remarks tech_c admin_c notify mnt_lower mnt_b
 can_ok $object, qw( org );
 
 can_ok $object, $object->attributes('mandatory');
-can_ok $object, $object->attributes('optionnal');
+can_ok $object, $object->attributes('optional');
 
 # Test 'as_block'
 $tested{'as_block'}++;

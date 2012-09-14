@@ -46,7 +46,7 @@ sub new {
 
     $self->attributes( 'primary', ['poem'] );
     $self->attributes( 'mandatory', [ 'poem', 'form', 'text', 'author', 'admin_c', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optionnal', [ 'descr', 'remarks', 'notify' ] );
+    $self->attributes( 'optional', [ 'descr', 'remarks', 'notify' ] );
     $self->attributes( 'single',    [ 'poem',  'form',    'source' ] );
     $self->attributes( 'multiple',  [ 'descr', 'text',    'admin_c', 'author', 'remarks', 'notify', 'mnt_by', 'changed' ] );
 

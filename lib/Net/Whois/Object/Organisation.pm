@@ -52,7 +52,7 @@ sub new {
 
     $self->attributes( 'primary',   ['organisation'] );
     $self->attributes( 'mandatory', [ 'organisation', 'org_name', 'org_type', 'address', 'e_mail', 'mnt_ref', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optionnal', [ 'descr', 'remarks', 'phone', 'fax_no', 'org', 'admin_c', 'tech_c', 'ref_nfy', 'notify' ] );
+    $self->attributes( 'optional', [ 'descr', 'remarks', 'phone', 'fax_no', 'org', 'admin_c', 'tech_c', 'ref_nfy', 'notify' ] );
     $self->attributes( 'single', [ 'organisation', 'org_name', 'org_type', 'source' ] );
     $self->attributes( 'multiple', [ 'descr', 'remarks', 'address', 'phone', 'fax_no', 'e_mail', 'org', 'admin_c', 'tech_c', 'ref_nfy', 'mnt_ref', 'notify', 'mnt_by', 'changed' ] );
 

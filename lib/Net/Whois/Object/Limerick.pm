@@ -44,7 +44,7 @@ sub new {
 
     $self->attributes( 'primary', ['limerick'] );
     $self->attributes( 'mandatory', [ 'limerick', 'text', 'admin_c', 'author', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optionnal', [ 'descr', 'remarks', 'notify' ] );
+    $self->attributes( 'optional', [ 'descr', 'remarks', 'notify' ] );
     $self->attributes( 'single', [ 'limerick', 'source' ] );
     $self->attributes( 'multiple', [ 'text', 'admin_c', 'author', 'mnt_by', 'changed', 'descr', 'remarks', 'notify' ] );
 

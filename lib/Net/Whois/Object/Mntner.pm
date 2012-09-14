@@ -58,7 +58,7 @@ sub new {
 
     $self->attributes( 'primary', ['mntner'] );
     $self->attributes( 'mandatory', [ 'mntner', 'descr', 'admin_c', 'auth', 'mnt_by', 'referral_by', 'changed', 'source' ] );
-    $self->attributes( 'optionnal', [ 'org', 'tech_c', 'mnt_nfy', 'remarks', 'notify', 'abuse_mailbox', 'auth_override' ] );
+    $self->attributes( 'optional', [ 'org', 'tech_c', 'mnt_nfy', 'remarks', 'notify', 'abuse_mailbox', 'auth_override' ] );
     $self->attributes( 'single', [ 'mntner', 'auth_override', 'auth', 'referral_by', 'source' ] );
     $self->attributes( 'multiple', [ 'descr', 'admin_c', 'mnt_by', 'changed', 'org', 'tech_c', 'mnt_nfy', 'remarks', 'notify', 'abuse_mailbox' ] );
 

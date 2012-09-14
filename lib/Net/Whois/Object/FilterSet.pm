@@ -48,7 +48,7 @@ sub new {
 
     $self->attributes( 'primary',   ['filter_set'] );
     $self->attributes( 'mandatory', [ 'filter_set', 'filter', 'mp_filter', 'source' ] );
-    $self->attributes( 'optionnal', [ 'remarks', 'org', 'notify', 'mnt_lower' ] );
+    $self->attributes( 'optional', [ 'remarks', 'org', 'notify', 'mnt_lower' ] );
     $self->attributes( 'single',    [ 'filter_set', 'filter', 'mp_filter', 'source' ] );
     $self->attributes( 'multiple',  [ 'descr', 'remarks', 'org', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'mnt_lower', 'changed' ] );
 

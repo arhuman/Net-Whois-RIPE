@@ -36,7 +36,7 @@ sub new {
     }
 
     $self->attributes( 'mandatory', ['response'] );
-    $self->attributes( 'optionnal', ['comment'] );
+    $self->attributes( 'optional', ['comment'] );
     $self->attributes( 'single',    ['response'] );
     $self->attributes( 'multiple',  ['comment'] );
 

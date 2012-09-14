@@ -52,7 +52,7 @@ sub new {
 
     $self->attributes( 'primary',   ['domain'] );
     $self->attributes( 'mandatory', [ 'domain', 'descr', 'tech_c', 'admin_c', 'zone_c', 'changed', 'source' ] );
-    $self->attributes( 'optionnal', [ 'org', 'nserver', 'ds_rdata', 'sub_dom', 'dom_net', 'remarks', 'notify', 'mnt_by', 'mnt_lower', 'refer' ] );
+    $self->attributes( 'optional', [ 'org', 'nserver', 'ds_rdata', 'sub_dom', 'dom_net', 'remarks', 'notify', 'mnt_by', 'mnt_lower', 'refer' ] );
     $self->attributes( 'single', [ 'domain', 'refer', 'source' ] );
     $self->attributes( 'multiple', [ 'descr', 'org', 'admin_c', 'tech_c', 'zone_c', 'nserver', 'ds_rdata', 'sub_dom', 'dom_net', 'remarks', 'notify', 'mnt_by', 'mnt_lower', 'changed' ] );
 

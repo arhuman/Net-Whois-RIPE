@@ -45,7 +45,7 @@ sub new {
 
     $self->attributes( 'primary', ['as_set'] );
     $self->attributes( 'mandatory', [ 'as_set', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optionnal', [ 'members', 'mbrs_by_ref', 'remarks', 'notify' ] );
+    $self->attributes( 'optional', [ 'members', 'mbrs_by_ref', 'remarks', 'notify' ] );
     $self->attributes( 'single', [ 'as_set', 'source' ] );
     $self->attributes( 'multiple', [ 'descr', 'members', 'mbrs_by_ref', 'remarks', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'changed' ] );
 

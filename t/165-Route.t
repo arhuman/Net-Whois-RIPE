@@ -25,7 +25,7 @@ can_ok $object, qw( route descr country origin cross_mnt cross_nfy holes member_
 
 # Check if typed attributes are correct
 can_ok $object, $object->attributes('mandatory');
-can_ok $object, $object->attributes('optionnal');
+can_ok $object, $object->attributes('optional');
 
 # Test 'route'
 $tested{'route'}++;

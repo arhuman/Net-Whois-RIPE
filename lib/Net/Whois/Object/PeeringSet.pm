@@ -50,7 +50,7 @@ sub new {
 
     $self->attributes( 'primary', ['peering_set'] );
     $self->attributes( 'mandatory', [ 'peering_set', 'descr', 'peering', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optionnal', [ 'remarks',     'notify' ] );
+    $self->attributes( 'optional', [ 'remarks',     'notify' ] );
     $self->attributes( 'single',    [ 'peering_set', 'source' ] );
     $self->attributes( 'multiple',  [ 'descr',       'peering', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'remarks', 'notify' ] );
 
