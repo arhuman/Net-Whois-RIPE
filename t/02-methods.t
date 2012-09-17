@@ -29,7 +29,7 @@ can_ok $class,
   qw( DESTROY );
 
 {
-    my $c = Net::Whois::RIPE->new( disconnected => 1 );
+    my $c = Net::Whois::RIPE->new( disconnected => 1, unfiltered => 1 );
     isa_ok $c, $class;
 
     # hostname()
@@ -78,6 +78,8 @@ can_ok $class,
     ok !$c->grouping, q{and 0 is probably the only way to turn it off.};
     $c->grouping('yes');
     ok $c->grouping, q{true values are interpreted as true for grouping.};
+
+    ok $c->unfiltered, '->new can set the unfiltered flag';
 }
 
 {

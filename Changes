@@ -4,7 +4,8 @@ Revision history for net-whois-ripe
             - Depend on LWP::UserAgent instead of WWW::Mechanize
               (Thanks to Moritz Lenz)
             - Make tests more portable
-            
+
+
 2.00015     17 Jul 2012
             - Change the way to test if t/common.pl was well loaded
               (remove $! checking which caused issue with old Perl versions)
