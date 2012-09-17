@@ -24,7 +24,7 @@ can_ok $object, qw( poem descr form text admin_c author remarks notify mnt_by
 
 # Check if typed attributes are correct
 can_ok $object, $object->attributes('mandatory');
-can_ok $object, $object->attributes('optionnal');
+can_ok $object, $object->attributes('optional');
 
 # Test 'poem'
 $tested{'poem'}++;

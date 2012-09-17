@@ -24,7 +24,7 @@ can_ok $object, qw( key_cert method owner fingerpr remarks org certif notify
 
 # Check if typed attributes are correct
 can_ok $object, $object->attributes('mandatory');
-can_ok $object, $object->attributes('optionnal');
+can_ok $object, $object->attributes('optional');
 
 # Test 'key_cert'
 $tested{'key_cert'}++;

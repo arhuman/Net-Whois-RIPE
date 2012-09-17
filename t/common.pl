@@ -14,12 +14,12 @@ ok( !$object->can('bogusmethod'), "No AUTOLOAD interference with $class tests" )
 
 for my $a ( $object->attributes('mandatory') ) {
     ok( $object->attribute_is( $a, 'mandatory' ), "Attribute $a is mandatory" );
-    ok( !$object->attribute_is( $a, 'optionnal' ), "Attribute $a is not optionnal");
+    ok( !$object->attribute_is( $a, 'optional' ), "Attribute $a is not optional");
 }
 
-for my $a ( $object->attributes('optionnal') ) {
+for my $a ( $object->attributes('optional') ) {
     ok( !$object->attribute_is( $a, 'mandatory' ), "Attribute $a is not mandatory" );
-    ok( $object->attribute_is( $a, 'optionnal' ), "Attribute $a is optionnal");
+    ok( $object->attribute_is( $a, 'optional' ), "Attribute $a is optional");
 }
 
 for my $a ( $object->attributes('single') ) {

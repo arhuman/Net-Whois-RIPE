@@ -25,7 +25,7 @@ can_ok $object, qw( mnt_irt );
 
 # Check if typed attributes are correct
 can_ok $object, $object->attributes('mandatory');
-can_ok $object, $object->attributes('optionnal');
+can_ok $object, $object->attributes('optional');
 
 # Test 'inet6num'
 $tested{'inet6num'}++;
