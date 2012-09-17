@@ -200,7 +200,7 @@ for DNSSEC (short for DNS Security Extensions)
 sub ds_rdata {
     my ( $self, $server ) = @_;
 
-    return $self->_multiple_attribute_setget( 'ds_data', $server );
+    return $self->_multiple_attribute_setget( 'ds_rdata', $server );
 }
 
 =head2 B<sub_dom( [$dom] )>
