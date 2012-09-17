@@ -255,7 +255,7 @@ include a URL or email address.
 sub remarks {
     my ( $self, $remark ) = @_;
 
-    return $self->_multiple_attribute_setget( 'remark', $remark );
+    return $self->_multiple_attribute_setget( 'remarks', $remark );
 }
 
 =head2 B<admin_c( [$contact] )>
@@ -339,7 +339,7 @@ always return the current mnt_routes array.
 sub mnt_routes {
     my ( $self, $mnt_routes ) = @_;
 
-    return $self->_multiple_attribute_setget( 'mnt_route', $mnt_route );
+    return $self->_multiple_attribute_setget( 'mnt_routes', $mnt_route );
 }
 
 =head2 B<mnt_by( [$mnt_by] )>
