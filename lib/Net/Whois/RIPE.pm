@@ -170,8 +170,6 @@ connection to the RIPE Database service desired.
 =cut
 
 {
-    my @option_keys = qw{hostname port timeout keepalive referral
-        recursive grouping types};
     my %default_options = (
         hostname     => 'whois.ripe.net',
         port         => '43',
@@ -190,7 +188,7 @@ connection to the RIPE Database service desired.
         my %known_options;
         $known_options{$_}
             = exists $options{$_} ? $options{$_} : $default_options{$_}
-            foreach @option_keys;
+            foreach keys %default_options;
 
         my $self = bless { __options => \%known_options }, $class;
 
