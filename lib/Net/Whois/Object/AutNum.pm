@@ -255,7 +255,7 @@ include a URL or email address.
 sub remarks {
     my ( $self, $remark ) = @_;
 
-    return $self->_multiple_attribute_setget( 'remark', $remark );
+    return $self->_multiple_attribute_setget( 'remarks', $remark );
 }
 
 =head2 B<admin_c( [$contact] )>

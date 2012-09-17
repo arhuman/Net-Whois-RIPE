@@ -101,7 +101,7 @@ of AS Numbers, or other as-set names.
 sub members {
     my ( $self, $member ) = @_;
 
-    return $self->_multiple_attribute_setget( 'member', $member );
+    return $self->_multiple_attribute_setget( 'members', $member );
 }
 
 =head2 B<mbrs_by_ref( [$mbr] )>
@@ -127,7 +127,7 @@ defined explicitly by the members attribute.
 sub mbrs_by_ref {
     my ( $self, $mbr ) = @_;
 
-    return $self->_multiple_attribute_setget( 'mbr', $mbr );
+    return $self->_multiple_attribute_setget( 'mbrs_by_ref', $mbr );
 }
 
 =head2 B<remarks( [$remark] )>
@@ -224,7 +224,7 @@ object will be able to change details.
 sub mnt_by {
     my ( $self, $mnt ) = @_;
 
-    return $self->_multiple_attribute_setget( 'mnt', $mnt );
+    return $self->_multiple_attribute_setget( 'mnt_by', $mnt );
 }
 
 =head2 B<changed( [$changed] )>

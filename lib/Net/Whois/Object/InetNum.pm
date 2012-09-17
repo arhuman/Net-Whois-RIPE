@@ -320,7 +320,7 @@ object.
 sub mnt_domains {
     my ( $self, $mnt_domain ) = @_;
 
-    return $self->_multiple_attribute_setget( 'mnt_domain', $mnt_domain );
+    return $self->_multiple_attribute_setget( 'mnt_domains', $mnt_domain );
 }
 
 =head2 B<changed( [$changed] )>
