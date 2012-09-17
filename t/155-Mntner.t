@@ -24,7 +24,7 @@ can_ok $object, qw( mntner descr country admin_c tech_c upd_to mnt_nfy auth
 
 # Check if typed attributes are correct
 can_ok $object, $object->attributes('mandatory');
-can_ok $object, $object->attributes('optionnal');
+can_ok $object, $object->attributes('optional');
 
 # Test 'mntner'
 $tested{'mntner'}++;
