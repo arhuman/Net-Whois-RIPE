@@ -44,17 +44,14 @@ Constructor for the Net::Whois::Object::Role class
 =cut
 
 sub new {
-    my ( $class, %options ) = @_;
+    my ( $class, @options ) = @_;
 
     my $self = bless {}, $class;
-
-    for my $key ( keys %options ) {
-        $self->$key( $options{$key} );
-    }
+    $self->_init(@options);
 
     $self->attributes( 'primary', ['nic_hdl'] );
     $self->attributes( 'mandatory', [ 'role', 'address', 'e_mail', 'tech_c', 'admin_c', 'nic_hdl', 'changed', 'source' ] );
-    $self->attributes( 'optionnal', [ 'phone', 'fax_no', 'trouble', 'remarks', 'notify', 'mnt_by' ] );
+    $self->attributes( 'optional', [ 'phone', 'fax_no', 'trouble', 'remarks', 'notify', 'mnt_by' ] );
     $self->attributes( 'single', [ 'role', 'nic_hdl', 'source' ] );
     $self->attributes( 'multiple', [ 'address', 'e_mail', 'tech_c', 'admin_c', 'changed', 'phone', 'fax_no', 'trouble', 'remarks', 'notify', 'mnt_by' ] );
 

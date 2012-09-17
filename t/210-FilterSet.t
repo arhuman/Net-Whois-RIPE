@@ -24,7 +24,7 @@ can_ok $object, qw( filter_set descr filter mp_filter remarks org tech_c
 
 # Check if typed attributes are correct
 can_ok $object, $object->attributes('mandatory');
-can_ok $object, $object->attributes('optionnal');
+can_ok $object, $object->attributes('optional');
 
 # Test 'filter_set'
 $tested{'filter_set'}++;

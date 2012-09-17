@@ -45,17 +45,14 @@ Constructor for the Net::Whois::Object::RouteSet class
 =cut
 
 sub new {
-    my ( $class, %options ) = @_;
+    my ( $class, @options ) = @_;
 
     my $self = bless {}, $class;
-
-    for my $key ( keys %options ) {
-        $self->$key( $options{$key} );
-    }
+    $self->_init(@options);
 
     $self->attributes( 'primary', ['route_set'] );
     $self->attributes( 'mandatory', [ 'route_set', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optionnal', [ 'members', 'mbrs_by_ref', 'remarks', 'notify' ] );
+    $self->attributes( 'optional', [ 'members', 'mbrs_by_ref', 'remarks', 'notify' ] );
     $self->attributes( 'single', [ 'route_set', 'source' ] );
     $self->attributes( 'multiple', [ 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'members', 'mbrs_by_ref', 'remarks', 'notify' ] );
 

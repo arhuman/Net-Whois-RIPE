@@ -24,7 +24,7 @@ can_ok $object, qw( organisation org_name org_type descr remarks address phone
 
 # Check if typed attributes are correct
 can_ok $object, $object->attributes('mandatory');
-can_ok $object, $object->attributes('optionnal');
+can_ok $object, $object->attributes('optional');
 
 # Test 'organisation'
 $tested{'organisation'}++;

@@ -24,7 +24,7 @@ can_ok $object, qw( person address phone fax_no e_mail nic_hdl remarks notify
 
 # Check if typed attributes are correct
 can_ok $object, $object->attributes('mandatory');
-can_ok $object, $object->attributes('optionnal');
+can_ok $object, $object->attributes('optional');
 
 # Test 'person'
 $tested{'person'}++;

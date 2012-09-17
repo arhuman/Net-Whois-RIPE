@@ -24,7 +24,7 @@ can_ok $object, qw( domain descr org admin_c tech_c zone_c nserver ds_rdata sub_
 
 # Check if typed attributes are correct
 can_ok $object, $object->attributes('mandatory');
-can_ok $object, $object->attributes('optionnal');
+can_ok $object, $object->attributes('optional');
 
 # Test 'domain'
 $tested{'domain'}++;

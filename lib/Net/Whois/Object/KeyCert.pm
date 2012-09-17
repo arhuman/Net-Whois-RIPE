@@ -38,17 +38,14 @@ Constructor for the Net::Whois::Object::InetRtr class
 =cut
 
 sub new {
-    my ( $class, %options ) = @_;
+    my ( $class, @options ) = @_;
 
     my $self = bless {}, $class;
-
-    for my $key ( keys %options ) {
-        $self->$key( $options{$key} );
-    }
+    $self->_init(@options);
 
     $self->attributes( 'primary',   ['key_cert'] );
     $self->attributes( 'mandatory', [ 'key_cert', 'certif', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optionnal', [ 'org', 'remarks', 'notify', 'admin_c', 'tech_c' ] );
+    $self->attributes( 'optional', [ 'org', 'remarks', 'notify', 'admin_c', 'tech_c' ] );
     $self->attributes( 'single', [ 'key_cert', 'method', 'fingerpr', 'source' ] );
     $self->attributes( 'multiple', [ 'owner', 'certif', 'org', 'remarks', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'changed' ] );
 
