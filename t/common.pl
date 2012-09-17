@@ -42,3 +42,7 @@ for my $a ( $object->attributes('all') ) {
     ok ($object->attribute_is($a, 'single') or $object->attribute_is($a, 'multiple'), "$a is either single or multiple");
     ok ($object->attribute_is($a, 'single') != $object->attribute_is($a, 'multiple'), "$a can't be both single".$object->attribute_is($a,'single')." and multi".$object->attribute_is($a,'multiple'));
 }
+
+# check that the object can be dumped
+# this catches spelling errors in attribute accessors
+ok $object->dump, 'can dump object';
