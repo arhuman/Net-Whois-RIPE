@@ -1,5 +1,7 @@
 Revision history for net-whois-ripe
 
+            - Fix new() to handle unfiltered option
+
 2.00016     11 Sep 2012
             - Depend on LWP::UserAgent instead of WWW::Mechanize
               (Thanks to Moritz Lenz)
