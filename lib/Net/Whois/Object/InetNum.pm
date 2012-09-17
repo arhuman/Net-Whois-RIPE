@@ -302,7 +302,7 @@ object.
 sub mnt_routes {
     my ( $self, $mnt_route ) = @_;
 
-    return $self->_multiple_attribute_setget( 'mnt_route', $mnt_route );
+    return $self->_multiple_attribute_setget( 'mnt_routes', $mnt_route );
 }
 
 =head2 B<mnt_domains( [$mnt_domain] )>
