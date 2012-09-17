@@ -24,7 +24,7 @@ can_ok $object, qw( as_set descr members mbrs_by_ref remarks tech_c admin_c
 
 # Check if typed attributes are correct
 can_ok $object, $object->attributes('mandatory');
-can_ok $object, $object->attributes('optionnal');
+can_ok $object, $object->attributes('optional');
 
 # Test 'as_set'
 $tested{'as_set'}++;

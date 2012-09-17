@@ -24,7 +24,7 @@ can_ok $object, qw( inet_rtr descr alias local_as ifaddr interface peer mp_peer
 
 # Check if typed attributes are correct
 can_ok $object, $object->attributes('mandatory');
-can_ok $object, $object->attributes('optionnal');
+can_ok $object, $object->attributes('optional');
 
 # Test 'inet_rtr'
 $tested{'inet_rtr'}++;
