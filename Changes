@@ -1,6 +1,9 @@
 Revision history for net-whois-ripe
 
+            A big thank you to Moritz Lenz from Noris Network AG
+            for all his patches :
             - Fix new() to handle unfiltered option
+            - Preserve attribute order in constructor
 
 2.00016     11 Sep 2012
             - Depend on LWP::UserAgent instead of WWW::Mechanize
