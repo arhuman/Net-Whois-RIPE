@@ -606,7 +606,7 @@ sub _syncupdates_submit {
 
     croak "LWP::UserAgent required for updates" unless $LWP;    
 
-    my $url = $self->source eq 'RIPE'
+    my $url = ($self->source || 'TEST') eq 'RIPE'
             ? 'http://syncupdates.db.ripe.net/'
             : 'http://syncupdates-test.db.ripe.net';
 
