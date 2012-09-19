@@ -611,6 +611,9 @@ hours.
 Thanks to Luis Motta Campos for his trust when allowing me to publish this
 release.
 
+Thanks to Moritz Lenz for all his contributions
+(Thanks also to 'Noris Network AG', his employer for allowing him to contribute in the office hours)
+
 =cut
 
 1;
