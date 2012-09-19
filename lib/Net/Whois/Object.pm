@@ -441,7 +441,7 @@ sub syncupdates_create {
 
     my $html = $self->_syncupdates_submit( $self->dump(), $auth );
 
-    if ( $html =~ /\*\*\*Info:\s+Authorisation for\s+\[.+\]\s+(\S+)\s*$/m ) {
+    if ( $html =~ /\*\*\*Info:\s+Authorisation for\[[^\]]+]\s+(.+)\s*$/m ) {
         my $value = $1;
         $self->_single_attribute_setget( $key, $value );
         return $value;
