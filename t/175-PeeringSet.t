@@ -24,7 +24,7 @@ can_ok $object, qw( peering_set descr peering mp_peering remarks tech_c
 
 # Check if typed attributes are correct
 can_ok $object, $object->attributes('mandatory');
-can_ok $object, $object->attributes('optionnal');
+can_ok $object, $object->attributes('optional');
 
 # Test 'peering_set'
 $tested{'peering_set'}++;

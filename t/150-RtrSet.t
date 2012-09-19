@@ -24,7 +24,7 @@ can_ok $object, qw(rtr_set descr members mp_members mbrs_by_ref
 
 # Check if typed attributes are correct
 can_ok $object, $object->attributes('mandatory');
-can_ok $object, $object->attributes('optionnal');
+can_ok $object, $object->attributes('optional');
 
 # Test 'rtr_set'
 $tested{'rtr_set'}++;

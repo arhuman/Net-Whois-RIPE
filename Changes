@@ -1,10 +1,20 @@
 Revision history for net-whois-ripe
 
+2.00017     19 Sep 2012
+            A big thank you to Moritz Lenz from Noris Network AG
+            for all his patches :
+            - Add PGP key authentication
+            - Fix new() to handle unfiltered option
+            - Preserve attribute order in constructor
+            - Fix regex in syncupdates_create
+            - Various typos fixed, documentation addition...
+
 2.00016     11 Sep 2012
             - Depend on LWP::UserAgent instead of WWW::Mechanize
               (Thanks to Moritz Lenz)
             - Make tests more portable
-            
+
+
 2.00015     17 Jul 2012
             - Change the way to test if t/common.pl was well loaded
               (remove $! checking which caused issue with old Perl versions)

@@ -29,11 +29,11 @@ Net::Whois::RIPE - a pure-Perl implementation of the RIPE Database client.
 
 =head1 VERSION
 
-Version 2.00_015 - BETA
+Version 2.00_017 - BETA
 
 =cut
 
-our $VERSION = 2.00_016;
+our $VERSION = 2.00_017;
 
 =head1 SYNOPSIS
 
@@ -170,8 +170,6 @@ connection to the RIPE Database service desired.
 =cut
 
 {
-    my @option_keys = qw{hostname port timeout keepalive referral
-        recursive grouping types};
     my %default_options = (
         hostname     => 'whois.ripe.net',
         port         => '43',
@@ -190,7 +188,7 @@ connection to the RIPE Database service desired.
         my %known_options;
         $known_options{$_}
             = exists $options{$_} ? $options{$_} : $default_options{$_}
-            foreach @option_keys;
+            foreach keys %default_options;
 
         my $self = bless { __options => \%known_options }, $class;
 
@@ -599,7 +597,8 @@ hours.
 
 Thanks to Carlos Fuentes for the nice patch with bugfixes for version 2.00_008.
 
-Thanks to Moritz Lenz for his contribution to versio 2.00_016 
+Thanks to Moritz Lenz for all his contributions
+Thanks to Noris Network AG for allowing him to contribute to this module.
 
 =head1 COPYRIGHT & LICENSE
 

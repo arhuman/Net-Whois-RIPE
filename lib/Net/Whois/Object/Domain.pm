@@ -35,24 +35,21 @@ name is written in fully qualified format, without a trailing " . "
 
 =head1 METHODS
 
-=head2 new ( %options )
+=head2 new ( @options )
 
 Constructor for the Net::Whois::Object::Domain class
 
 =cut
 
 sub new {
-    my ( $class, %options ) = @_;
+    my ( $class, @options ) = @_;
 
     my $self = bless {}, $class;
-
-    for my $key ( keys %options ) {
-        $self->$key( $options{$key} );
-    }
+    $self->_init(@options);
 
     $self->attributes( 'primary',   ['domain'] );
     $self->attributes( 'mandatory', [ 'domain', 'descr', 'tech_c', 'admin_c', 'zone_c', 'changed', 'source' ] );
-    $self->attributes( 'optionnal', [ 'org', 'nserver', 'ds_rdata', 'sub_dom', 'dom_net', 'remarks', 'notify', 'mnt_by', 'mnt_lower', 'refer' ] );
+    $self->attributes( 'optional', [ 'org', 'nserver', 'ds_rdata', 'sub_dom', 'dom_net', 'remarks', 'notify', 'mnt_by', 'mnt_lower', 'refer' ] );
     $self->attributes( 'single', [ 'domain', 'refer', 'source' ] );
     $self->attributes( 'multiple', [ 'descr', 'org', 'admin_c', 'tech_c', 'zone_c', 'nserver', 'ds_rdata', 'sub_dom', 'dom_net', 'remarks', 'notify', 'mnt_by', 'mnt_lower', 'changed' ] );
 

@@ -254,7 +254,7 @@ $type can be
 
     'primary'   Primary/Lookup key
     'mandatory' Required for update creation
-    'optionnal' Optionnal for update/creation
+    'optional' Optionnal for update/creation
     'multiple'  Can have multiple values
     'single'    Have only one value
     'all'       You can't specify attributes for this special type
@@ -268,9 +268,9 @@ Returns a list of attributes of the required type.
 sub attributes {
     my ( $self, $type, $ra_attributes ) = @_;
     if ( not defined $type or $type =~ /all/i ) {
-        return ( $self->attributes('mandatory'), $self->attributes('optionnal') );
+        return ( $self->attributes('mandatory'), $self->attributes('optional') );
     }
-    croak "Invalid attribute's type ($type)" unless $type =~ m/(all|primary|mandatory|optionnal|single|multiple)/i;
+    croak "Invalid attribute's type ($type)" unless $type =~ m/(all|primary|mandatory|optional|single|multiple)/i;
     if ($ra_attributes) {
         for my $a ( @{$ra_attributes} ) {
             $self->{TYPE}{$type}{$a} = 1;
@@ -401,7 +401,7 @@ sub syncupdates_update {
 
 Delete the object in the RIPE database through the web syncupdates interface.
 Use the password passed as parameter to authenticate.
-The optionnal parmeter reason is used to explain why the object is deleted.
+The optional parmeter reason is used to explain why the object is deleted.
 
 =cut
 
@@ -441,7 +441,7 @@ sub syncupdates_create {
 
     my $html = $self->_syncupdates_submit( $self->dump(), $auth );
 
-    if ( $html =~ /\*\*\*Info:\s+Authorisation for\s+\[.+\]\s+(\S+)\s*$/m ) {
+    if ( $html =~ /\*\*\*Info:\s+Authorisation for\[[^\]]+]\s+(.+)\s*$/m ) {
         my $value = $1;
         $self->_single_attribute_setget( $key, $value );
         return $value;
@@ -557,7 +557,22 @@ sub _multiple_attribute_setget {
     return $self->{$attribute};
 }
 
-=head2 B<_syncupdates_submit( $text, $auth )>
+=head2 B<_init( @options )>
+
+Initialize self with C<@options>
+
+=cut
+
+sub _init {
+    my ($self, @options) = @_;
+
+    while (my ($key, $val ) = splice(@options, 0, 2)) {
+        $self->$key( $val );
+    }
+}
+
+
+=head2 B<_syncupdates_submit( $text, $password )>
 
 Interact with the RIPE database through the web syncupdates interface.
 Submit the text passed as parameter.
@@ -657,6 +672,9 @@ hours.
 
 Thanks to Luis Motta Campos for his trust when allowing me to publish this
 release.
+
+Thanks to Moritz Lenz for all his contributions
+(Thanks also to 'Noris Network AG', his employer for allowing him to contribute in the office hours)
 
 =cut
 

@@ -25,7 +25,7 @@ can_ok $object, qw( route6 descr country origin org holes member_of inject aggr_
 
 # Check if typed attributes are correct
 can_ok $object, $object->attributes('mandatory');
-can_ok $object, $object->attributes('optionnal');
+can_ok $object, $object->attributes('optional');
 
 # Test 'route6'
 $tested{'route6'}++;
