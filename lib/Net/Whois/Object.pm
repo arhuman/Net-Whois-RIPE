@@ -439,15 +439,19 @@ sub syncupdates_create {
 
     my ($key)  = $self->attributes('primary');
 
-    my $html = $self->_syncupdates_submit( $self->dump(), $auth );
+    my $res = $self->_syncupdates_submit( $self->dump(), $auth );
 
-    if ( $html =~ /\*\*\*Info:\s+Authorisation for\[[^\]]+]\s+(.+)\s*$/m ) {
+    if (
+                $res =~ /^Number of objects processed with errors:\s+(\d+)/m
+            && $1 == 0
+            && $res =~ /\*\*\*Info:\s+Authorisation for\s+\[[^\]]+]\s+(.+)\s*$/m
+        ) {
         my $value = $1;
         $self->_single_attribute_setget( $key, $value );
         return $value;
     }
     else {
-        croak "No object KEY found ($html)";
+        croak "Error while creating object through syncupdates API: $res";
     }
 }
 
