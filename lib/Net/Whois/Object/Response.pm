@@ -2,12 +2,10 @@ package Net::Whois::Object::Response;
 
 use base qw/Net::Whois::Object/;
 
-BEGIN {
-    __PACKAGE__->attributes( 'mandatory', ['response'] );
-    __PACKAGE__->attributes( 'optional', ['comment'] );
-    __PACKAGE__->attributes( 'single',    ['response'] );
-    __PACKAGE__->attributes( 'multiple',  ['comment'] );
-}
+__PACKAGE__->attributes( 'mandatory', ['response'] );
+__PACKAGE__->attributes( 'optional', ['comment'] );
+__PACKAGE__->attributes( 'single',    ['response'] );
+__PACKAGE__->attributes( 'multiple',  ['comment'] );
 
 
 =head1 NAME
@@ -48,25 +46,11 @@ sub new {
 Accessor to the response attribute.
 Accepts an optional response, always return the current response.
 
-=cut
-
-sub response {
-    my ( $self, $response ) = @_;
-
-    return $self->_single_attribute_setget( 'response', $response );
-}
-
 =head2 B<comment( [$comment] )>
 
 Accessor to the comment attribute.
 Accepts an optional comment, always return the current comment.
 
 =cut
-
-sub comment {
-    my ( $self, $comment ) = @_;
-
-    return $self->_multiple_attribute_setget( 'comment', $comment );
-}
 
 1;

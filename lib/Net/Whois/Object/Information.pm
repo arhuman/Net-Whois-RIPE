@@ -2,11 +2,9 @@ package Net::Whois::Object::Information;
 
 use base qw/Net::Whois::Object/;
 
-BEGIN {
-    __PACKAGE__->attributes( 'mandatory', ['comment'] );
-    __PACKAGE__->attributes( 'optional', [] );
-    __PACKAGE__->attributes( 'multiple',  ['comment'] );
-}
+__PACKAGE__->attributes( 'mandatory', ['comment'] );
+__PACKAGE__->attributes( 'optional', [] );
+__PACKAGE__->attributes( 'multiple',  ['comment'] );
 
 =head1 NAME
 
@@ -49,11 +47,5 @@ Accepts an optional comment to be added to the comment array,
 always return the current comment array.
 
 =cut
-
-sub comment {
-    my ( $self, $comment ) = @_;
-
-    return $self->_multiple_attribute_setget( 'comment', $comment );
-}
 
 1;
