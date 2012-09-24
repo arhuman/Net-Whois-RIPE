@@ -27,6 +27,13 @@ use base qw/Net::Whois::Object/;
 # From http://www.apnic.net/apnic-info/whois_search/using-whois/guide/route6
 # country:       [optional]   [single]     [ ]
 #
+BEGIN {
+    __PACKAGE__->attributes( 'primary',   ['route6'] );
+    __PACKAGE__->attributes( 'mandatory', [ 'route6', 'origin', 'descr', 'mnt_by', 'changed', 'source' ] );
+    __PACKAGE__->attributes( 'optional', [ 'holes', 'org', 'member_of', 'inject', 'aggr_mtd', 'aggr_bndry', 'export_comps', 'components', 'remarks', 'notify', 'mnt_lower', 'mnt_routes' ] );
+    __PACKAGE__->attributes( 'single', [ 'route6', 'origin', 'aggr_mtd', 'aggr_bndry', 'export_comps', 'components', 'source' ] );
+    __PACKAGE__->attributes( 'multiple', [ 'descr', 'mnt_by', 'changed', 'holes', 'org', 'member_of', 'inject', 'remarks', 'notify', 'mnt_lower', 'mnt_routes' ] );
+}
 
 =head1 NAME
 
@@ -53,12 +60,6 @@ sub new {
 
     my $self = bless {}, $class;
     $self->_init(@options);
-
-    $self->attributes( 'primary',   ['route6'] );
-    $self->attributes( 'mandatory', [ 'route6', 'origin', 'descr', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optional', [ 'holes', 'org', 'member_of', 'inject', 'aggr_mtd', 'aggr_bndry', 'export_comps', 'components', 'remarks', 'notify', 'mnt_lower', 'mnt_routes' ] );
-    $self->attributes( 'single', [ 'route6', 'origin', 'aggr_mtd', 'aggr_bndry', 'export_comps', 'components', 'source' ] );
-    $self->attributes( 'multiple', [ 'descr', 'mnt_by', 'changed', 'holes', 'org', 'member_of', 'inject', 'remarks', 'notify', 'mnt_lower', 'mnt_routes' ] );
 
     return $self;
 }

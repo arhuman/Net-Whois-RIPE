@@ -23,6 +23,13 @@ use base qw/Net::Whois::Object/;
 # mnt-by:         [mandatory]  [multiple]   [inverse key]
 # changed:        [mandatory]  [multiple]   [ ]
 # source:         [mandatory]  [single]     [ ]
+BEGIN {
+    __PACKAGE__->attributes( 'primary', ['irt'] );
+    __PACKAGE__->attributes( 'mandatory', [ 'irt', 'address', 'e_mail', 'abuse_mailbox', 'tech_c', 'admin_c', 'auth', 'mnt_by', 'changed', 'source' ] );
+    __PACKAGE__->attributes( 'optional', [ 'phone', 'fax_no', 'signature', 'encryption', 'org', 'remarks', 'irt_nfy', 'notify' ] );
+    __PACKAGE__->attributes( 'single', [ 'irt', 'source' ] );
+    __PACKAGE__->attributes( 'multiple', [ 'address', 'phone', 'fax_no', 'e_mail', 'abuse_mailbox', 'signature', 'encryption', 'org', 'auth', 'remarks', 'tech_c', 'admin_c', 'irt_nfy', 'notify', 'mnt_by', 'changed' ] );
+}
 
 =head1 NAME
 
@@ -51,11 +58,6 @@ sub new {
     my $self = bless {}, $class;
     $self->_init(@options);
 
-    $self->attributes( 'primary', ['irt'] );
-    $self->attributes( 'mandatory', [ 'irt', 'address', 'e_mail', 'abuse_mailbox', 'tech_c', 'admin_c', 'auth', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optional', [ 'phone', 'fax_no', 'signature', 'encryption', 'org', 'remarks', 'irt_nfy', 'notify' ] );
-    $self->attributes( 'single', [ 'irt', 'source' ] );
-    $self->attributes( 'multiple', [ 'address', 'phone', 'fax_no', 'e_mail', 'abuse_mailbox', 'signature', 'encryption', 'org', 'auth', 'remarks', 'tech_c', 'admin_c', 'irt_nfy', 'notify', 'mnt_by', 'changed' ] );
 
     return $self;
 

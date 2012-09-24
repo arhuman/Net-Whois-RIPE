@@ -19,6 +19,13 @@ use base qw/Net::Whois::Object/;
 
 # From http://www.apnic.net/apnic-info/whois_search/using-whois/guide/rtr-set
 # mp-members:    [optional]   [multiple]   [ ]
+BEGIN {
+    __PACKAGE__->attributes( 'primary', ['rtr_set'] );
+    __PACKAGE__->attributes( 'mandatory', [ 'rtr_set', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
+    __PACKAGE__->attributes( 'optional', [ 'members', 'mbrs_by_ref', 'remarks', 'notify' ] );
+    __PACKAGE__->attributes( 'single', [ 'rtr_set', 'source' ] );
+    __PACKAGE__->attributes( 'multiple', [ 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'members', 'mbrs_by_ref', 'remarks', 'notify' ] );
+}
 
 =head1 NAME
 
@@ -45,12 +52,6 @@ sub new {
 
     my $self = bless {}, $class;
     $self->_init(@options);
-
-    $self->attributes( 'primary', ['rtr_set'] );
-    $self->attributes( 'mandatory', [ 'rtr_set', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optional', [ 'members', 'mbrs_by_ref', 'remarks', 'notify' ] );
-    $self->attributes( 'single', [ 'rtr_set', 'source' ] );
-    $self->attributes( 'multiple', [ 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'members', 'mbrs_by_ref', 'remarks', 'notify' ] );
 
     return $self;
 }

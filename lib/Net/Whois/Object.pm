@@ -669,7 +669,7 @@ of the object that the method was called on.
 
 my %TYPES;
 sub _TYPE {
-    $TYPES{ref $_[0]} ||= {}
+    $TYPES{ref $_[0] || $_[0] } ||= {}
 }
 
 

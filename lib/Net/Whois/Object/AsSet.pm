@@ -16,6 +16,14 @@ use base qw/Net::Whois::Object/;
 # mnt-by:       [mandatory]  [multiple]   [inverse key]
 # changed:      [mandatory]  [multiple]   [ ]
 # source:       [mandatory]  [single]     [ ]
+BEGIN {
+    __PACKAGE__->attributes( 'primary', ['as_set'] );
+    __PACKAGE__->attributes( 'mandatory', [ 'as_set', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
+    __PACKAGE__->attributes( 'optional', [ 'members', 'mbrs_by_ref', 'remarks', 'notify' ] );
+    __PACKAGE__->attributes( 'single', [ 'as_set', 'source' ] );
+    __PACKAGE__->attributes( 'multiple', [ 'descr', 'members', 'mbrs_by_ref', 'remarks', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'changed' ] );
+
+}
 
 =head1 NAME
 
@@ -39,12 +47,6 @@ sub new {
 
     my $self = bless {}, $class;
     $self->_init(@options);
-
-    $self->attributes( 'primary', ['as_set'] );
-    $self->attributes( 'mandatory', [ 'as_set', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optional', [ 'members', 'mbrs_by_ref', 'remarks', 'notify' ] );
-    $self->attributes( 'single', [ 'as_set', 'source' ] );
-    $self->attributes( 'multiple', [ 'descr', 'members', 'mbrs_by_ref', 'remarks', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'changed' ] );
 
     return $self;
 }

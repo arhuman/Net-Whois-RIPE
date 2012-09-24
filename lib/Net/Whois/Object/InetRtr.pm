@@ -22,6 +22,14 @@ use base qw/Net::Whois::Object/;
 # mnt-by:        [mandatory]  [multiple]   [inverse key]
 # changed:       [mandatory]  [multiple]   [ ]
 # source:        [mandatory]  [single]     [ ]
+BEGIN {
+    __PACKAGE__->attributes( 'primary', ['inet_rtr'] );
+    __PACKAGE__->attributes( 'mandatory', [ 'inet_rtr', 'descr', 'local_as', 'ifaddr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
+    __PACKAGE__->attributes( 'optional', [ 'alias', 'interface', 'peer', 'mp_peer', 'member_of', 'remarks', 'org', 'notify' ] );
+    __PACKAGE__->attributes( 'single', [ 'inet_rtr', 'local_as', 'source' ] );
+    __PACKAGE__->attributes( 'multiple', [ 'descr', 'remarks', 'alias', 'ifaddr', 'interface', 'peer', 'mp_peer', 'member_of', 'org', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'changed' ] );
+}
+
 
 =head1 NAME
 
@@ -44,12 +52,6 @@ sub new {
 
     my $self = bless {}, $class;
     $self->_init(@options);
-
-    $self->attributes( 'primary', ['inet_rtr'] );
-    $self->attributes( 'mandatory', [ 'inet_rtr', 'descr', 'local_as', 'ifaddr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optional', [ 'alias', 'interface', 'peer', 'mp_peer', 'member_of', 'remarks', 'org', 'notify' ] );
-    $self->attributes( 'single', [ 'inet_rtr', 'local_as', 'source' ] );
-    $self->attributes( 'multiple', [ 'descr', 'remarks', 'alias', 'ifaddr', 'interface', 'peer', 'mp_peer', 'member_of', 'org', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'changed' ] );
 
     return $self;
 }

@@ -18,6 +18,14 @@ use base qw/Net::Whois::Object/;
 # mnt-by:        [mandatory]  [multiple]   [inverse key]
 # changed:       [mandatory]  [multiple]   [ ]
 # source:        [mandatory]  [single]     [ ]
+BEGIN {
+    __PACKAGE__->attributes( 'primary',   ['key_cert'] );
+    __PACKAGE__->attributes( 'mandatory', [ 'key_cert', 'certif', 'mnt_by', 'changed', 'source' ] );
+    __PACKAGE__->attributes( 'optional', [ 'org', 'remarks', 'notify', 'admin_c', 'tech_c' ] );
+    __PACKAGE__->attributes( 'single', [ 'key_cert', 'method', 'fingerpr', 'source' ] );
+    __PACKAGE__->attributes( 'multiple', [ 'owner', 'certif', 'org', 'remarks', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'changed' ] );
+}
+
 
 =head1 NAME
 
@@ -42,12 +50,6 @@ sub new {
 
     my $self = bless {}, $class;
     $self->_init(@options);
-
-    $self->attributes( 'primary',   ['key_cert'] );
-    $self->attributes( 'mandatory', [ 'key_cert', 'certif', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optional', [ 'org', 'remarks', 'notify', 'admin_c', 'tech_c' ] );
-    $self->attributes( 'single', [ 'key_cert', 'method', 'fingerpr', 'source' ] );
-    $self->attributes( 'multiple', [ 'owner', 'certif', 'org', 'remarks', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'changed' ] );
 
     return $self;
 }

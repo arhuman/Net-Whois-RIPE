@@ -15,6 +15,13 @@ use base qw/Net::Whois::Object/;
 # mnt-by:        [mandatory]  [multiple]   [inverse key]
 # changed:       [mandatory]  [multiple]   [ ]
 # source:        [mandatory]  [single]     [ ]
+BEGIN {
+    __PACKAGE__->attributes( 'primary', ['limerick'] );
+    __PACKAGE__->attributes( 'mandatory', [ 'limerick', 'text', 'admin_c', 'author', 'mnt_by', 'changed', 'source' ] );
+    __PACKAGE__->attributes( 'optional', [ 'descr', 'remarks', 'notify' ] );
+    __PACKAGE__->attributes( 'single', [ 'limerick', 'source' ] );
+    __PACKAGE__->attributes( 'multiple', [ 'text', 'admin_c', 'author', 'mnt_by', 'changed', 'descr', 'remarks', 'notify' ] );
+}
 
 =head1 NAME
 
@@ -39,11 +46,6 @@ sub new {
     my $self = bless {}, $class;
     $self->_init(@options);
 
-    $self->attributes( 'primary', ['limerick'] );
-    $self->attributes( 'mandatory', [ 'limerick', 'text', 'admin_c', 'author', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optional', [ 'descr', 'remarks', 'notify' ] );
-    $self->attributes( 'single', [ 'limerick', 'source' ] );
-    $self->attributes( 'multiple', [ 'text', 'admin_c', 'author', 'mnt_by', 'changed', 'descr', 'remarks', 'notify' ] );
 
     return $self;
 

@@ -17,6 +17,14 @@ use base qw/Net::Whois::Object/;
 # changed:       [mandatory]  [multiple]   [ ]
 # source:        [mandatory]  [single]     [ ]
 
+BEGIN {
+    __PACKAGE__->attributes( 'primary', ['as_block'] );
+    __PACKAGE__->attributes( 'mandatory', [ 'as_block', 'admin_c', 'tech_c', 'mnt_by', 'changed', 'source' ] );
+    __PACKAGE__->attributes( 'optional', [ 'descr', 'remarks', 'org', 'notify', 'mnt_lower' ] );
+    __PACKAGE__->attributes( 'single', [ 'as_block', 'source' ] );
+    __PACKAGE__->attributes( 'multiple', [ 'descr', 'remarks', 'org', 'admin_c', 'tech_c', 'notify', 'mnt_lower', 'mnt_by', 'changed' ] );
+}
+
 # Found in the wild
 # org:
 
@@ -45,11 +53,6 @@ sub new {
     my $self = bless {}, $class;
     $self->_init(@options);
 
-    $self->attributes( 'primary', ['as_block'] );
-    $self->attributes( 'mandatory', [ 'as_block', 'admin_c', 'tech_c', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optional', [ 'descr', 'remarks', 'org', 'notify', 'mnt_lower' ] );
-    $self->attributes( 'single', [ 'as_block', 'source' ] );
-    $self->attributes( 'multiple', [ 'descr', 'remarks', 'org', 'admin_c', 'tech_c', 'notify', 'mnt_lower', 'mnt_by', 'changed' ] );
 
     return $self;
 }

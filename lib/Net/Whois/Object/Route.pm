@@ -28,6 +28,13 @@ use base qw/Net::Whois::Object/;
 # From http://www.apnic.net/apnic-info/whois_search/using-whois/guide/route
 # country:       [optional]   [single]     [ ]
 #
+BEGIN {
+    __PACKAGE__->attributes( 'primary',   ['route'] );
+    __PACKAGE__->attributes( 'mandatory', [ 'route', 'origin', 'descr', 'mnt_by', 'changed', 'source' ] );
+    __PACKAGE__->attributes( 'optional', [ 'holes', 'member_of', 'inject', 'aggr_mtd', 'aggr_bndry', 'export_comps', 'components', 'remarks', 'cross_mnt', 'cross_nfy', 'notify', 'mnt_lower', 'mnt_routes' ] );
+    __PACKAGE__->attributes( 'single', [ 'route', 'origin', 'aggr_mtd', 'aggr_bndry', 'export_comps', 'components', 'source' ] );
+    __PACKAGE__->attributes( 'multiple', [ 'descr', 'mnt_by', 'changed', 'holes', 'member_of', 'inject', 'remarks', 'cross_mnt', 'cross_nfy', 'notify', 'mnt_lower', 'mnt_routes' ] );
+}
 
 =head1 NAME
 
@@ -40,7 +47,6 @@ in combination with the aut-num and other related objects, can be used to
 describe your IPv4 routing policy in a compact form. This can help your
 network identify routing policy errors and omissions more easily than by
 reading long configuration files.
-
 
 
 =head1 METHODS
@@ -57,11 +63,6 @@ sub new {
     my $self = bless {}, $class;
     $self->_init(@options);
 
-    $self->attributes( 'primary',   ['route'] );
-    $self->attributes( 'mandatory', [ 'route', 'origin', 'descr', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optional', [ 'holes', 'member_of', 'inject', 'aggr_mtd', 'aggr_bndry', 'export_comps', 'components', 'remarks', 'cross_mnt', 'cross_nfy', 'notify', 'mnt_lower', 'mnt_routes' ] );
-    $self->attributes( 'single', [ 'route', 'origin', 'aggr_mtd', 'aggr_bndry', 'export_comps', 'components', 'source' ] );
-    $self->attributes( 'multiple', [ 'descr', 'mnt_by', 'changed', 'holes', 'member_of', 'inject', 'remarks', 'cross_mnt', 'cross_nfy', 'notify', 'mnt_lower', 'mnt_routes' ] );
 
     return $self;
 }

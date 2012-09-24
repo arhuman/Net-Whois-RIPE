@@ -19,6 +19,14 @@ use base qw/Net::Whois::Object/;
 # mnt-by:        [optional]   [multiple]   [inverse key]
 # changed:       [mandatory]  [multiple]   [ ]
 # source:        [mandatory]  [single]     [ ]
+BEGIN {
+    __PACKAGE__->attributes( 'primary', ['nic_hdl'] );
+    __PACKAGE__->attributes( 'mandatory', [ 'role', 'address', 'e_mail', 'tech_c', 'admin_c', 'nic_hdl', 'changed', 'source' ] );
+    __PACKAGE__->attributes( 'optional', [ 'phone', 'fax_no', 'trouble', 'remarks', 'notify', 'mnt_by' ] );
+    __PACKAGE__->attributes( 'single', [ 'role', 'nic_hdl', 'source' ] );
+    __PACKAGE__->attributes( 'multiple', [ 'address', 'e_mail', 'tech_c', 'admin_c', 'changed', 'phone', 'fax_no', 'trouble', 'remarks', 'notify', 'mnt_by' ] );
+}
+
 
 =head1 NAME
 
@@ -48,12 +56,6 @@ sub new {
 
     my $self = bless {}, $class;
     $self->_init(@options);
-
-    $self->attributes( 'primary', ['nic_hdl'] );
-    $self->attributes( 'mandatory', [ 'role', 'address', 'e_mail', 'tech_c', 'admin_c', 'nic_hdl', 'changed', 'source' ] );
-    $self->attributes( 'optional', [ 'phone', 'fax_no', 'trouble', 'remarks', 'notify', 'mnt_by' ] );
-    $self->attributes( 'single', [ 'role', 'nic_hdl', 'source' ] );
-    $self->attributes( 'multiple', [ 'address', 'e_mail', 'tech_c', 'admin_c', 'changed', 'phone', 'fax_no', 'trouble', 'remarks', 'notify', 'mnt_by' ] );
 
     return $self;
 }
