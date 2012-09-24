@@ -276,6 +276,23 @@ sub attributes {
             $self->_TYPE()->{$type}{$a} = 1;
         }
     }
+    if ($type eq 'single' || $type eq 'multiple') {
+        my $symbol_table = do {
+            no strict 'refs';
+            \%{$self . '::'};
+        };
+
+        for my $a ( @{$ra_attributes} ) {
+            my $attr_name = $a;
+            unless (exists $symbol_table->{$a}) {
+                my $accessor = $type eq 'single'
+                    ? sub { _single_attribute_setget(  $_[0], $a, $_[1]) }
+                    : sub { _multiple_attribute_setget($_[0], $a, $_[1]) };
+                no strict 'refs';
+                *{"${self}::$a"} = $accessor;
+            }
+        }
+    }
     return sort keys %{ $self->_TYPE()->{$type} };
 }
 
