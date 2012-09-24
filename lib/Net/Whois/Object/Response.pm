@@ -2,6 +2,14 @@ package Net::Whois::Object::Response;
 
 use base qw/Net::Whois::Object/;
 
+BEGIN {
+    __PACKAGE__->attributes( 'mandatory', ['response'] );
+    __PACKAGE__->attributes( 'optional', ['comment'] );
+    __PACKAGE__->attributes( 'single',    ['response'] );
+    __PACKAGE__->attributes( 'multiple',  ['comment'] );
+}
+
+
 =head1 NAME
 
 Net::Whois::Object::Response - an object representation of the RPSL Response block
@@ -31,11 +39,6 @@ sub new {
 
     my $self = bless {}, $class;
     $self->_init(@options);
-
-    $self->attributes( 'mandatory', ['response'] );
-    $self->attributes( 'optional', ['comment'] );
-    $self->attributes( 'single',    ['response'] );
-    $self->attributes( 'multiple',  ['comment'] );
 
     return $self;
 }

@@ -15,6 +15,13 @@ use base qw/Net::Whois::Object/;
 # changed:      [mandatory]     [multiple]  [ ]
 # source:       [mandatory]     [single]    [ ]
 #
+BEGIN {
+    __PACKAGE__->attributes( 'primary', ['poetic_form'] );
+    __PACKAGE__->attributes( 'mandatory', [ 'poetic_form', 'admin_c', 'mnt_by', 'changed', 'source' ] );
+    __PACKAGE__->attributes( 'optional', [ 'descr', 'remarks', 'notify' ] );
+    __PACKAGE__->attributes( 'single', [ 'poetic_form', 'source' ] );
+    __PACKAGE__->attributes( 'multiple', [ 'descr', 'admin_c', 'remarks', 'notify', 'mnt_by', 'changed' ] );
+}
 
 =head1 NAME
 
@@ -38,12 +45,6 @@ sub new {
 
     my $self = bless {}, $class;
     $self->_init(@options);
-
-    $self->attributes( 'primary', ['poetic_form'] );
-    $self->attributes( 'mandatory', [ 'poetic_form', 'admin_c', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optional', [ 'descr', 'remarks', 'notify' ] );
-    $self->attributes( 'single', [ 'poetic_form', 'source' ] );
-    $self->attributes( 'multiple', [ 'descr', 'admin_c', 'remarks', 'notify', 'mnt_by', 'changed' ] );
 
     return $self;
 }

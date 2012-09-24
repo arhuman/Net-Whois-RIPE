@@ -21,6 +21,13 @@ use base qw/Net::Whois::Object/;
 #
 # mp-members:     [optional]   [multiple]   [ ]
 # mnt-lower:      [optional]   [multiple]   [inverse key]
+BEGIN {
+    __PACKAGE__->attributes( 'primary', ['route_set'] );
+    __PACKAGE__->attributes( 'mandatory', [ 'route_set', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
+    __PACKAGE__->attributes( 'optional', [ 'members', 'mbrs_by_ref', 'remarks', 'notify' ] );
+    __PACKAGE__->attributes( 'single', [ 'route_set', 'source' ] );
+    __PACKAGE__->attributes( 'multiple', [ 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'members', 'mbrs_by_ref', 'remarks', 'notify' ] );
+}
 
 =head1 NAME
 
@@ -50,11 +57,6 @@ sub new {
     my $self = bless {}, $class;
     $self->_init(@options);
 
-    $self->attributes( 'primary', ['route_set'] );
-    $self->attributes( 'mandatory', [ 'route_set', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optional', [ 'members', 'mbrs_by_ref', 'remarks', 'notify' ] );
-    $self->attributes( 'single', [ 'route_set', 'source' ] );
-    $self->attributes( 'multiple', [ 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'members', 'mbrs_by_ref', 'remarks', 'notify' ] );
 
     return $self;
 }

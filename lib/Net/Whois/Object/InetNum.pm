@@ -27,6 +27,14 @@ use base qw/Net::Whois::Object/;
 #
 # mnt-irt:        [mandatory]  [multiple]   [inverse key]
 #
+BEGIN {
+    __PACKAGE__->attributes( 'primary', ['inetnum'] );
+    __PACKAGE__->attributes( 'mandatory', [ 'inetnum', 'netname', 'descr', 'country', 'tech_c', 'admin_c', 'status', 'mnt_by', 'changed', 'source' ] );
+    __PACKAGE__->attributes( 'optional', [ 'org', 'remarks', 'notify', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt' ] );
+    __PACKAGE__->attributes( 'single', [ 'inetnum', 'netname', 'org', 'status', 'source' ] );
+    __PACKAGE__->attributes( 'multiple', [ 'descr', 'country', 'tech_c', 'admin_c', 'remarks', 'notify', 'mnt_by', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt', 'changed' ] );
+}
+
 
 =head1 NAME
 
@@ -51,12 +59,6 @@ sub new {
     my $self = bless {}, $class;
 
     $self->_init(@options);
-
-    $self->attributes( 'primary', ['inetnum'] );
-    $self->attributes( 'mandatory', [ 'inetnum', 'netname', 'descr', 'country', 'tech_c', 'admin_c', 'status', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optional', [ 'org', 'remarks', 'notify', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt' ] );
-    $self->attributes( 'single', [ 'inetnum', 'netname', 'org', 'status', 'source' ] );
-    $self->attributes( 'multiple', [ 'descr', 'country', 'tech_c', 'admin_c', 'remarks', 'notify', 'mnt_by', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt', 'changed' ] );
 
     return $self;
 }

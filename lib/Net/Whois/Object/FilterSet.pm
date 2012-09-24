@@ -18,6 +18,13 @@ use base qw/Net::Whois::Object/;
 # mnt-lower:     [optional]   [multiple]   [inverse key]
 # changed:       [mandatory]  [multiple]   [ ]
 # source:        [mandatory]  [single]     [ ]
+BEGIN {
+    __PACKAGE__->attributes( 'primary',   ['filter_set'] );
+    __PACKAGE__->attributes( 'mandatory', [ 'filter_set', 'filter', 'mp_filter', 'source' ] );
+    __PACKAGE__->attributes( 'optional', [ 'remarks', 'org', 'notify', 'mnt_lower' ] );
+    __PACKAGE__->attributes( 'single',    [ 'filter_set', 'filter', 'mp_filter', 'source' ] );
+    __PACKAGE__->attributes( 'multiple',  [ 'descr', 'remarks', 'org', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'mnt_lower', 'changed' ] );
+}
 
 =head1 NAME
 
@@ -42,12 +49,6 @@ sub new {
 
     my $self = bless {}, $class;
     $self->_init(@options);
-
-    $self->attributes( 'primary',   ['filter_set'] );
-    $self->attributes( 'mandatory', [ 'filter_set', 'filter', 'mp_filter', 'source' ] );
-    $self->attributes( 'optional', [ 'remarks', 'org', 'notify', 'mnt_lower' ] );
-    $self->attributes( 'single',    [ 'filter_set', 'filter', 'mp_filter', 'source' ] );
-    $self->attributes( 'multiple',  [ 'descr', 'remarks', 'org', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'mnt_lower', 'changed' ] );
 
     return $self;
 }

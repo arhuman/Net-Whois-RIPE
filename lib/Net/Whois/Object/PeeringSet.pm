@@ -20,6 +20,14 @@ use base qw/Net::Whois::Object/;
 #
 # mp-peering:     [optional]   [multiple]   [ ]
 # mnt-lower:      [optional]   [multiple]   [inverse key]
+BEGIN {
+    __PACKAGE__->attributes( 'primary', ['peering_set'] );
+    __PACKAGE__->attributes( 'mandatory', [ 'peering_set', 'descr', 'peering', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
+    __PACKAGE__->attributes( 'optional', [ 'remarks',     'notify' ] );
+    __PACKAGE__->attributes( 'single',    [ 'peering_set', 'source' ] );
+    __PACKAGE__->attributes( 'multiple',  [ 'descr',       'peering', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'remarks', 'notify' ] );
+}
+
 
 =head1 NAME
 
@@ -44,12 +52,6 @@ sub new {
 
     my $self = bless {}, $class;
     $self->_init(@options);
-
-    $self->attributes( 'primary', ['peering_set'] );
-    $self->attributes( 'mandatory', [ 'peering_set', 'descr', 'peering', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optional', [ 'remarks',     'notify' ] );
-    $self->attributes( 'single',    [ 'peering_set', 'source' ] );
-    $self->attributes( 'multiple',  [ 'descr',       'peering', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'remarks', 'notify' ] );
 
     return $self;
 }
