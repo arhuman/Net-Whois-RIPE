@@ -16,6 +16,11 @@ use base qw/Net::Whois::Object/;
 # mnt-by:       [mandatory]  [multiple]   [inverse key]
 # changed:      [mandatory]  [multiple]   [ ]
 # source:       [mandatory]  [single]     [ ]
+__PACKAGE__->attributes( 'primary', ['as_set'] );
+__PACKAGE__->attributes( 'mandatory', [ 'as_set', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
+__PACKAGE__->attributes( 'optional', [ 'members', 'mbrs_by_ref', 'remarks', 'notify' ] );
+__PACKAGE__->attributes( 'single', [ 'as_set', 'source' ] );
+__PACKAGE__->attributes( 'multiple', [ 'descr', 'members', 'mbrs_by_ref', 'remarks', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'changed' ] );
 
 =head1 NAME
 
@@ -40,12 +45,6 @@ sub new {
     my $self = bless {}, $class;
     $self->_init(@options);
 
-    $self->attributes( 'primary', ['as_set'] );
-    $self->attributes( 'mandatory', [ 'as_set', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optional', [ 'members', 'mbrs_by_ref', 'remarks', 'notify' ] );
-    $self->attributes( 'single', [ 'as_set', 'source' ] );
-    $self->attributes( 'multiple', [ 'descr', 'members', 'mbrs_by_ref', 'remarks', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'changed' ] );
-
     return $self;
 }
 
@@ -60,13 +59,6 @@ The later form is called Hierarchical form, the former non-hierarchical.
 There must be at least one set-name within the hierarchical form that starts 
 with 'as-'.
 
-=cut
-
-sub as_set {
-    my ( $self, $as_set ) = @_;
-
-    return $self->_single_attribute_setget( 'as_set', $as_set );
-}
 
 =head2 B<descr( [$descr] )>
 
@@ -76,14 +68,6 @@ always return the current descr array.
 
 A short description related to the object's purpose.
 
-=cut
-
-sub descr {
-    my ( $self, $descr ) = @_;
-
-    return $self->_multiple_attribute_setget( 'descr', $descr );
-}
-
 =head2 B<members( [$member] )>
 
 Accessor to the members attribute.
@@ -92,14 +76,6 @@ always return the current 'members' array.
 
 The members attribute lists the members of the set. It can be either a list
 of AS Numbers, or other as-set names.
-
-=cut
-
-sub members {
-    my ( $self, $member ) = @_;
-
-    return $self->_multiple_attribute_setget( 'members', $member );
-}
 
 =head2 B<mbrs_by_ref( [$mbr] )>
 
@@ -119,14 +95,6 @@ attribute is ANY, any object of the corresponding type referring to the set is
 a member of the set. If the mbrs_by_ref attribute is missing, the set is
 defined explicitly by the members attribute.
 
-=cut
-
-sub mbrs_by_ref {
-    my ( $self, $mbr ) = @_;
-
-    return $self->_multiple_attribute_setget( 'mbrs_by_ref', $mbr );
-}
-
 =head2 B<remarks( [$remark] )>
 
 Accessor to the remarks attribute.
@@ -135,14 +103,6 @@ always return the current remarks array.
 
 Information about the object that cannot be stated in other attributes.
 May include a URL or email address.
-
-=cut
-
-sub remarks {
-    my ( $self, $remark ) = @_;
-
-    return $self->_multiple_attribute_setget( 'remarks', $remark );
-}
 
 =head2 B<tech_c( [$tech_c] )>
 
@@ -158,14 +118,6 @@ A technical contact (tech-c) must be a person responsible for the
 day-to-day operation of the network, but does not need to be
 physically located at the site of the network.
 
-=cut
-
-sub tech_c {
-    my ( $self, $tech_c ) = @_;
-
-    return $self->_multiple_attribute_setget( 'tech_c', $tech_c );
-}
-
 =head2 B<admin_c( [$admin_c] )>
 
 Accessor to the admin_c attribute.
@@ -178,14 +130,6 @@ often fulfills a role function, there may be more than one admin-c listed.
 An administrative contact (admin-c) must be someone who is physically
 located at the site of the network.
 
-=cut
-
-sub admin_c {
-    my ( $self, $admin_c ) = @_;
-
-    return $self->_multiple_attribute_setget( 'admin_c', $admin_c );
-}
-
 =head2 B<notify( [$notify] )>
 
 Accessor to the notify attribute.
@@ -194,14 +138,6 @@ always return the current notify array.
 
 The email address to which notifications of changes to this object will be
 sent.
-
-=cut
-
-sub notify {
-    my ( $self, $notify ) = @_;
-
-    return $self->_multiple_attribute_setget( 'notify', $notify );
-}
 
 =head2 B<mnt_by( [$mnt] )>
 
@@ -215,14 +151,6 @@ object.
 When your database details are protected by a 'mntner' object, then
 only persons with access to the security information of that 'mntner'
 object will be able to change details.
-
-=cut
-
-sub mnt_by {
-    my ( $self, $mnt ) = @_;
-
-    return $self->_multiple_attribute_setget( 'mnt_by', $mnt );
-}
 
 =head2 B<changed( [$changed] )>
 
@@ -239,14 +167,6 @@ Please use the address format specified in RFC 822 - Standard for
 the Format of ARPA Internet Text Message and provide the date
 format using one of the following two formats: YYYYMMDD or YYMMDD.
 
-=cut
-
-sub changed {
-    my ( $self, $changed ) = @_;
-
-    return $self->_multiple_attribute_setget( 'changed', $changed );
-}
-
 =head2 B<source( [$source] )>
 
 Accessor to the source attribute.
@@ -255,11 +175,5 @@ Accepts an optional source, always return the current source.
 The database where the object is registered.
 
 =cut
-
-sub source {
-    my ( $self, $source ) = @_;
-
-    return $self->_single_attribute_setget( 'source', $source );
-}
 
 1;

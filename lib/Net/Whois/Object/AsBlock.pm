@@ -17,6 +17,12 @@ use base qw/Net::Whois::Object/;
 # changed:       [mandatory]  [multiple]   [ ]
 # source:        [mandatory]  [single]     [ ]
 
+__PACKAGE__->attributes( 'primary', ['as_block'] );
+__PACKAGE__->attributes( 'mandatory', [ 'as_block', 'admin_c', 'tech_c', 'mnt_by', 'changed', 'source' ] );
+__PACKAGE__->attributes( 'optional', [ 'descr', 'remarks', 'org', 'notify', 'mnt_lower' ] );
+__PACKAGE__->attributes( 'single', [ 'as_block', 'source', 'org' ] );
+__PACKAGE__->attributes( 'multiple', [ 'descr', 'remarks', 'admin_c', 'tech_c', 'notify', 'mnt_lower', 'mnt_by', 'changed' ] );
+
 # Found in the wild
 # org:
 
@@ -45,11 +51,6 @@ sub new {
     my $self = bless {}, $class;
     $self->_init(@options);
 
-    $self->attributes( 'primary', ['as_block'] );
-    $self->attributes( 'mandatory', [ 'as_block', 'admin_c', 'tech_c', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optional', [ 'descr', 'remarks', 'org', 'notify', 'mnt_lower' ] );
-    $self->attributes( 'single', [ 'as_block', 'source' ] );
-    $self->attributes( 'multiple', [ 'descr', 'remarks', 'org', 'admin_c', 'tech_c', 'notify', 'mnt_lower', 'mnt_by', 'changed' ] );
 
     return $self;
 }
@@ -67,14 +68,6 @@ members or end-users in the region.
 Information on individual AS numbers within an as-block object are
 stored in the appropriate Internet Registry's Whois Database.
 
-=cut
-
-sub as_block {
-    my ( $self, $as_block ) = @_;
-
-    return $self->_single_attribute_setget( 'as_block', $as_block );
-}
-
 =head2 B<descr( [$descr] )>
 
 Accessor to the descr attribute.
@@ -82,14 +75,6 @@ Accepts an optional descr, always return the current descr value.
 
 Description of the Internet Registry delegated the range of AS numbers shown
 in the as-block.
-
-=cut
-
-sub descr {
-    my ( $self, $descr ) = @_;
-
-    return $self->_multiple_attribute_setget( 'descr', $descr );
-}
 
 =head2 B<remarks( [$remarks] )>
 
@@ -102,14 +87,6 @@ the as-block.
 
 Also includes where to direct a whois client to find further information on
 the AS numbers.
-
-=cut
-
-sub remarks {
-    my ( $self, $remarks ) = @_;
-
-    return $self->_multiple_attribute_setget( 'remarks', $remarks );
-}
 
 =head2 B<tech_c( [$tech_c] )>
 
@@ -126,14 +103,6 @@ day-to-day operation of the network, but does not need to be
 physically located at the site of the network.
 
 
-=cut
-
-sub tech_c {
-    my ( $self, $tech_c ) = @_;
-
-    return $self->_multiple_attribute_setget( 'tech_c', $tech_c );
-}
-
 =head2 B<admin_c( [$admin_c])>
 
 Accessor to the admin_c attribute.
@@ -146,14 +115,6 @@ often fulfills a role function, there may be more than one admin-c listed.
 An administrative contact(admin-c) must be someone who is physically
 located at the site of the network.
 
-=cut
-
-sub admin_c {
-    my ( $self, $admin_c ) = @_;
-
-    return $self->_multiple_attribute_setget( 'admin_c', $admin_c );
-}
-
 =head2 B<notify( [$notify] )>
 
 Accessor to the notify attribute.
@@ -162,14 +123,6 @@ Accepts an optional value to be added notify array,
 
 The email address to which notifications of changes 
 to the object should be sent.
-
-=cut
-
-sub notify {
-    my ( $self, $notify ) = @_;
-
-    return $self->_multiple_attribute_setget( 'notify', $notify );
-}
 
 =head2 B<mnt_lower( [$mnt_lower] )>
 
@@ -183,14 +136,6 @@ of 'aut-num' objects within the range specified by the as-block.
 If no 'mnt-lower' is specified, the 'mnt-by' attribute is used for
 authorization.
 
-=cut
-
-sub mnt_lower {
-    my ( $self, $mnt_lower ) = @_;
-
-    return $self->_multiple_attribute_setget( 'mnt_lower', $mnt_lower );
-}
-
 =head2 B<mnt_by( [$mnt_by] )>
 
 Accessor to the mnt_by attribute.
@@ -203,14 +148,6 @@ object.
 When your database details are protected by a 'mntner' object, then
 only persons with access to the security information of that 'mntner'
 object will be able to change details.
-
-=cut
-
-sub mnt_by {
-    my ( $self, $mnt_by ) = @_;
-
-    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
-}
 
 =head2 B<changed( [$changed] )>
 
@@ -227,28 +164,12 @@ Please use the address format specified in RFC 822 - Standard for
 the Format of ARPA Internet Text Message and provide the date
 format using one of the following two formats: YYYYMMDD or YYMMDD.
 
-=cut
-
-sub changed {
-    my ( $self, $changed ) = @_;
-
-    return $self->_multiple_attribute_setget( 'changed', $changed );
-}
-
 =head2 B<source( [$source] )>
 
 Accessor to the source attribute.
 Accepts an optional source, always return the current source.
 
 The database where the object is registered.
-
-=cut
-
-sub source {
-    my ( $self, $source ) = @_;
-
-    return $self->_single_attribute_setget( 'source', $source );
-}
 
 =head2 B<org( [$org] )>
 
@@ -258,11 +179,5 @@ Accepts an optional org, always return the current org.
 The organisation entity this object is bound to.
 
 =cut
-
-sub org {
-    my ( $self, $org ) = @_;
-
-    return $self->_single_attribute_setget( 'org', $org );
-}
 
 1;

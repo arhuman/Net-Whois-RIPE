@@ -91,6 +91,11 @@ is_deeply( $object->changed(), ['xxx@somewhere.com 20121016'], 'changed properly
 $object->changed('Added changed');
 is( $object->changed()->[1], 'Added changed', 'changed properly added' );
 
+# Test 'abuse_mailbox'
+$tested{'abuse_mailbox'}++;
+$object->abuse_mailbox('foo@example.com');
+is($object->abuse_mailbox->[0], 'foo@example.com', 'abuse_mailbox');
+
 # Test 'source'
 $tested{'source'}++;
 is( $object->source(), 'RIPE # Filtered', 'source properly parsed' );

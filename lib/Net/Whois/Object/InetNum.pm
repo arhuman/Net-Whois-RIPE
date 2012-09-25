@@ -27,6 +27,12 @@ use base qw/Net::Whois::Object/;
 #
 # mnt-irt:        [mandatory]  [multiple]   [inverse key]
 #
+__PACKAGE__->attributes( 'primary', ['inetnum'] );
+__PACKAGE__->attributes( 'mandatory', [ 'inetnum', 'netname', 'descr', 'country', 'tech_c', 'admin_c', 'status', 'mnt_by', 'changed', 'source' ] );
+__PACKAGE__->attributes( 'optional', [ 'org', 'remarks', 'notify', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt' ] );
+__PACKAGE__->attributes( 'single', [ 'inetnum', 'netname', 'org', 'status', 'source' ] );
+    __PACKAGE__->attributes( 'multiple', [ 'descr', 'country', 'tech_c', 'admin_c', 'remarks', 'notify', 'mnt_by', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt', 'changed' ] );
+
 
 =head1 NAME
 
@@ -52,12 +58,6 @@ sub new {
 
     $self->_init(@options);
 
-    $self->attributes( 'primary', ['inetnum'] );
-    $self->attributes( 'mandatory', [ 'inetnum', 'netname', 'descr', 'country', 'tech_c', 'admin_c', 'status', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optional', [ 'org', 'remarks', 'notify', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt' ] );
-    $self->attributes( 'single', [ 'inetnum', 'netname', 'org', 'status', 'source' ] );
-    $self->attributes( 'multiple', [ 'descr', 'country', 'tech_c', 'admin_c', 'remarks', 'notify', 'mnt_by', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt', 'changed' ] );
-
     return $self;
 }
 
@@ -66,26 +66,10 @@ sub new {
 Accessor to the inetnum attribute.
 Accepts an optional inetnum value, always return the current inetnum value.
 
-=cut
-
-sub inetnum {
-    my ( $self, $inetnum ) = @_;
-
-    return $self->_single_attribute_setget( 'inetnum', $inetnum );
-}
-
 =head2 B<netname( [$netname] )>
 
 Accessor to the netname attribute.
 Accepts an optional netname, always return the current netname.
-
-=cut
-
-sub netname {
-    my ( $self, $netname ) = @_;
-
-    return $self->_single_attribute_setget( 'netname', $netname );
-}
 
 =head2 B<descr( [$descr] )>
 
@@ -93,27 +77,11 @@ Accessor to the descr attribute.
 Accepts an optional descr value to be added to the descr array,
 always return the current descr array.
 
-=cut
-
-sub descr {
-    my ( $self, $descr ) = @_;
-
-    return $self->_multiple_attribute_setget( 'descr', $descr );
-}
-
 =head2 B<country( [$country] )>
 
 Accessor to the country attribute.
 Accepts an optional country to be added to the country array,
 always return the current country array.
-
-=cut
-
-sub country {
-    my ( $self, $country ) = @_;
-
-    return $self->_multiple_attribute_setget( 'country', $country );
-}
 
 =head2 B<org( [$org] )>
 
@@ -122,14 +90,6 @@ Accepts an optional org, always return the current org.
 
 Only a single value for the org attribute is allowed in the Inetnum object.
 This is to ensure only one organisation is responsible for this resource.
-
-=cut
-
-sub org {
-    my ( $self, $org ) = @_;
-
-    return $self->_single_attribute_setget( 'org', $org );
-}
 
 =head2 B<admin_c( [$contact] )>
 
@@ -142,14 +102,6 @@ often fulfills a role function, there may be more than one admin_c listed.
 
 An administrative contact (admin_c) must be someone who is physically
 located at the site of the network.
-
-=cut
-
-sub admin_c {
-    my ( $self, $contact ) = @_;
-
-    return $self->_multiple_attribute_setget( 'admin_c', $contact );
-}
 
 =head2 B<tech_c( [$contact] )>
 
@@ -164,14 +116,6 @@ listed.
 A technical contact (tech_c) must be a person responsible for the
 day-to-day operation of the network, but does not need to be
 physically located at the site of the network.
-
-=cut
-
-sub tech_c {
-    my ( $self, $contact ) = @_;
-
-    return $self->_multiple_attribute_setget( 'tech_c', $contact );
-}
 
 =head2 B<status( [$status] )>
 
@@ -209,14 +153,6 @@ Status can have one of these values:
 
 =back
 
-=cut
-
-sub status {
-    my ( $self, $status ) = @_;
-
-    return $self->_single_attribute_setget( 'status', $status );
-}
-
 =head2 B<remarks( [$remark] )>
 
 Accessor to the remarks attribute.
@@ -225,14 +161,6 @@ always return the current remarks array.
 
 General remarks. May include a URL or instructions on where to send abuse
 complaints.
-
-=cut
-
-sub remarks {
-    my ( $self, $remark ) = @_;
-
-    return $self->_multiple_attribute_setget( 'remarks', $remark );
-}
 
 =head2 B<notify( [$notify] )>
 
@@ -243,14 +171,6 @@ always return the current notify array.
 The email address to which notifications of changes to this object should be
 sent.
 
-=cut
-
-sub notify {
-    my ( $self, $notify ) = @_;
-
-    return $self->_multiple_attribute_setget( 'notify', $notify );
-}
-
 =head2 B<mnt_by( [$mnt_by] )>
 
 Accessor to the mnt_by attribute.
@@ -260,14 +180,6 @@ always return the current mnt_by array.
 Lists a registered Mntner used to authorize and authenticate changes to this
 object.
 
-=cut
-
-sub mnt_by {
-    my ( $self, $mnt_by ) = @_;
-
-    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
-}
-
 =head2 B<mnt_lower( [$mnt_lower] )>
 
 Accessor to the mnt_lower attribute.
@@ -276,14 +188,6 @@ always return the current mnt_lower array.
 
 Sometimes there is a hierarchy of maintainers. In these cases, mnt_lower is
 used as well as mnt_by.
-
-=cut
-
-sub mnt_lower {
-    my ( $self, $mnt_lower ) = @_;
-
-    return $self->_multiple_attribute_setget( 'mnt_lower', $mnt_lower );
-}
 
 =head2 B<mnt_routes( [$mnt_route] )>
 
@@ -295,14 +199,6 @@ The identifier of a registered Mntner object used to control the creation of
 Route objects associated with the address range specified by the Inetnum
 object.
 
-=cut
-
-sub mnt_routes {
-    my ( $self, $mnt_route ) = @_;
-
-    return $self->_multiple_attribute_setget( 'mnt_routes', $mnt_route );
-}
-
 =head2 B<mnt_domains( [$mnt_domain] )>
 
 Accessor to the mnt_domains attribute.
@@ -312,14 +208,6 @@ always return the current mnt_domains array.
 The identifier of a registered Mntner object used to control the creation of
 Domain objects associated with the address range specified by the Inetnum
 object.
-
-=cut
-
-sub mnt_domains {
-    my ( $self, $mnt_domain ) = @_;
-
-    return $self->_multiple_attribute_setget( 'mnt_domains', $mnt_domain );
-}
 
 =head2 B<changed( [$changed] )>
 
@@ -336,28 +224,12 @@ Please use the address format specified in RFC 822 - Standard for
 the Format of ARPA Internet Text Message and provide the date
 format using one of the following two formats: YYYYMMDD or YYMMDD.
 
-=cut
-
-sub changed {
-    my ( $self, $changed ) = @_;
-
-    return $self->_multiple_attribute_setget( 'changed', $changed );
-}
-
 =head2 B<source( [$source] )>
 
 Accessor to the source attribute.
 Accepts an optional source, always return the current source.
 
 The database where the object is registered.
-
-=cut
-
-sub source {
-    my ( $self, $source ) = @_;
-
-    return $self->_single_attribute_setget( 'source', $source );
-}
 
 =head2 B<mnt_irt( [$mnt_irt] )>
 
@@ -369,11 +241,5 @@ The identifier of a registered Mntner object used to provide information
 about a Computer Security Incident Response Team (CSIRT).
 
 =cut
-
-sub mnt_irt {
-    my ( $self, $mnt_irt ) = @_;
-
-    return $self->_multiple_attribute_setget( 'mnt_irt', $mnt_irt );
-}
 
 1;
