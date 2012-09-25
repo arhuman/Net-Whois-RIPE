@@ -21,6 +21,11 @@ use base qw/Net::Whois::Object/;
 # referral-by:   [mandatory]  [single]     [inverse key]
 # changed:       [mandatory]  [multiple]   [ ]
 # source:        [mandatory]  [single]     [ ]
+__PACKAGE__->attributes( 'primary', ['mntner'] );
+__PACKAGE__->attributes( 'mandatory', [ 'mntner', 'descr', 'admin_c', 'auth', 'mnt_by', 'referral_by', 'changed', 'source', 'upd_to' ] );
+__PACKAGE__->attributes( 'optional', [ 'org', 'country', 'tech_c', 'mnt_nfy', 'remarks', 'notify', 'abuse_mailbox', 'auth_override' ] );
+__PACKAGE__->attributes( 'single', [ 'mntner', 'auth_override', 'country', 'referral_by', 'source' ] );
+__PACKAGE__->attributes( 'multiple', [ 'auth', 'descr', 'admin_c', 'mnt_by', 'changed', 'org', 'tech_c', 'mnt_nfy', 'remarks', 'notify', 'abuse_mailbox', 'upd_to' ] );
 
 =head1 NAME
 
@@ -53,12 +58,6 @@ sub new {
     my $self = bless {}, $class;
     $self->_init(@options);
 
-    $self->attributes( 'primary', ['mntner'] );
-    $self->attributes( 'mandatory', [ 'mntner', 'descr', 'admin_c', 'auth', 'mnt_by', 'referral_by', 'changed', 'source' ] );
-    $self->attributes( 'optional', [ 'org', 'tech_c', 'mnt_nfy', 'remarks', 'notify', 'abuse_mailbox', 'auth_override' ] );
-    $self->attributes( 'single', [ 'mntner', 'auth_override', 'auth', 'referral_by', 'source' ] );
-    $self->attributes( 'multiple', [ 'descr', 'admin_c', 'mnt_by', 'changed', 'org', 'tech_c', 'mnt_nfy', 'remarks', 'notify', 'abuse_mailbox' ] );
-
     return $self;
 }
 
@@ -77,14 +76,6 @@ Maintainer for resource registrations:
  EXAMPLE 
  MAINT-WF-SPARKYNET
 
-=cut
-
-sub mntner {
-    my ( $self, $mntner ) = @_;
-
-    return $self->_single_attribute_setget( 'mntner', $mntner );
-}
-
 =head2 B<descr( [$descr] )>
 
 Accessor to the descr attribute.
@@ -94,14 +85,6 @@ always return the current descr array.
 A short description of the mntner object and the name of the organization
 associated with it.
 
-=cut
-
-sub descr {
-    my ( $self, $descr ) = @_;
-
-    return $self->_multiple_attribute_setget( 'descr', $descr );
-}
-
 =head2 B<org( [$org] )>
 
 Accessor to the org attribute.
@@ -109,14 +92,6 @@ Accepts an optional org value to be added to the org array,
 always return the current org array.
 
 The organisation this object is bound to.
-
-=cut
-
-sub org {
-    my ( $self, $org ) = @_;
-
-    return $self->_multiple_attribute_setget( 'org', $org );
-}
 
 =head2 B<admin_c( [$contact] )>
 
@@ -130,14 +105,6 @@ listed.
 
 An administrative contact (admin_c) must be someone who is
 physically located at the site of the network.
-
-=cut
-
-sub admin_c {
-    my ( $self, $contact ) = @_;
-
-    return $self->_multiple_attribute_setget( 'admin_c', $contact );
-}
 
 =head2 B<tech_c( [$contact] )>
 
@@ -153,14 +120,6 @@ A technical contact (tech_c) must be a person responsible for the
 day-to-day operation of the network, but does not need to be
 physically located at the site of the network.
 
-=cut
-
-sub tech_c {
-    my ( $self, $contact ) = @_;
-
-    return $self->_multiple_attribute_setget( 'tech_c', $contact );
-}
-
 =head2 B<upd_to( [$upd_to] )>
 
 Accessor to the upd_to attribute.
@@ -169,14 +128,6 @@ always return the current upd_to array.
 
 The upd_to attribute specifies the email address to be notified when an
 attempt to update an object protected by this Mntner is unsuccessful.
-
-=cut
-
-sub upd_to {
-    my ( $self, $upd_to ) = @_;
-
-    return $self->_multiple_attribute_setget( 'upd_to', $upd_to );
-}
 
 =head2 B<mnt_nfy( [$mnt_nfy] )>
 
@@ -187,14 +138,6 @@ always return the current mnt_nfy array.
 The mnt_nfy attribute specifies the email address to be notified when an
 object protected by this Mntner is successfully updated.
 
-=cut
-
-sub mnt_nfy {
-    my ( $self, $mnt_nfy ) = @_;
-
-    return $self->_multiple_attribute_setget( 'mnt_nfy', $mnt_nfy );
-}
-
 =head2 B<auth( [$auth] )>
 
 Accessor to the auth attribute.
@@ -204,14 +147,6 @@ always return the current auth array.
 The auth attribute defines an authentication scheme to be used. . Any of
 the current authentication schemes used by the RIPE Database are allowed.
 
-=cut
-
-sub auth {
-    my ( $self, $auth ) = @_;
-
-    return $self->_multiple_attribute_setget( 'auth', $auth );
-}
-
 =head2 B<remarks( [$remark] )>
 
 Accessor to the remarks attribute.
@@ -219,14 +154,6 @@ Accepts an optional remark to be addedt to the remarks array,
 always return the current remarks array.
 
 General remarks. May include a URL or email address.
-
-=cut
-
-sub remarks {
-    my ( $self, $remark ) = @_;
-
-    return $self->_multiple_attribute_setget( 'remarks', $remark );
-}
 
 =head2 B<notify( [$notify] )>
 
@@ -236,14 +163,6 @@ always return the current notify array.
 
 The email address to which notifications of changes to this object should
 be sent.
-
-=cut
-
-sub notify {
-    my ( $self, $notify ) = @_;
-
-    return $self->_multiple_attribute_setget( 'notify', $notify );
-}
 
 =head2 B<mnt_by( [$mnt_by] )>
 
@@ -256,14 +175,6 @@ this object.
 
 Most users set the mnt-by value in a Mntner to reference itself.
 
-=cut
-
-sub mnt_by {
-    my ( $self, $mnt_by ) = @_;
-
-    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
-}
-
 =head2 B<auth_override( [$auth_override] )>
 
 Accessor to the auth_override attribute.
@@ -275,14 +186,6 @@ for a Mntner to be modified if it becomes unresponsive.
 As this is not part of the core functionality of the RIPE Database, 
 it has not been implemented in the current version of the database.
 
-=cut
-
-sub auth_override {
-    my ( $self, $auth_override ) = @_;
-
-    return $self->_single_attribute_setget( 'auth_override', $auth_override );
-}
-
 =head2 B<referral_by( [$referral_by] )>
 
 Accessor to the referral_by attribute.
@@ -293,14 +196,6 @@ in the Mntner object template. Together with referral-by attribute, they allow
 for a Mntner to be modified if it becomes unresponsive. 
 As this is not part of the core functionality of the RIPE Database, 
 it has not been implemented in the current version of the database.
-
-=cut
-
-sub referral_by {
-    my ( $self, $referral_by ) = @_;
-
-    return $self->_single_attribute_setget( 'referral_by', $referral_by );
-}
 
 =head2 B<changed( [$changed] )>
 
@@ -317,28 +212,12 @@ Please use the address format specified in RFC 822 - Standard for
 the Format of ARPA Internet Text Message and provide the date
 format using one of the following two formats: YYYYMMDD or YYMMDD.
 
-=cut
-
-sub changed {
-    my ( $self, $changed ) = @_;
-
-    return $self->_multiple_attribute_setget( 'changed', $changed );
-}
-
 =head2 B<source( [$source] )>
 
 Accessor to the source attribute.
 Accepts an optional source, always return the current source.
 
 The name of the database from which the data was obtained.
-
-=cut
-
-sub source {
-    my ( $self, $source ) = @_;
-
-    return $self->_single_attribute_setget( 'source', $source );
-}
 
 =head2 B<country( [$country] )>
 
@@ -348,14 +227,6 @@ Two letter ISO 3166 code of the country or economy where the admin-c is based.
 
 Please use UPPERCASE letters.
 
-=cut
-
-sub country {
-    my ( $self, $country ) = @_;
-
-    return $self->_single_attribute_setget( 'country', $country );
-}
-
 =head2 B<abuse_mailbox( [$abuse_mailbox] )>
 
 Accessor to the abuse_mailbox attribute.
@@ -363,11 +234,5 @@ Accepts an optional abuse_mailbox value to be added to the abuse_mailbox array,
 always return the current abuse_mailbox array.
 
 =cut
-
-sub abuse_mailbox {
-    my ( $self, $abuse_mailbox ) = @_;
-
-    return $self->_multiple_attribute_setget( 'abuse_mailbox', $abuse_mailbox );
-}
 
 1;

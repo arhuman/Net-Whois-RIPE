@@ -46,9 +46,9 @@ is( $object->remarks()->[7], 'Added remarks', 'remarks properly added' );
 
 # Test 'org'
 $tested{'org'}++;
-is( $object->org(), 'ORG-NCC1-RIPE', 'as-block properly parsed' );
+is( $object->org(), 'ORG-NCC1-RIPE', 'org properly parsed' );
 $object->org('ORG-MDFIED');
-is( $object->org(), 'ORG-MDFIED', 'as-block properly set' );
+is( $object->org(), 'ORG-MDFIED', 'org properly set' );
 
 # Test 'admin_c'
 $tested{'admin_c'}++;

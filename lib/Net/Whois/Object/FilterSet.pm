@@ -18,6 +18,11 @@ use base qw/Net::Whois::Object/;
 # mnt-lower:     [optional]   [multiple]   [inverse key]
 # changed:       [mandatory]  [multiple]   [ ]
 # source:        [mandatory]  [single]     [ ]
+__PACKAGE__->attributes( 'primary',   ['filter_set'] );
+__PACKAGE__->attributes( 'mandatory', [ 'filter_set', 'filter', 'mp_filter', 'source' ] );
+__PACKAGE__->attributes( 'optional', [ 'remarks', 'org', 'notify', 'mnt_lower' ] );
+__PACKAGE__->attributes( 'single',    [ 'filter_set', 'filter', 'mp_filter', 'source' ] );
+__PACKAGE__->attributes( 'multiple',  [ 'descr', 'remarks', 'org', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'mnt_lower', 'changed' ] );
 
 =head1 NAME
 
@@ -42,12 +47,6 @@ sub new {
 
     my $self = bless {}, $class;
     $self->_init(@options);
-
-    $self->attributes( 'primary',   ['filter_set'] );
-    $self->attributes( 'mandatory', [ 'filter_set', 'filter', 'mp_filter', 'source' ] );
-    $self->attributes( 'optional', [ 'remarks', 'org', 'notify', 'mnt_lower' ] );
-    $self->attributes( 'single',    [ 'filter_set', 'filter', 'mp_filter', 'source' ] );
-    $self->attributes( 'multiple',  [ 'descr', 'remarks', 'org', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'mnt_lower', 'changed' ] );
 
     return $self;
 }
@@ -86,14 +85,6 @@ always return the current descr array.
 
 A short description related to the object's purpose.
 
-=cut
-
-sub descr {
-    my ( $self, $descr ) = @_;
-
-    return $self->_multiple_attribute_setget( 'descr', $descr );
-}
-
 =head2 B<filter( [$filter] )>
 
 Accessor to the filter attribute.
@@ -105,14 +96,6 @@ A policy filter is a logical expression which, when applied to a
 set of routes, returns a subset of these routes – the ones that
 you have said you want to see.
 
-=cut
-
-sub filter {
-    my ( $self, $filter ) = @_;
-
-    return $self->_single_attribute_setget( 'filter', $filter );
-}
-
 =head2 B<mp_filter( [$mp_filter] )>
 
 Accessor to the mp_filter attribute.
@@ -121,14 +104,6 @@ Accepts an optional mp_filter value, always return the current mp_filter.
 Logical expression which when applied to a set of IPv4 or IPv6 routes returns
 a subset of these routes.
 
-=cut
-
-sub mp_filter {
-    my ( $self, $mp_filter ) = @_;
-
-    return $self->_single_attribute_setget( 'mp_filter', $mp_filter );
-}
-
 =head2 B<remarks( [$remark] )>
 
 Accessor to the remarks attribute.
@@ -136,14 +111,6 @@ Accepts an optional remark to be added to the remarks array,
 always return the current remarks array.
 
 General remarks. May include a URL or email address.
-
-=cut
-
-sub remarks {
-    my ( $self, $remark ) = @_;
-
-    return $self->_multiple_attribute_setget( 'remarks', $remark );
-}
 
 =head2 B<tech_c( [$contact] )>
 
@@ -159,14 +126,6 @@ A technical contact (tech_c) must be a person responsible for the
 day-to-day operation of the network, but does not need to be
 physically located at the site of the network.
 
-=cut
-
-sub tech_c {
-    my ( $self, $contact ) = @_;
-
-    return $self->_multiple_attribute_setget( 'tech_c', $contact );
-}
-
 =head2 B<admin_c( [$contact] )>
 
 Accessor to the admin_c attribute.
@@ -179,14 +138,6 @@ often fulfills a role function, there may be more than one admin_c listed.
 An administrative contact (admin_c) must be someone who is physically
 located at the site of the network.
 
-=cut
-
-sub admin_c {
-    my ( $self, $contact ) = @_;
-
-    return $self->_multiple_attribute_setget( 'admin_c', $contact );
-}
-
 =head2 B<org( [$org] )>
 
 Accessor to the org attribute.
@@ -194,14 +145,6 @@ Accepts an optional org value to be added to the org array,
 always return the current org array.
 
 The organisation responsible for this FilterSet object.
-
-=cut
-
-sub org {
-    my ( $self, $org ) = @_;
-
-    return $self->_multiple_attribute_setget( 'org', $org );
-}
 
 =head2 B<notify( [$notify] )>
 
@@ -218,14 +161,6 @@ Please use the address format specified in RFC 822 - Standard for
 the Format of ARPA Internet Text Message and provide the date
 format using one of the following two formats: YYYYMMDD or YYMMDD.
 
-=cut
-
-sub notify {
-    my ( $self, $notify ) = @_;
-
-    return $self->_multiple_attribute_setget( 'notify', $notify );
-}
-
 =head2 B<mnt_by( [$mnt_by] )>
 
 Accessor to the mnt_by attribute.
@@ -239,14 +174,6 @@ When the database details are protected by a Mntner object, then
 only persons with access to the security information of that Mntner
 object will be able to change details.
 
-=cut
-
-sub mnt_by {
-    my ( $self, $mnt_by ) = @_;
-
-    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
-}
-
 =head2 B<mnt_lower( [$mnt_lower] )>
 
 Accessor to the mnt_lower attribute.
@@ -255,14 +182,6 @@ always return the current mnt_lower array.
 
 Sometimes there is a hierarchy of maintainers. In these cases, mnt_lower is
 used as well as mnt_by.
-
-=cut
-
-sub mnt_lower {
-    my ( $self, $mnt_lower ) = @_;
-
-    return $self->_multiple_attribute_setget( 'mnt_lower', $mnt_lower );
-}
 
 =head2 B<changed( [$changed] )>
 
@@ -279,14 +198,6 @@ Please use the address format specified in RFC 822 - Standard for
 the Format of ARPA Internet Text Message and provide the date
 format using one of the following two formats: YYYYMMDD or YYMMDD.
 
-=cut
-
-sub changed {
-    my ( $self, $changed ) = @_;
-
-    return $self->_multiple_attribute_setget( 'changed', $changed );
-}
-
 =head2 B<source( [$source] )>
 
 Accessor to the source attribute.
@@ -295,11 +206,5 @@ Accepts an optional source, always return the current source.
 The database where the object is registered.
 
 =cut
-
-sub source {
-    my ( $self, $source ) = @_;
-
-    return $self->_single_attribute_setget( 'source', $source );
-}
 
 1;

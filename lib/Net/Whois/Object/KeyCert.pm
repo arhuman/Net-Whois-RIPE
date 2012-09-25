@@ -18,6 +18,12 @@ use base qw/Net::Whois::Object/;
 # mnt-by:        [mandatory]  [multiple]   [inverse key]
 # changed:       [mandatory]  [multiple]   [ ]
 # source:        [mandatory]  [single]     [ ]
+__PACKAGE__->attributes( 'primary',   ['key_cert'] );
+__PACKAGE__->attributes( 'mandatory', [ 'key_cert', 'certif', 'mnt_by', 'changed', 'source' ] );
+__PACKAGE__->attributes( 'optional', [ 'org', 'remarks', 'notify', 'admin_c', 'tech_c' ] );
+__PACKAGE__->attributes( 'single', [ 'key_cert', 'method', 'fingerpr', 'source' ] );
+__PACKAGE__->attributes( 'multiple', [ 'owner', 'certif', 'org', 'remarks', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'changed' ] );
+
 
 =head1 NAME
 
@@ -43,12 +49,6 @@ sub new {
     my $self = bless {}, $class;
     $self->_init(@options);
 
-    $self->attributes( 'primary',   ['key_cert'] );
-    $self->attributes( 'mandatory', [ 'key_cert', 'certif', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optional', [ 'org', 'remarks', 'notify', 'admin_c', 'tech_c' ] );
-    $self->attributes( 'single', [ 'key_cert', 'method', 'fingerpr', 'source' ] );
-    $self->attributes( 'multiple', [ 'owner', 'certif', 'org', 'remarks', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'changed' ] );
-
     return $self;
 }
 
@@ -66,14 +66,6 @@ you want to create an X.509 KeyCert object, you should specify the value as
 AUTO-xx. If you delete an X.509 KeyCert object, it is not possible to
 recreate it with the same name.
 
-=cut
-
-sub key_cert {
-    my ( $self, $key_cert ) = @_;
-
-    return $self->_single_attribute_setget( 'key_cert', $key_cert );
-}
-
 =head2 B<method( [$method] )>
 
 Accessor to the method attribute.
@@ -84,14 +76,6 @@ It is not necessary to include this attribute when you create or
 modify this object. If it is supplied, the software will check the value.
 If necessary the software will replace the supplied value with generated
 value. In this case a warning is returned to the user.
-
-=cut
-
-sub method {
-    my ( $self, $method ) = @_;
-
-    return $self->_single_attribute_setget( 'method', $method );
-}
 
 =head2 B<owner( [$owner] )>
 
@@ -105,14 +89,6 @@ modify this object. If it is supplied, the software will check the value.
 If necessary the software will replace the supplied value with generated
 value. In this case a warning is returned to the user.
 
-=cut
-
-sub owner {
-    my ( $self, $owner ) = @_;
-
-    return $self->_multiple_attribute_setget( 'owner', $owner );
-}
-
 =head2 B<fingerpr( [$fingerpr] )>
 
 Accessor to the fingerpr attribute.
@@ -123,14 +99,6 @@ It is not necessary to include this attribute when you create or
 modify this object. If it is supplied, the software will check the value.
 If necessary the software will replace the supplied value with generated
 value. In this case a warning is returned to the user.
-
-=cut
-
-sub fingerpr {
-    my ( $self, $fingerpr ) = @_;
-
-    return $self->_single_attribute_setget( 'fingerpr', $fingerpr );
-}
 
 =head2 B<certif( [$certif] )>
 
@@ -148,14 +116,6 @@ armored format of the key. All the lines of the exported key must be included,
 as well as the start/end markers and the empty line which separates the header
 from the key body.
 
-=cut
-
-sub certif {
-    my ( $self, $certif ) = @_;
-
-    return $self->_multiple_attribute_setget( 'certif', $certif );
-}
-
 =head2 B<remarks( [$remark] )>
 
 Accessor to the remarks attribute.
@@ -163,14 +123,6 @@ Accepts an optional remark to be added to the remarks array,
 always return the current remarks array.
 
 General remarks. May include a URL or email address.
-
-=cut
-
-sub remarks {
-    my ( $self, $remark ) = @_;
-
-    return $self->_multiple_attribute_setget( 'remarks', $remark );
-}
 
 =head2 B<org( [$org] )>
 
@@ -180,14 +132,6 @@ always return the current org array.
 
 The organisation entity this object is bound to.
 
-=cut
-
-sub org {
-    my ( $self, $org ) = @_;
-
-    return $self->_multiple_attribute_setget( 'org', $org );
-}
-
 =head2 B<notify( [$notify] )>
 
 Accessor to the notify attribute.
@@ -196,14 +140,6 @@ always return the current notify array.
 
 The email address to which notifications of changes to this object should be
 sent.
-
-=cut
-
-sub notify {
-    my ( $self, $notify ) = @_;
-
-    return $self->_multiple_attribute_setget( 'notify', $notify );
-}
 
 =head2 B<admin_c( [$contact] )>
 
@@ -216,14 +152,6 @@ often fulfills a role function, there may be more than one admin_c listed.
 
 An administrative contact (admin_c) must be someone who is physically
 located at the site of the network.
-
-=cut
-
-sub admin_c {
-    my ( $self, $contact ) = @_;
-
-    return $self->_multiple_attribute_setget( 'admin_c', $contact );
-}
 
 =head2 B<tech_c( [$contact] )>
 
@@ -239,14 +167,6 @@ A technical contact (tech_c) must be a person responsible for the
 day-to-day operation of the network, but does not need to be
 physically located at the site of the network.
 
-=cut
-
-sub tech_c {
-    my ( $self, $contact ) = @_;
-
-    return $self->_multiple_attribute_setget( 'tech_c', $contact );
-}
-
 =head2 B<mnt_by( [$mnt_by] )>
 
 Accessor to the mnt_by attribute.
@@ -256,13 +176,6 @@ always return the current mnt_by array.
 Lists a registered Mntner used to authorize and authenticate changes to this
 object.
 
-=cut
-
-sub mnt_by {
-    my ( $self, $mnt_by ) = @_;
-
-    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
-}
 
 =head2 B<changed( [$changed] )>
 
@@ -279,14 +192,6 @@ Please use the address format specified in RFC 822 - Standard for
 the Format of ARPA Internet Text Message and provide the date
 format using one of the following two formats: YYYYMMDD or YYMMDD.
 
-=cut
-
-sub changed {
-    my ( $self, $changed ) = @_;
-
-    return $self->_multiple_attribute_setget( 'changed', $changed );
-}
-
 =head2 B<source( [$source] )>
 
 Accessor to the source attribute.
@@ -295,11 +200,5 @@ Accepts an optional source, always return the current source.
 The database where the object is registered.
 
 =cut
-
-sub source {
-    my ( $self, $source ) = @_;
-
-    return $self->_single_attribute_setget( 'source', $source );
-}
 
 1;

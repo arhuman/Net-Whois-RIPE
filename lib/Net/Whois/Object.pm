@@ -273,10 +273,27 @@ sub attributes {
     croak "Invalid attribute's type ($type)" unless $type =~ m/(all|primary|mandatory|optional|single|multiple)/i;
     if ($ra_attributes) {
         for my $a ( @{$ra_attributes} ) {
-            $self->{TYPE}{$type}{$a} = 1;
+            $self->_TYPE()->{$type}{$a} = 1;
         }
     }
-    return sort keys %{ $self->{TYPE}{$type} };
+    if ($type eq 'single' || $type eq 'multiple') {
+        my $symbol_table = do {
+            no strict 'refs';
+            \%{$self . '::'};
+        };
+
+        for my $a ( @{$ra_attributes} ) {
+            my $attr_name = $a;
+            unless (exists $symbol_table->{$a}) {
+                my $accessor = $type eq 'single'
+                    ? sub { _single_attribute_setget(  $_[0], $a, $_[1]) }
+                    : sub { _multiple_attribute_setget($_[0], $a, $_[1]) };
+                no strict 'refs';
+                *{"${self}::$a"} = $accessor;
+            }
+        }
+    }
+    return sort keys %{ $self->_TYPE()->{$type} };
 }
 
 =head2 B<class ( )>
@@ -300,7 +317,7 @@ This method return true if $attribute is of type $type.
 sub attribute_is {
     my ( $self, $attribute, $type ) = @_;
 
-    return defined $self->{TYPE}{$type}{$attribute} ? 1 : 0;
+    return defined $self->_TYPE()->{$type}{$attribute} ? 1 : 0;
 
     # for my $att ( $self->attributes( $type )) {
     #     if ($att eq $attribute) { return 1; }
@@ -632,8 +649,6 @@ sub _syncupdates_submit {
 Sign the C<$text> with the C<gpg> command and gpg information in C<$auth>
 Returns the signed text.
 
-=end UNDOCUMENTED
-
 =cut
 
 sub _pgp_sign {
@@ -660,6 +675,20 @@ sub _pgp_sign {
     return $text;
 }
 
+=head2 B<_TYPE>
+
+Returns a hash ref that contains the attribute data for the class
+of the object that the method was called on.
+
+=end UNDOCUMENTED
+
+=cut
+
+my %TYPES;
+sub _TYPE {
+    $TYPES{ref $_[0] || $_[0] } ||= {}
+}
+
 
 =head1 TODO
 
@@ -676,6 +705,9 @@ hours.
 
 Thanks to Luis Motta Campos for his trust when allowing me to publish this
 release.
+
+Thanks to Moritz Lenz for all his contributions
+(Thanks also to 'Noris Network AG', his employer, for allowing him to contribute in the office hours)
 
 =cut
 

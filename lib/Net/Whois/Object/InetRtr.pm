@@ -22,6 +22,12 @@ use base qw/Net::Whois::Object/;
 # mnt-by:        [mandatory]  [multiple]   [inverse key]
 # changed:       [mandatory]  [multiple]   [ ]
 # source:        [mandatory]  [single]     [ ]
+__PACKAGE__->attributes( 'primary', ['inet_rtr'] );
+__PACKAGE__->attributes( 'mandatory', [ 'inet_rtr', 'descr', 'local_as', 'ifaddr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
+__PACKAGE__->attributes( 'optional', [ 'alias', 'interface', 'peer', 'mp_peer', 'member_of', 'remarks', 'org', 'notify' ] );
+__PACKAGE__->attributes( 'single', [ 'inet_rtr', 'local_as', 'source' ] );
+__PACKAGE__->attributes( 'multiple', [ 'descr', 'remarks', 'alias', 'ifaddr', 'interface', 'peer', 'mp_peer', 'member_of', 'org', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'changed' ] );
+
 
 =head1 NAME
 
@@ -45,12 +51,6 @@ sub new {
     my $self = bless {}, $class;
     $self->_init(@options);
 
-    $self->attributes( 'primary', ['inet_rtr'] );
-    $self->attributes( 'mandatory', [ 'inet_rtr', 'descr', 'local_as', 'ifaddr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optional', [ 'alias', 'interface', 'peer', 'mp_peer', 'member_of', 'remarks', 'org', 'notify' ] );
-    $self->attributes( 'single', [ 'inet_rtr', 'local_as', 'source' ] );
-    $self->attributes( 'multiple', [ 'descr', 'remarks', 'alias', 'ifaddr', 'interface', 'peer', 'mp_peer', 'member_of', 'org', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'changed' ] );
-
     return $self;
 }
 
@@ -62,14 +62,6 @@ Accepts an optional inet_rtr, always return the current inet_rtr value.
 The inet_rtr attribute is a valid DNS name for a router without a trailing
 dot.
 
-=cut
-
-sub inet_rtr {
-    my ( $self, $inet_rtr ) = @_;
-
-    return $self->_single_attribute_setget( 'inet_rtr', $inet_rtr );
-}
-
 =head2 B<descr( [$descr] )>
 
 Accessor to the descr attribute.
@@ -77,14 +69,6 @@ Accepts an optional descr value to be added to the descr array,
 always return the current descr array.
 
 A short description related to the object's purpose.
-
-=cut
-
-sub descr {
-    my ( $self, $descr ) = @_;
-
-    return $self->_multiple_attribute_setget( 'descr', $descr );
-}
 
 =head2 B<alias( [$alias] )>
 
@@ -95,14 +79,6 @@ always return the current alias array.
 Each alias attribute, if present, is also standard DNS name for the
 specified router.
 
-=cut
-
-sub alias {
-    my ( $self, $alias ) = @_;
-
-    return $self->_multiple_attribute_setget( 'alias', $alias );
-}
-
 =head2 B<local_as( [$local_as] )>
 
 Accessor to the local_as attribute.
@@ -110,14 +86,6 @@ Accepts an optional local_as, always return the current local_as.
 
 The local_as attribute specifies the AS Number of the AS that owns or
 operates this router.
-
-=cut
-
-sub local_as {
-    my ( $self, $local_as ) = @_;
-
-    return $self->_single_attribute_setget( 'local_as', $local_as );
-}
 
 =head2 B<ifaddr( [$ifaddr] )>
 
@@ -129,14 +97,6 @@ The ifaddr attribute specifies the interface address within an Internet
 router, as well as an optional action to set other parameters on this
 interface.
 
-=cut
-
-sub ifaddr {
-    my ( $self, $ifaddr ) = @_;
-
-    return $self->_multiple_attribute_setget( 'ifaddr', $ifaddr );
-}
-
 =head2 B<peer( [$peer] )>
 
 Accessor to the peer attribute.
@@ -145,14 +105,6 @@ always return the current peer array.
 
 The peer attribute specifies the details of any interior or exterior router
 peering.
-
-=cut
-
-sub peer {
-    my ( $self, $peer ) = @_;
-
-    return $self->_multiple_attribute_setget( 'peer', $peer );
-}
 
 =head2 B<member_of( [$member_of] )>
 
@@ -164,14 +116,6 @@ The member_of attribute value identifies a set object that this object
 wants to be a member of. This claim, however, should be acknowledged by a
 respective mbrs-by-ref attribute in the referenced object.
 
-=cut
-
-sub member_of {
-    my ( $self, $member_of ) = @_;
-
-    return $self->_multiple_attribute_setget( 'member_of', $member_of );
-}
-
 =head2 B<remarks( [$remark] )>
 
 Accessor to the remarks attribute.
@@ -180,14 +124,6 @@ always return the current remarks array.
 
 General remarks. May include a URL or instructions on where to send abuse
 complaints.
-
-=cut
-
-sub remarks {
-    my ( $self, $remark ) = @_;
-
-    return $self->_multiple_attribute_setget( 'remarks', $remark );
-}
 
 =head2 B<admin_c( [$contact] )>
 
@@ -200,14 +136,6 @@ often fulfills a role function, there may be more than one admin_c listed.
 
 An administrative contact (admin_c) must be someone who is physically
 located at the site of the network.
-
-=cut
-
-sub admin_c {
-    my ( $self, $contact ) = @_;
-
-    return $self->_multiple_attribute_setget( 'admin_c', $contact );
-}
 
 =head2 B<tech_c( [$contact] )>
 
@@ -223,14 +151,6 @@ A technical contact (tech_c) must be a person responsible for the
 day-to-day operation of the network, but does not need to be
 physically located at the site of the network.
 
-=cut
-
-sub tech_c {
-    my ( $self, $contact ) = @_;
-
-    return $self->_multiple_attribute_setget( 'tech_c', $contact );
-}
-
 =head2 B<notify( [$notify] )>
 
 Accessor to the notify attribute.
@@ -240,14 +160,6 @@ always return the current notify array.
 The email address to which notifications of changes to this object should
 be sent.
 
-=cut
-
-sub notify {
-    my ( $self, $notify ) = @_;
-
-    return $self->_multiple_attribute_setget( 'notify', $notify );
-}
-
 =head2 B<mnt_by( [$mnt_by] )>
 
 Accessor to the mnt_by attribute.
@@ -256,14 +168,6 @@ always return the current mnt_by array.
 
 Lists a registered 'mntner' used to authorize and authenticate changes to this
 object.
-
-=cut
-
-sub mnt_by {
-    my ( $self, $mnt_by ) = @_;
-
-    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
-}
 
 =head2 B<changed( [$changed] )>
 
@@ -280,28 +184,12 @@ Please use the address format specified in RFC 822 - Standard for
 the Format of ARPA Internet Text Message and provide the date
 format using one of the following two formats: YYYYMMDD or YYMMDD.
 
-=cut
-
-sub changed {
-    my ( $self, $changed ) = @_;
-
-    return $self->_multiple_attribute_setget( 'changed', $changed );
-}
-
 =head2 B<source( [$source] )>
 
 Accessor to the source attribute.
 Accepts an optional source, always return the current source.
 
 The database where the object is registered.
-
-=cut
-
-sub source {
-    my ( $self, $source ) = @_;
-
-    return $self->_single_attribute_setget( 'source', $source );
-}
 
 =head2 B<mp_peer( [$peer] )>
 
@@ -315,14 +203,6 @@ specified.
 
 The mp-peer attribute extends the peer attribute for IPv6 addresses.
 
-=cut
-
-sub mp_peer {
-    my ( $self, $mp_peer ) = @_;
-
-    return $self->_multiple_attribute_setget( 'mp_peer', $mp_peer );
-}
-
 =head2 B<interface( [$interface] )>
 
 Accessor to the interface attribute.
@@ -331,14 +211,6 @@ always return the current interface array.
 
 The interface attribute specifies a multi-protocol interface address within
 an Internet router, optional action and tunnel definition.
-
-=cut
-
-sub interface {
-    my ( $self, $interface ) = @_;
-
-    return $self->_multiple_attribute_setget( 'interface', $interface );
-}
 
 =head2 B<org( [$org] )>
 
@@ -349,11 +221,5 @@ always return the current org array.
 The organisation entity this object is bound to.
 
 =cut
-
-sub org {
-    my ( $self, $org ) = @_;
-
-    return $self->_multiple_attribute_setget( 'org', $org );
-}
 
 1;
