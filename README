@@ -1,3 +1,10 @@
+BEGIN NORIS-SPECIFIC STUFF
+
+This is a mirror of https://github.com/moritz/Net-Whois-RIPE
+where development happens in the 'moritz-dev' and 'debian' branches.
+
+END NORIS SPECIFIC STUFF
+
 Net::Whois::RIPE
 
 A pure-perl programming interface to the RIPE Database Whois service.
