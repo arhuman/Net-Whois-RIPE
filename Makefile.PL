@@ -25,4 +25,5 @@ WriteMakefile(
     BUILD_REQUIRES => { 'Test::Exception' => 0, },
     dist           => { COMPRESS          => 'gzip -9f', SUFFIX => 'gz', },
     clean          => { FILES             => 'Net-Whois-RIPE-*' },
+    LICENSE        => 'perl',
 );

@@ -1,0 +1,12 @@
+This is the debian package for the Net-Whois-RIPE module.
+It was created by Moritz Lenz <mlenz@noris.net> using dh-make-perl.
+
+It was downloaded from http://search.cpan.org/dist/Net-Whois-RIPE/
+
+This package can be distributed under the same terms as perl itself.
+
+The upstream author is: Luis Motta Campos <lmc@cpan.org>.
+
+
+The Debian packaging is (C) 2012, Moritz Lenz <mlenz@noris.net> and
+is licensed under the same terms as the software itself (see above).

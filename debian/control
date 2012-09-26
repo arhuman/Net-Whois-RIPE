@@ -1,0 +1,16 @@
+Source: libnet-whois-ripe-perl
+Section: perl
+Priority: optional
+Build-Depends: debhelper (>= 5)
+Build-Depends-Indep: perl (>= 5.6.10-12), libiterator-perl
+Maintainer: Moritz Lenz <mlenz@noris.net>
+Standards-Version: 3.8.0
+Homepage: http://search.cpan.org/dist/Net-Whois-RIPE/
+
+Package: libnet-whois-ripe-perl
+Architecture: all
+Depends: ${perl:Depends}, ${misc:Depends}
+Description: a pure-Perl implementation of the RIPE Database client.
+ a pure-Perl implementation of the RIPE Database client.
+ .
+ This description was automagically extracted from the module by dh-make-perl.

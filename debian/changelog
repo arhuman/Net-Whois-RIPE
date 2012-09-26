@@ -1,0 +1,5 @@
+libnet-whois-ripe-perl (2.00013-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Moritz Lenz <mlenz@noris.net>  Wed, 26 Sep 2012 11:15:08 +0200
