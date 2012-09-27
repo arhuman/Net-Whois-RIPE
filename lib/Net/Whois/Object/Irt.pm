@@ -23,6 +23,11 @@ use base qw/Net::Whois::Object/;
 # mnt-by:         [mandatory]  [multiple]   [inverse key]
 # changed:        [mandatory]  [multiple]   [ ]
 # source:         [mandatory]  [single]     [ ]
+__PACKAGE__->attributes( 'primary', ['irt'] );
+__PACKAGE__->attributes( 'mandatory', [ 'irt', 'address', 'e_mail', 'abuse_mailbox', 'tech_c', 'admin_c', 'auth', 'mnt_by', 'changed', 'source' ] );
+__PACKAGE__->attributes( 'optional', [ 'phone', 'fax_no', 'signature', 'encryption', 'org', 'remarks', 'irt_nfy', 'notify' ] );
+__PACKAGE__->attributes( 'single', [ 'irt', 'source' ] );
+__PACKAGE__->attributes( 'multiple', [ 'address', 'phone', 'fax_no', 'e_mail', 'abuse_mailbox', 'signature', 'encryption', 'org', 'auth', 'remarks', 'tech_c', 'admin_c', 'irt_nfy', 'notify', 'mnt_by', 'changed' ] );
 
 =head1 NAME
 
@@ -51,11 +56,6 @@ sub new {
     my $self = bless {}, $class;
     $self->_init(@options);
 
-    $self->attributes( 'primary', ['irt'] );
-    $self->attributes( 'mandatory', [ 'irt', 'address', 'e_mail', 'abuse_mailbox', 'tech_c', 'admin_c', 'auth', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optional', [ 'phone', 'fax_no', 'signature', 'encryption', 'org', 'remarks', 'irt_nfy', 'notify' ] );
-    $self->attributes( 'single', [ 'irt', 'source' ] );
-    $self->attributes( 'multiple', [ 'address', 'phone', 'fax_no', 'e_mail', 'abuse_mailbox', 'signature', 'encryption', 'org', 'auth', 'remarks', 'tech_c', 'admin_c', 'irt_nfy', 'notify', 'mnt_by', 'changed' ] );
 
     return $self;
 
@@ -112,14 +112,6 @@ A contact telephone number.
  EXAMPLE
  phone: +681 368 0844 ext. 32
 
-=cut
-
-sub phone {
-    my ( $self, $phone ) = @_;
-
-    return $self->_multiple_attribute_setget( 'phone', $phone );
-}
-
 =head2 B<fax_no( [$fax_no] )>
 
 Accessor to the fax_no attribute.
@@ -130,14 +122,6 @@ A contact fax number.
 
 + <international code> <area code> <fax #>
 
-=cut
-
-sub fax_no {
-    my ( $self, $fax_no ) = @_;
-
-    return $self->_multiple_attribute_setget( 'fax_no', $fax_no );
-}
-
 =head2 B<e_mail( [$e_mail] )>
 
 Accessor to the e_mail attribute.
@@ -146,14 +130,6 @@ always return the current e_mail array.
 
 A contact email address for non-abuse/technical incidents.
 
-=cut
-
-sub e_mail {
-    my ( $self, $e_mail ) = @_;
-
-    return $self->_multiple_attribute_setget( 'e_mail', $e_mail );
-}
-
 =head2 B<abuse_mailbox( [$abuse_mailbox] )>
 
 Accessor to the abuse_mailbox attribute.
@@ -161,14 +137,6 @@ Accepts an optional abuse_mailbox to be added to the abuse_mailbox array,
 always return the current abuse_mailbox array.
 
 Specifies the email address to which abuse complaints should be sent.
-
-=cut
-
-sub abuse_mailbox {
-    my ( $self, $abuse_mailbox ) = @_;
-
-    return $self->_multiple_attribute_setget( 'abuse_mailbox', $abuse_mailbox );
-}
 
 =head2 B<signature( [$signature] )>
 
@@ -179,14 +147,6 @@ always return the current signature array.
 References a KeyCert object representing a CSIRT public key used by the
 team to sign their correspondence.
 
-=cut
-
-sub signature {
-    my ( $self, $signature ) = @_;
-
-    return $self->_multiple_attribute_setget( 'signature', $signature );
-}
-
 =head2 B<encryption( [$encryption] )>
 
 Accessor to the encryption attribute.
@@ -196,14 +156,6 @@ always return the current encryption array.
 References a KeyCert object representing a CSIRT public key used to encrypt
 correspondence sent to the CSIRT.
 
-=cut
-
-sub encryption {
-    my ( $self, $encryption ) = @_;
-
-    return $self->_multiple_attribute_setget( 'encryption', $encryption );
-}
-
 =head2 B<org( [$org] )>
 
 Accessor to the org attribute.
@@ -211,14 +163,6 @@ Accepts an optional org value to be added to the org array,
 always return the current org array.
 
 The organisation responsible for this resource.
-
-=cut
-
-sub org {
-    my ( $self, $org ) = @_;
-
-    return $self->_multiple_attribute_setget( 'org', $org );
-}
 
 =head2 B<auth( [$auth] )>
 
@@ -228,14 +172,6 @@ always return the current auth array.
 
 The Auth defines an authentication scheme to be used. Any of the current
 authentication schemes used by the RIPE Database are allowed.
-
-=cut
-
-sub auth {
-    my ( $self, $auth ) = @_;
-
-    return $self->_multiple_attribute_setget( 'auth', $auth );
-}
 
 =head2 B<admin_c( [$contact] )>
 
@@ -248,14 +184,6 @@ often fulfills a role function, there may be more than one admin_c listed.
 
 An administrative contact (admin_c) must be someone who is physically
 located at the site of the network.
-
-=cut
-
-sub admin_c {
-    my ( $self, $contact ) = @_;
-
-    return $self->_multiple_attribute_setget( 'admin_c', $contact );
-}
 
 =head2 B<tech_c( [$contact] )>
 
@@ -270,14 +198,6 @@ A technical contact (tech_c) must be a person responsible for the
 day-to-day operation of the network, but does not need to be
 physically located at the site of the network.
 
-=cut
-
-sub tech_c {
-    my ( $self, $contact ) = @_;
-
-    return $self->_multiple_attribute_setget( 'tech_c', $contact );
-}
-
 =head2 B<remarks( [$remark] )>
 
 Accessor to the remarks attribute.
@@ -285,14 +205,6 @@ Accepts an optional remark to be added to the remarks array,
 always return the current remarks array.
 
 Information about the object that cannot be stated in other attributes.
-
-=cut
-
-sub remarks {
-    my ( $self, $remark ) = @_;
-
-    return $self->_multiple_attribute_setget( 'remarks', $remark );
-}
 
 =head2 B<notify( [$notify] )>
 
@@ -303,14 +215,6 @@ always return the current notify array.
 The email address to which notifications of changes to this object should
 be sent.
 
-=cut
-
-sub notify {
-    my ( $self, $notify ) = @_;
-
-    return $self->_multiple_attribute_setget( 'notify', $notify );
-}
-
 =head2 B<mnt_by( [$mnt_by] )>
 
 Accessor to the mnt_by attribute.
@@ -319,14 +223,6 @@ always return the current mnt_by array.
 
 Lists a registered Mntner used to authorize and authenticate changes to
 this object.
-
-=cut
-
-sub mnt_by {
-    my ( $self, $mnt_by ) = @_;
-
-    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
-}
 
 =head2 B<changed( [$changed] )>
 
@@ -343,28 +239,12 @@ Please use the address format specified in RFC 822 - Standard for
 the Format of ARPA Internet Text Message and provide the date
 format using one of the following two formats: YYYYMMDD or YYMMDD.
 
-=cut
-
-sub changed {
-    my ( $self, $changed ) = @_;
-
-    return $self->_multiple_attribute_setget( 'changed', $changed );
-}
-
 =head2 B<source( [$source] )>
 
 Accessor to the source attribute.
 Accepts an optional source, always return the current source.
 
 The database where the object is registered.
-
-=cut
-
-sub source {
-    my ( $self, $source ) = @_;
-
-    return $self->_single_attribute_setget( 'source', $source );
-}
 
 =head2 B<irt_nfy( [$irt_nfy] )>
 
@@ -376,11 +256,5 @@ The irt_nfy attribute specifies the email address to be notified when a
 reference to the irt object is added or removed.
 
 =cut
-
-sub irt_nfy {
-    my ( $self, $irt_nfy ) = @_;
-
-    return $self->_multiple_attribute_setget( 'irt_nfy', $irt_nfy );
-}
 
 1;

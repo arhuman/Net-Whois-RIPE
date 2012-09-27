@@ -24,6 +24,12 @@ use base qw/Net::Whois::Object/;
 # mnt-by:        [mandatory]  [multiple]   [inverse key]
 # changed:       [mandatory]  [multiple]   [ ]
 # source:        [mandatory]  [single]     [ ]
+__PACKAGE__->attributes( 'primary',   ['aut_num'] );
+__PACKAGE__->attributes( 'mandatory', [ 'aut_num', 'as_name', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
+__PACKAGE__->attributes( 'optional', [ 'member_of', 'import', 'mp_import', 'export', 'mp_export', 'default', 'mp_default', 'remarks', 'notify', 'mnt_lower', 'mnt_routes', 'org' ] );
+__PACKAGE__->attributes( 'single', [ 'aut_num', 'as_name', 'source', 'org' ] );
+__PACKAGE__->attributes( 'multiple', [ 'descr', 'member_of', 'import', 'mp_import', 'export', 'mp_export', 'default', 'mp_default', 'remarks', 'admin_c', 'tech_c', 'notify', 'mnt_lower', 'mnt_routes', 'mnt_by', 'changed' ] );
+
 
 =head1 NAME
 
@@ -51,12 +57,6 @@ sub new {
 
     my $self = bless {}, $class;
     $self->_init(@options);
-
-    $self->attributes( 'primary',   ['aut_num'] );
-    $self->attributes( 'mandatory', [ 'aut_num', 'as_name', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
-    $self->attributes( 'optional', [ 'member_of', 'import', 'mp_import', 'export', 'mp_export', 'default', 'mp_default', 'remarks', 'notify', 'mnt_lower', 'mnt_routes' ] );
-    $self->attributes( 'single', [ 'aut_num', 'as_name', 'source' ] );
-    $self->attributes( 'multiple', [ 'descr', 'member_of', 'import', 'mp_import', 'export', 'mp_export', 'default', 'mp_default', 'remarks', 'admin_c', 'tech_c', 'notify', 'mnt_lower', 'mnt_routes', 'mnt_by', 'changed' ] );
 
     return $self;
 }
@@ -92,26 +92,10 @@ Accepts an optional as_name, always return the current as_name array.
 
 The as-name attribute is a symbolic name of the AS.
 
-=cut
-
-sub as_name {
-    my ( $self, $as_name ) = @_;
-
-    return $self->_single_attribute_setget( 'as_name', $as_name );
-}
-
 =head2 B<descr( [$descr] )>
 
 Accessor to the descr attribute.
 Accepts an optional descr value to be added to the descr array, always return the current descr array.
-
-=cut
-
-sub descr {
-    my ( $self, $descr ) = @_;
-
-    return $self->_multiple_attribute_setget( 'descr', $descr );
-}
 
 =head2 B<member_of( [$mbr_of] )>
 
@@ -131,14 +115,6 @@ To be included in an 'as-set', the 'as-set' object must:
 include the keyword "ANY" or the AS number's mbrs_by_ref attribute
 and/or list the AS number in the members attribute
 
-=cut
-
-sub member_of {
-    my ( $self, $member_of ) = @_;
-
-    return $self->_multiple_attribute_setget( 'member_of', $member_of );
-}
-
 =head2 B<import( [$import] )>
 
 Accessor to the import attribute.
@@ -146,14 +122,6 @@ Accepts an optional import line to be added to the import array,
 always return the current import array.
 
 The inbound IPv4 routing policy of the AS.
-
-=cut
-
-sub import {
-    my ( $self, $import ) = @_;
-
-    return $self->_multiple_attribute_setget( 'import', $import );
-}
 
 =head2 B<mp_import( [$import] )>
 
@@ -163,14 +131,6 @@ always return the current mp_import array.
 
 The inbound IPv6 routing policy of the AS.
 
-=cut
-
-sub mp_import {
-    my ( $self, $mp_import ) = @_;
-
-    return $self->_multiple_attribute_setget( 'mp_import', $mp_import );
-}
-
 =head2 B<export( [$export] )>
 
 Accessor to the export attribute.
@@ -179,14 +139,6 @@ always return the current export array.
 
 The outbound routing policy of the AS.
 
-=cut
-
-sub export {
-    my ( $self, $export ) = @_;
-
-    return $self->_multiple_attribute_setget( 'export', $export );
-}
-
 =head2 B<mp_export( [$mp_export] )>
 
 Accessor to the mp_export attribute.
@@ -194,14 +146,6 @@ Accepts an optional mp_export line to be added to the mp_export array,
 always return the current mp_export array.
 
 The outbound IPv6 routing policy of the AS.
-
-=cut
-
-sub mp_export {
-    my ( $self, $mp_export ) = @_;
-
-    return $self->_multiple_attribute_setget( 'mp_export', $mp_export );
-}
 
 =head2 B<default( [$default] )>
 
@@ -212,14 +156,6 @@ always return the current default array.
 The peer network the AS will use for as a default, that is, when the AS has no
 more-specific information on where to send the traffic.
 
-=cut
-
-sub default {
-    my ( $self, $default ) = @_;
-
-    return $self->_multiple_attribute_setget( 'default', $default );
-}
-
 =head2 B<mp_default( [$mp_default] )>
 
 Accessor to the mp_default attribute.
@@ -229,14 +165,6 @@ always return the current mp_default array.
 This attribute performs the same function as the 'default' attribute above.
 The difference is that mp-default allows both IPv4 and IPv6 addresses to be
 specified.
-
-=cut
-
-sub mp_default {
-    my ( $self, $mp_default ) = @_;
-
-    return $self->_multiple_attribute_setget( 'mp_default', $mp_default );
-}
 
 =head2 B<remarks( [$remark] )>
 
@@ -249,12 +177,6 @@ include a URL or email address.
 
 =cut
 
-sub remarks {
-    my ( $self, $remark ) = @_;
-
-    return $self->_multiple_attribute_setget( 'remarks', $remark );
-}
-
 =head2 B<admin_c( [$contact] )>
 
 Accessor to the admin_c attribute.
@@ -266,14 +188,6 @@ often fulfills a role function, there may be more than one admin_c listed.
 
 An administrative contact (admin_c) must be someone who is physically
 located at the site of the network.
-
-=cut
-
-sub admin_c {
-    my ( $self, $contact ) = @_;
-
-    return $self->_multiple_attribute_setget( 'admin_c', $contact );
-}
 
 =head2 B<tech_c( [$contact] )>
 
@@ -289,14 +203,6 @@ A technical contact (tech_c) must be a person responsible for the
 day-to-day operation of the network, but does not need to be
 physically located at the site of the network.
 
-=cut
-
-sub tech_c {
-    my ( $self, $contact ) = @_;
-
-    return $self->_multiple_attribute_setget( 'tech_c', $contact );
-}
-
 =head2 B<notify( [$notify] )>
 
 Accessor to the notify attribute.
@@ -305,25 +211,11 @@ always return the current notify array.
 
 =cut
 
-sub notify {
-    my ( $self, $notify ) = @_;
-
-    return $self->_multiple_attribute_setget( 'notify', $notify );
-}
-
 =head2 B<mnt_lower( [$mnt_lower] )>
 
 Accessor to the mnt_lower attribute.
 Accepts an optional mnt_lower value to be added to the mnt_lower array,
 always return the current mnt_lower array.
-
-=cut
-
-sub mnt_lower {
-    my ( $self, $mnt_lower ) = @_;
-
-    return $self->_multiple_attribute_setget( 'mnt_lower', $mnt_lower );
-}
 
 =head2 B<mnt_routes( [$mnt_routes] )>
 
@@ -331,27 +223,11 @@ Accessor to the mnt_routes attribute.
 Accepts an optional mnt_routes value to be added to the mnt_routes array,
 always return the current mnt_routes array.
 
-=cut
-
-sub mnt_routes {
-    my ( $self, $mnt_routes ) = @_;
-
-    return $self->_multiple_attribute_setget( 'mnt_routes', $mnt_route );
-}
-
 =head2 B<mnt_by( [$mnt_by] )>
 
 Accessor to the mnt_by attribute.
 Accepts an optional mnt_by value to be added to the mnt_by array,
 always return the current mnt_by array.
-
-=cut
-
-sub mnt_by {
-    my ( $self, $mnt_by ) = @_;
-
-    return $self->_multiple_attribute_setget( 'mnt_by', $mnt_by );
-}
 
 =head2 B<changed( [$changed] )>
 
@@ -359,28 +235,12 @@ Accessor to the changed attribute.
 Accepts an optional changed value to be added to the changed array,
 always return the current changed array.
 
-=cut
-
-sub changed {
-    my ( $self, $changed ) = @_;
-
-    return $self->_multiple_attribute_setget( 'changed', $changed );
-}
-
 =head2 B<source( [$source] )>
 
 Accessor to the source attribute.
 Accepts an optional source, always return the current source.
 
 The database where the object is registered.
-
-=cut
-
-sub source {
-    my ( $self, $source ) = @_;
-
-    return $self->_single_attribute_setget( 'source', $source );
-}
 
 =head2 B<org( [$org] )>
 
@@ -391,11 +251,5 @@ Only a single value for the org attribute is allowed in the aut-num object.
 This is to ensure only one organisation is responsible for this resource.
 
 =cut
-
-sub org {
-    my ( $self, $org ) = @_;
-
-    return $self->_single_attribute_setget( 'org', $org );
-}
 
 1;

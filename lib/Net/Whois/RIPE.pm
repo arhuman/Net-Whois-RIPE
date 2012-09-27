@@ -6,7 +6,6 @@ use strict;
 use IO::Socket::INET;
 use IO::Select;
 use Iterator;
-use Iterator::Util;
 
 use constant {
     SOON                    => 30,
@@ -29,11 +28,11 @@ Net::Whois::RIPE - a pure-Perl implementation of the RIPE Database client.
 
 =head1 VERSION
 
-Version 2.00_017 - BETA
+Version 2.00_018 - BETA
 
 =cut
 
-our $VERSION = 2.00_017;
+our $VERSION = 2.00_018;
 
 =head1 SYNOPSIS
 
@@ -515,9 +514,12 @@ connection will be terminated after this query.
 
 sub object_types {
     my $self = shift;
-    my $iterator = igrep { !m{^%\s} } $self->__query(QUERY_LIST_OBJECTS);
-    return if $iterator->is_exhausted;
-    return split qr{\s+}, $iterator->value;
+    my $iterator = $self->__query(QUERY_LIST_OBJECTS);
+    while (!$iterator->is_exhausted) {
+        my $value = $iterator->value;
+        return split /\s+/, $value if $value !~ /^%\s/;
+    }
+    return;
 }
 
 =head1 AUTHOR
