@@ -92,10 +92,37 @@ is( $object->source(), 'RIPE # Filtered', 'source properly parsed' );
 $object->source('APNIC');
 is( $object->source(), 'APNIC', 'source properly set' );
 
+# test 'align'
+my $align = Net::Whois::Object::AsBlock->new(
+    as_block  =>   'AS30720 - AS30895',
+    descr     =>   'RIPE NCC ASN block',
+    remarks   =>   'These AS Numbers are further assigned to network',
+    remarks   =>   'operators in the RIPE NCC service region. AS',
+    remarks   =>   'assignment policy is documented in:',
+    remarks   =>   '<http://www.ripe.net/ripe/docs/asn-assignment.html>',
+    remarks   =>   'RIPE NCC members can request AS Numbers using the',
+    remarks   =>   'form available in the LIR Portal or at:',
+    remarks   =>   '<http://www.ripe.net/ripe/docs/asnrequestform.html>',
+    org       =>   'ORG-NCC1-RIPE',
+    admin_c   =>   'CREW-RIPE',
+    tech_c    =>   'RD132-RIPE',
+    mnt_by    =>   'RIPE-DBM-MNT',
+    notify    =>   'RIPE-DBM-MNT',
+    mnt_lower =>   'RIPE-NCC-HM-MNT',
+    changed   =>   'arhuman@gmail.com 20120701',
+    source    =>   'RIPE # Filtered',
+);
+$align->align(30);
+
+for (split /\n/, $align->dump) {
+    ok $_ =~ /^.{29}\s\S/, "Line '$_' is aligned to column 30";
+}
+
 # Common tests
 do 't/common.pl';
 ok( $tested{common_loaded}, "t/common.pl properly loaded" );
 ok( !$@, "Can evaluate t/common.pl ($@)" );
+
 
 __DATA__
 as-block:       AS30720 - AS30895
