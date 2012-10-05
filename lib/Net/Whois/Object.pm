@@ -6,6 +6,7 @@ use Carp;
 use Net::Whois::RIPE;
 use Data::Dumper;
 use IPC::Open2 qw/open2/;
+use List::Util qw/max/;
 
 our $LWP;
 BEGIN {
@@ -373,6 +374,44 @@ sub dump {
 
     return $result;
 }
+
+=head2 B<align( $column )>
+
+Changes the object by adding or removing leading whitespace,
+so that all C<< $self->dump >> produces values that are aligned
+vertically on column C<$column>.
+
+If C<$column> is omitted, it is chosen large enough to make vertical
+alignment possible for all values.
+
+=cut
+
+sub align {
+    my $self     = shift;
+    my $align_to = shift;
+
+    # $self->dump adds one colon and five spaces,
+    # so there's a padding of 5
+    my $padding = 5;
+    $align_to  ||= $padding + max map length, $self->attributes('all');
+
+    for ($self->attributes('single')) {
+        my $alignment = ' ' x ($align_to - $padding - length);
+        if (exists $self->{$_}) {
+            $self->{$_} =~ s/^\s*/$alignment/;
+        }
+    }
+
+    for ($self->attributes('multiple')) {
+        my $alignment = ' ' x ($align_to - $padding - length);
+        if (exists $self->{$_}) {
+            s/^\s*/$alignment/ for @{ $self->{$_} };
+        }
+    }
+
+    return $self;
+}
+
 
 =head2 B<syncupdates_update( $password )>
 
