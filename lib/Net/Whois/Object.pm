@@ -473,7 +473,7 @@ sub syncupdates_delete {
 
     my $html = $self->_syncupdates_submit( $text, $auth );
 
-    if ( $html =~ /Delete SUCCEEDED:.*$value/m ) {
+    if ( $html =~ /Delete SUCCEEDED:.*\Q$value\E/m ) {
         return $value;
     }
     else {
