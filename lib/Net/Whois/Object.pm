@@ -4,7 +4,6 @@ use warnings;
 
 use Carp;
 use Net::Whois::RIPE;
-use Data::Dumper;
 use IPC::Open2 qw/open2/;
 use List::Util qw/max/;
 
@@ -26,6 +25,11 @@ Net::Whois::Object - Object encapsulating RPSL data returned by Whois queries
     use Net::Whois::RIPE;
     use Net::Whois::Object;
 
+    my @objects = Net::Whois::Object->query('AS30781');
+
+
+    # Or you can use the previous way
+
     my $whois = Net::Whois::RIPE->new( %options );
     $iterator = $whois->query('AS30781');
 
@@ -35,6 +39,7 @@ Net::Whois::Object - Object encapsulating RPSL data returned by Whois queries
         # process the Net::Whois::Object::xxx objects... 
         # Type of object is available via class() method
     }
+
 
 =head1 USAGE
 
@@ -46,10 +51,21 @@ Net::Whois::Object - Object encapsulating RPSL data returned by Whois queries
 
 =head2 Filter the objects
 
-Currently the only crude way to filter objects is to use the class() method.
+Before you had to filter objects using the class() method.
 
-    # To only get the Person object (and ignore the Information objects)
+    # Then to only get the Person object (and ignore the Information objects)
     my ($person) = grep {$_->class() eq 'Person'} Net::Whois::Object->new($iterator);
+
+But now the query() method allow you to filter more easily
+
+    my ($person) = Net::Whois::Object->query('POLK-RIPE', { type => 'person' });
+
+You can even use the query() filtering capabilities a little further
+
+    my @emails = Net::Whois::Object->query('POLK-RIPE', { type => 'person', attribute => 'e_mail' });
+
+Please note, that as soon as you use the attribute filter, the values returned
+are strings and no more Net::Whois::Objects.
 
 =head2 Modify the data
 
@@ -357,7 +373,7 @@ sub displayed_attributes {
 Simple naive way to display a text form of the class.
 Try to be as close as possible as the submited text.
 
-Currently the only option available is 'align' which accept a column number as
+Currently the only option available is 'align' which accept a $column number as
 parameter so that all C<< $self->dump >> produces values that are aligned
 vertically on column C<$column>.
 
@@ -480,9 +496,17 @@ Return the primary key of the object created.
 sub syncupdates_create {
     my ( $self, $options ) = @_;
 
+    my $dump_options;
+
+    for my $opt ( keys %$options ) {
+        if ( $opt =~ /^align$/i ) {
+            $dump_options = { align => $options->{$opt} };
+        }
+    }
+
     my ($key) = $self->attributes('primary');
 
-    my $res = $self->_syncupdates_submit( $self->dump(), $options );
+    my $res = $self->_syncupdates_submit( $self->dump($dump_options), $options );
 
     if (    $res =~ /^Number of objects processed with errors:\s+(\d+)/m
          && $1 == 0
@@ -493,6 +517,62 @@ sub syncupdates_create {
         return $value;
     } else {
         croak "Error while creating object through syncupdates API: $res";
+    }
+}
+
+=head2 B<query( $query, [\%options] )>
+
+ ******************************** EXPERIMENTAL ************************************
+   This method is a work in progress, the API and behaviour are subject to change
+ **********************************************************************************
+
+Query the RIPE database and return Net::Whois::Objects
+
+This method accepts 2 optional parameters
+
+'type' which is a regex used to filter the query result :
+Only the object whose type matches the 'type' parameter are returned
+
+'attribute' which is a regex used to filter the query result :
+Only the value of the attributes matching the 'attribute' parameter are
+returned
+
+Note that if 'attribute' is specified strings are returned, instead of
+Net::Whois::Objects
+
+=cut
+
+sub query {
+    my ( $class, $query, $options ) = @_;
+
+    my $attribute;
+    my $type;
+
+    for my $opt ( keys %$options ) {
+        if ( $opt =~ /^attribute$/i ) {
+            $attribute = $options->{$opt};
+        } elsif ( $opt =~ /^type$/i ) {
+            $type = $options->{$opt};
+        }
+    }
+
+    my $whois    = Net::Whois::RIPE->new(%$options);
+    my $iterator = $whois->query($query);
+
+    my @objects = Net::Whois::Object->new($iterator);
+
+    if ($type) {
+        @objects = grep { ref($_) =~ /$type/i } @objects;
+    }
+
+    if ($attribute) {
+        return grep {defined} map {
+            my $r;
+            eval { $r = $_->$attribute };
+            $@ ? undef : ref($r) eq 'ARRAY' ? @$r : $r
+        } @objects;
+    } else {
+        return grep {defined} @objects;
     }
 }
 
