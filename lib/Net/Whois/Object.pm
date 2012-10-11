@@ -56,7 +56,7 @@ Before you had to filter objects using the class() method.
     # Then to only get the Person object (and ignore the Information objects)
     my ($person) = grep {$_->class() eq 'Person'} Net::Whois::Object->new($iterator);
 
-But now the query() method allow you to filter more easily
+But now the query() method allows you to filter more easily
 
     my ($person) = Net::Whois::Object->query('POLK-RIPE', { type => 'person' });
 
@@ -77,14 +77,12 @@ are strings and no more Net::Whois::Objects.
 The dump() method, permit to print the object under the classic
 text form, made of 'attribute:  value' lines.
 
-
     # Dump the modified data
     my $to_be_mailed = $person->dump();
 
 dump() handle the 'align' parameter passed though a hash ref.
 
     my $to_be_mailed = $person->dump( { align => 15 });
-
 
 =head2 Update the RIPE database
 
@@ -93,7 +91,7 @@ The RIPE database update is currently under heavy development.
 
 We plan to offer several ways to update the RIPE database
 
-=head3 Update through the web interface.
+=head3 Update through the web interface
 
 RIPE provides several web interfaces
 
@@ -173,12 +171,11 @@ You can pass an array of lines or an iterator returned by Net::Whois::RIPE
 as argument.
 
 The two following ways of using the constructor are possible
-     
+
     my $whois = Net::Whois::RIPE->new( %options );
     $iterator = $whois->query('AS30781');
 
     # Using the iterator way
-    
     push @objects, Net::Whois::Object->new($iterator);
 
 or
@@ -333,11 +330,6 @@ sub attribute_is {
     my ( $self, $attribute, $type ) = @_;
 
     return defined $self->_TYPE()->{$type}{$attribute} ? 1 : 0;
-
-    # for my $att ( $self->attributes( $type )) {
-    #     if ($att eq $attribute) { return 1; }
-    # }
-    # return 0 ;
 }
 
 =head2 B<hidden_attributes( $attribute )>
@@ -484,10 +476,9 @@ sub syncupdates_delete {
 =head2 B<syncupdates_create( \%options )>
 
 Create an object in the the RIPE database through the web syncupdates interface.
-See L</Create> for possible values of C<$auth>.
+See L</Create> for more information on the authentication methods.
 
 The available options are 'pgpkey', 'password' and 'align'
-
 
 Return the primary key of the object created.
 
@@ -585,7 +576,6 @@ Private method. Shouldn't be used from other modules.
 Simple factory, creating Net::Whois::Objet::XXXX from
 the type passed as parameter.
 
-
 =cut
 
 sub _object_factory {
@@ -652,7 +642,6 @@ sub _single_attribute_setget {
     if ( defined $value ) {
 
         # Store attribute order for dump, unless this attribute as already been set
-        #
         push @{ $self->{order} }, $attribute unless $self->{$attribute} or $attribute eq 'class';
 
         $self->{$attribute} = $value;
@@ -785,6 +774,10 @@ sub _TYPE {
 =head1 TODO
 
 The update part (in RIPE database) still needs a lot of work.
+
+Enhance testing without network
+
+Enhance test coverage
 
 =head1 AUTHOR
 
