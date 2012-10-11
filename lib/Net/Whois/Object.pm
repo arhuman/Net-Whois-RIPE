@@ -400,7 +400,7 @@ sub dump {
         my $output = "$attribute:$alignment$val\n";
 
         # Process the comment
-        $output =~ s/comment:\s+/\% /;
+        $output =~ s/comment:\s*/\% /;
 
         $result .= $output;
     }

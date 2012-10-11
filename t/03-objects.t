@@ -40,6 +40,7 @@ is_deeply( [ $o[0]->attributes('all') ], [ 'comment', 'opt1', 'opt2', 'opt3' ] )
 is_deeply( [ $o[0]->attributes() ],      [ 'comment', 'opt1', 'opt2', 'opt3' ] );
 
 is( $o[2]->dump, "% Information related to 'AS30720 - AS30895'\n" );
+is( $o[2]->dump( { align => 8 } ), "% Information related to 'AS30720 - AS30895'\n" );
 
 __DATA__
 % This is the RIPE Database query service.
