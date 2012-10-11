@@ -9,11 +9,10 @@ use IPC::Open2 qw/open2/;
 use List::Util qw/max/;
 
 our $LWP;
+
 BEGIN {
-    $LWP    = do {
-        eval {
-            require LWP::UserAgent;
-        };
+    $LWP = do {
+        eval { require LWP::UserAgent; };
         ($@) ? 0 : 1;
     };
 }
@@ -61,11 +60,15 @@ Currently the only crude way to filter objects is to use the class() method.
 
 The dump() method, permit to print the object under the classic
 text form, made of 'attribute:  value' lines.
-This may seem useless now, but will come handy to make update through
-email.
+
 
     # Dump the modified data
     my $to_be_mailed = $person->dump();
+
+dump() handle the 'align' parameter passed though a hash ref.
+
+    my $to_be_mailed = $person->dump( { align => 15 });
+
 
 =head2 Update the RIPE database
 
@@ -89,14 +92,15 @@ B<CAUTION: SyncUpdates features require LWP::UserAgent to be installed.>
 
 Once the object has been modified, locally, you can create it in the database
 calling the syncupdates_create() method.
-The only parameter being the associated maintener's authentication
-as a password or pgp key:
+
+The parameters are passed through a hash ref, and can be the maintener
+authentication credentials ('password' or 'pgpkey') and the 'align' parameter
 
     $object->person('John Doe');
     ...
-    my $primary_key = $object->syncupdates_create({ password => $password });
+    my $primary_key = $object->syncupdates_create( { password => $password } );
     # or
-    my $primary_key = $object->syncupdates_create({ pgpkey   => $pgpkey   });
+    my $primary_key = $object->syncupdates_create( { pgpkey   => $keyID, align => 8 } );
 
 The pgp key must be an eight digit hexadecimal key ID known to the local
 C<gpg> executable.
@@ -106,9 +110,6 @@ syncupdates_create, you can also pass in the C<pgpexec> key to chose a program
 to execute for signing (C<gpg> by default), and C<pgpopts>, which must be an
 array reference of additional options to pass to the signing binary.
 
-For backwards compatibility, the password can be passed directly without
-using a a hash reference, C<< $object->syncupdates_create($password) >>.
-
 The primary key of the object created is returned.
 The attribute used as primary key can be obtained through 
 $object->attribute('primary') 
@@ -117,25 +118,28 @@ $object->attribute('primary')
 
 An object existing in the RIPE database, can be retrived, modified locally
 and the updated through the syncupdates_update() method.
-The only parameter being the associated maintener's authentication.
+
+The parameters are passed through a hash ref, and can be the maintener
+authentication credentials ('password' or 'pgpkey') and the 'align' parameter
 See L</Create> for more information on the authentication methods.
 
     $object->person('John Doe');
     ...
-    $object->syncupdates_update($auth);
+    $object->syncupdates_update( { password => $password } );
 
 =head4 Delete
 
 An object existing in the RIPE database, can be retrived, and deleted in
 the databased through the syncupdates_delete() method.
-The only required parameter being the associated maintener's authentication.
+The parameters are passed through a hash ref, and can be the maintener
+authentication credentials ('password' or 'pgpkey') and the 'reason' parameter
 See L</Create> for more information on the authentication methods.
 
-    $object->syncupdates_update($auth);
+    $object->syncupdates_update( { pgpkey => $keyID } );
 
 An additional parameter can be used as a reason for the deletion.
 
-    $object->syncupdates_update($auth,'Obsoleted by XXX');
+    $object->syncupdates_update( { pgpkey => $keyID, reason =>  'Obsoleted by XXX' } );
 
 If no reason is provided, a default one ('Not needed anymore') is used.
     
@@ -196,15 +200,13 @@ sub new {
             $attribute = 'response';
             $value     = $1;
 
-        }
-        elsif ( $line =~ /^(\S+):\s+(.*)/ ) {
+        } elsif ( $line =~ /^(\S+):\s+(.*)/ ) {
 
             # Attribute line
             $attribute = $1;
             $value     = $2;
 
-        }
-        elsif ( $line =~ /^%\s+(.*)/ ) {
+        } elsif ( $line =~ /^%\s+(.*)/ ) {
 
             $block = 'comment' unless $block;
 
@@ -212,14 +214,12 @@ sub new {
             $attribute = "comment";
             $value     = $1;
 
-        }
-        elsif ( $line =~ /^[^%]\s*(.+)/ ) {
+        } elsif ( $line =~ /^[^%]\s*(.+)/ ) {
 
             # Continuation line
             $value = $1;
 
-        }
-        elsif ( $line =~ /^$/ ) {
+        } elsif ( $line =~ /^$/ ) {
 
             # Blank line
             push @results, $object;
@@ -238,14 +238,14 @@ sub new {
 
         if ( !$object ) {
             $object = _object_factory( $block, $value ) unless $object;
-        }
-        elsif ($attribute) {
+        } elsif ($attribute) {
             $object->$attribute($value);
         }
 
     }
 
-    return @results;
+    # TODO : fix the trailing undef
+    return grep {defined} @results;
 }
 
 =head2 B<attributes( [$type [, \@attributes]] )>
@@ -277,18 +277,16 @@ sub attributes {
             $self->_TYPE()->{$type}{$a} = 1;
         }
     }
-    if ($type eq 'single' || $type eq 'multiple') {
+    if ( $type eq 'single' || $type eq 'multiple' ) {
         my $symbol_table = do {
             no strict 'refs';
-            \%{$self . '::'};
+            \%{ $self . '::' };
         };
 
         for my $a ( @{$ra_attributes} ) {
             my $attr_name = $a;
-            unless (exists $symbol_table->{$a}) {
-                my $accessor = $type eq 'single'
-                    ? sub { _single_attribute_setget(  $_[0], $a, $_[1]) }
-                    : sub { _multiple_attribute_setget($_[0], $a, $_[1]) };
+            unless ( exists $symbol_table->{$a} ) {
+                my $accessor = $type eq 'single' ? sub { _single_attribute_setget( $_[0], $a, $_[1] ) } : sub { _multiple_attribute_setget( $_[0], $a, $_[1] ) };
                 no strict 'refs';
                 *{"${self}::$a"} = $accessor;
             }
@@ -354,18 +352,35 @@ sub displayed_attributes {
     return @{ $self->{displayed_attributes} };
 }
 
-=head2 B<dump( )>
+=head2 B<dump( [\%options] )>
 
 Simple naive way to display a text form of the class.
 Try to be as close as possible as the submited text.
 
+Currently the only option available is 'align' which accept a column number as
+parameter so that all C<< $self->dump >> produces values that are aligned
+vertically on column C<$column>.
+
 =cut
 
 sub dump {
-    my ($self) = @_;
+    my ( $self, $options ) = @_;
 
     my %current_index;
     my $result;
+    my $align_to;
+
+    for my $opt ( keys %$options ) {
+        if ( $opt =~ /^align$/i ) {
+            $align_to = $options->{$opt};
+
+        } else {
+
+            croak "Unknown option $opt for dump()";
+        }
+    }
+
+    $align_to ||= 5 + max map length, $self->attributes('all');
 
     for my $line ( @{ $self->{order} } ) {
         my $attribute = $line;
@@ -381,7 +396,8 @@ sub dump {
 
         $val = '' unless $val;
 
-        my $output = "$attribute:    $val\n";
+        my $alignment = ' ' x ( $align_to - length($attribute) - 1 );
+        my $output = "$attribute:$alignment$val\n";
 
         # Process the comment
         $output =~ s/comment:\s+/\% /;
@@ -392,45 +408,7 @@ sub dump {
     return $result;
 }
 
-=head2 B<align( $column )>
-
-Changes the object by adding or removing leading whitespace,
-so that all C<< $self->dump >> produces values that are aligned
-vertically on column C<$column>.
-
-If C<$column> is omitted, it is chosen large enough to make vertical
-alignment possible for all values.
-
-=cut
-
-sub align {
-    my $self     = shift;
-    my $align_to = shift;
-
-    # $self->dump adds one colon and five spaces,
-    # so there's a padding of 5
-    my $padding = 5;
-    $align_to  ||= $padding + max map length, $self->attributes('all');
-
-    for ($self->attributes('single')) {
-        my $alignment = ' ' x ($align_to - $padding - length);
-        if (exists $self->{$_}) {
-            $self->{$_} =~ s/^\s*/$alignment/;
-        }
-    }
-
-    for ($self->attributes('multiple')) {
-        my $alignment = ' ' x ($align_to - $padding - length);
-        if (exists $self->{$_}) {
-            s/^\s*/$alignment/ for @{ $self->{$_} };
-        }
-    }
-
-    return $self;
-}
-
-
-=head2 B<syncupdates_update( $password )>
+=head2 B<syncupdates_update( $password, [\%options] )>
 
 Update the RIPE database through the web syncupdates interface.
 Use the password passed as parameter to authenticate.
@@ -438,22 +416,29 @@ Use the password passed as parameter to authenticate.
 =cut
 
 sub syncupdates_update {
-    my ( $self, $auth ) = @_;
+    my ( $self, $options ) = @_;
 
-    my ($key)  = $self->attributes('primary');
+    my $dump_options;
+
+    for my $opt ( keys %$options ) {
+        if ( $opt =~ /^align$/i ) {
+            $dump_options = { align => $options->{$opt} };
+        }
+    }
+
+    my ($key) = $self->attributes('primary');
     my $value = $self->_single_attribute_setget($key);
 
-    my $html = $self->_syncupdates_submit( $self->dump(), $auth );
-    
+    my $html = $self->_syncupdates_submit( $self->dump($dump_options), $options );
+
     if ( $html =~ /Modify SUCCEEDED:.*$value/m ) {
         return $value;
-    }
-    else {
+    } else {
         croak "Update not confirmed ($html)";
     }
 }
 
-=head2 B<syncupdates_delete( $password, [$reason] )>
+=head2 B<syncupdates_delete( \%options )>
 
 Delete the object in the RIPE database through the web syncupdates interface.
 Use the password passed as parameter to authenticate.
@@ -462,51 +447,51 @@ The optional parmeter reason is used to explain why the object is deleted.
 =cut
 
 sub syncupdates_delete {
-    my ( $self, $auth, $reason) = @_;
+    my ( $self, $options ) = @_;
 
-    my ($key)  = $self->attributes('primary');
+    my ($key) = $self->attributes('primary');
     my $value = $self->_single_attribute_setget($key);
 
     my $text = $self->dump();
-    $reason = 'Not needed anymore' unless $reason;
-    $text .= "delete: $reason\n";
+    $options->{reason} = 'Not needed anymore' unless $options->{reason};
+    $text .= "delete: " . $options->{reason} . "\n";
 
-    my $html = $self->_syncupdates_submit( $text, $auth );
+    my $html = $self->_syncupdates_submit( $text, $options );
 
     if ( $html =~ /Delete SUCCEEDED:.*$value/m ) {
         return $value;
-    }
-    else {
+    } else {
         croak "Deletion not confirmed ($html)";
     }
 }
 
-=head2 B<syncupdates_create( $auth )>
+=head2 B<syncupdates_create( \%options )>
 
 Create an object in the the RIPE database through the web syncupdates interface.
 See L</Create> for possible values of C<$auth>.
+
+The available options are 'pgpkey', 'password' and 'align'
+
 
 Return the primary key of the object created.
 
 =cut
 
 sub syncupdates_create {
-    my ( $self, $auth ) = @_;
+    my ( $self, $options ) = @_;
 
-    my ($key)  = $self->attributes('primary');
+    my ($key) = $self->attributes('primary');
 
-    my $res = $self->_syncupdates_submit( $self->dump(), $auth );
+    my $res = $self->_syncupdates_submit( $self->dump(), $options );
 
-    if (
-                $res =~ /^Number of objects processed with errors:\s+(\d+)/m
-            && $1 == 0
-            && $res =~ /\*\*\*Info:\s+Authorisation for\s+\[[^\]]+]\s+(.+)\s*$/m
-        ) {
+    if (    $res =~ /^Number of objects processed with errors:\s+(\d+)/m
+         && $1 == 0
+         && $res =~ /\*\*\*Info:\s+Authorisation for\s+\[[^\]]+]\s+(.+)\s*$/m )
+    {
         my $value = $1;
         $self->_single_attribute_setget( $key, $value );
         return $value;
-    }
-    else {
+    } else {
         croak "Error while creating object through syncupdates API: $res";
     }
 }
@@ -566,8 +551,7 @@ sub _object_factory {
     # First attribute is always single valued, except for comments
     if ( $type eq 'comment' ) {
         $object->_multiple_attribute_setget( $type => $value );
-    }
-    else {
+    } else {
         $object->_single_attribute_setget( $type => $value );
     }
 
@@ -589,7 +573,7 @@ sub _single_attribute_setget {
 
         # Store attribute order for dump, unless this attribute as already been set
         #
-        push @{ $self->{order} }, $attribute    unless $self->{$attribute} or $attribute eq 'class';
+        push @{ $self->{order} }, $attribute unless $self->{$attribute} or $attribute eq 'class';
 
         $self->{$attribute} = $value;
     }
@@ -608,7 +592,7 @@ sub _multiple_attribute_setget {
     if ( defined $value ) {
 
         # Store attribute order for dump
-        push @{ $self->{order} }, $attribute;    
+        push @{ $self->{order} }, $attribute;
 
         push @{ $self->{$attribute} }, $value;
     }
@@ -624,15 +608,14 @@ Initialize self with C<@options>
 =cut
 
 sub _init {
-    my ($self, @options) = @_;
+    my ( $self, @options ) = @_;
 
-    while (my ($key, $val ) = splice(@options, 0, 2)) {
-        $self->$key( $val );
+    while ( my ( $key, $val ) = splice( @options, 0, 2 ) ) {
+        $self->$key($val);
     }
 }
 
-
-=head2 B<_syncupdates_submit( $text, $password )>
+=head2 B<_syncupdates_submit( $text, \%options )>
 
 Interact with the RIPE database through the web syncupdates interface.
 Submit the text passed as parameter.
@@ -645,39 +628,29 @@ Return the HTML code of the returned page.
 =cut
 
 sub _syncupdates_submit {
-    my ( $self, $text, $auth ) = @_;
+    my ( $self, $text, $options ) = @_;
 
-    if ( $auth && !ref $auth) {
-        # preserve backwards compatiblity
-        $auth = { password => $auth };
-    }
-    $auth ||= {};
-
-    if ( exists $auth->{pgpkey} ) {
-        $text = $self->_pgp_sign($text, $auth);
-    }
-    elsif ( exists $auth->{password} ) {
-        my $password = $auth->{password};
+    if ( exists $options->{pgpkey} ) {
+        $text = $self->_pgp_sign( $text, { pgpkey => $options->{pgpkey} } );
+    } elsif ( exists $options->{password} ) {
+        my $password = $options->{password};
         chomp $password;
-        croak( "Passwords containing newlines are not supported" )
+        croak("Passwords containing newlines are not supported")
             if $password =~ /\n/;
-        $text .= "password: $password\n" 
+        $text .= "password: $password\n";
     }
 
-    croak "LWP::UserAgent required for updates" unless $LWP;    
+    croak "LWP::UserAgent required for updates" unless $LWP;
 
-    my $url = $self->source eq 'RIPE'
-            ? 'http://syncupdates.db.ripe.net/'
-            : 'http://syncupdates-test.db.ripe.net';
-
+    my $url = $self->source eq 'RIPE' ? 'http://syncupdates.db.ripe.net/' : 'http://syncupdates-test.db.ripe.net';
 
     my $ua = LWP::UserAgent->new;
 
-    my $response      = $ua->post($url, { DATA => $text  });
+    my $response = $ua->post( $url, { DATA => $text } );
     my $response_text = $response->decoded_content;
 
-    unless ($response->is_success) {
-        croak "Can't sync object with RIPE database: $response_text" 
+    unless ( $response->is_success ) {
+        croak "Can't sync object with RIPE database: $response_text";
     }
 
     return $response_text;
@@ -692,13 +665,14 @@ Returns the signed text.
 
 sub _pgp_sign {
     my ( $self, $text, $auth ) = @_;
+
     my $binary = $auth->{pgpexec} || 'gpg';
     my $key_id = $auth->{pgpkey};
     my @opts   = @{ $auth->{pgpopts} || [] };
+
     $key_id =~ s/^0x//;
-    my $pid = open2(my $child_out, my $child_in,
-          $binary, "--local-user=$key_id", '--clearsign', @opts);
-    print { $child_in } $text;
+    my $pid = open2( my $child_out, my $child_in, $binary, "--local-user=$key_id", '--clearsign', @opts );
+    print {$child_in} $text;
     close $child_in;
 
     $text = do { local $/; <$child_out> };
@@ -706,9 +680,8 @@ sub _pgp_sign {
 
     waitpid( $pid, 0 );
     my $child_exit_status = $? >> 8;
-    if ($child_exit_status != 0) {
-        croak "Error while launching $binary for signing the message: "
-            . "child prcoess exited with status $child_exit_status";
+    if ( $child_exit_status != 0 ) {
+        croak "Error while launching $binary for signing the message: child process exited with status $child_exit_status";
     }
 
     return $text;
@@ -724,11 +697,10 @@ of the object that the method was called on.
 =cut
 
 my %TYPES;
+
 sub _TYPE {
-    $TYPES{ref $_[0] || $_[0] } ||= {}
+    $TYPES{ ref $_[0] || $_[0] } ||= {};
 }
-
-
 
 =head1 TODO
 
