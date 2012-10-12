@@ -40,6 +40,28 @@ is_deeply( [ $o[0]->attributes('all') ], [ 'comment', 'opt1', 'opt2', 'opt3' ] )
 is_deeply( [ $o[0]->attributes() ],      [ 'comment', 'opt1', 'opt2', 'opt3' ] );
 
 is( $o[2]->dump, "% Information related to 'AS30720 - AS30895'\n" );
+is( $o[2]->dump( { align => 8 } ), "% Information related to 'AS30720 - AS30895'\n" );
+
+my @objects;
+eval { @objects = Net::Whois::Object->query('AS30781', {attribute => 'remarks'}) };
+
+SKIP: {
+    skip "Network issue",14 if ( $@ =~ /IO::Socket::INET/ );
+
+    for my $object (@objects) {
+        ok(!ref($object), "query() : String returned for 'remarks' attribute filter")
+    }
+
+    @objects = Net::Whois::Object->query('AS30781');
+    for my $object (@objects) {
+        ok(ref($object) =~ /Net::Whois::Object/ , "query() : Object returned for 'remarks' attribute filter")
+    }
+
+    @objects = Net::Whois::Object->query('AS30781', {type => 'asblock', attribute => 'admin_c'});
+    for my $object (@objects) {
+        ok($object eq 'CREW-RIPE' , "query() : 'CREW-RIPE' returned for AsBlock and admin-c filter")
+    }
+}
 
 __DATA__
 % This is the RIPE Database query service.

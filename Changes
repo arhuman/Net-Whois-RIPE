@@ -1,5 +1,18 @@
 Revision history for net-whois-ripe
 
+2.00019     12 Oct 2012
+            - **** API CHANGES ****
+             Now pass the credentials through option hashref
+              ('password' handled the same way as 'pgpkey')
+            - Add 'align' parameter to the dump() method
+              (code mainly from Moritz Lenz)
+            - Fix dump( {align => xxx })  issue on comments
+            - Tests now handle better network issues
+            - Add query() class method to Net::Whois::Object
+            - Also fix some typos, and perltidy the code
+
+
+
 2.00018     27 Sep 2012
             Another big contribution from Moritz Lenz :
             - drop dependency on Iterator::Util

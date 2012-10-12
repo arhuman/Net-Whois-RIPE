@@ -28,11 +28,11 @@ Net::Whois::RIPE - a pure-Perl implementation of the RIPE Database client.
 
 =head1 VERSION
 
-Version 2.00_018 - BETA
+Version 2.00_019 - BETA
 
 =cut
 
-our $VERSION = 2.00_018;
+our $VERSION = 2.00_019;
 
 =head1 SYNOPSIS
 
@@ -49,6 +49,12 @@ The usage should remain mostly the same:
 
   my $whois = Net::Whois::RIPE->new( %options );
   $iterator = $whois->query( 'AS333' );
+
+If you prefer to manipulate full-fledged objects you can now use
+
+  use Net::Whois::Object;
+
+  my @objects = Net::Whois::Object->query( 'AS333' );
 
 Of course, comments are more than welcome. If you believe you can help, please
 do not hesitate in contacting me.
@@ -90,6 +96,14 @@ containing a parsed version of the text (way more useful than a text blob, I
 believe). 
 Net::Whois::Object (from release 2.00_010) is the first attempt toward this
 goal.
+
+  # You can now do
+  my @objects = Net::Whois::Object->query( 'AS333' );
+
+  # And manipulate the object the OO ways
+  for my $object (@objects) {
+    print $object->remarks();
+  }
 
 =head1 METHODS
 
