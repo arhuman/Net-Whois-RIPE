@@ -1,5 +1,6 @@
 Revision history for net-whois-ripe
 
+2.00019     12 Oct 2012
             - **** API CHANGES ****
              Now pass the credentials through option hashref
               ('password' handled the same way as 'pgpkey')
@@ -7,8 +8,8 @@ Revision history for net-whois-ripe
               (code mainly from Moritz Lenz)
             - Fix dump( {align => xxx })  issue on comments
             - Tests now handle better network issues
+            - Add query() class method to Net::Whois::Object
             - Also fix some typos, and perltidy the code
-            - Add  query() class method to Net::Whois::Object
 
 
 
