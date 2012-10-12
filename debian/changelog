@@ -1,3 +1,9 @@
+libnet-whois-ripe-perl (2.00019-1) lenny; urgency=low
+
+  * Update to upstream 2.00_019
+
+ -- Moritz Lenz <mlenz@noris.net>  Fri, 12 Oct 2012 09:33:20 +0200
+
 libnet-whois-ripe-perl (2.00013-1) unstable; urgency=low
 
   * Initial Release.
