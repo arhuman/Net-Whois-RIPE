@@ -4,14 +4,12 @@ use Test::More;
 use Test::Exception;
 use Net::Whois::RIPE;
 use Net::Whois::Object;
-use Data::Dumper;
 
 our $LWP;
+
 BEGIN {
     $LWP = do {
-        eval {
-            require LWP::UserAgent;
-        };
+        eval { require LWP::UserAgent; };
         ($@) ? 0 : 1;
     };
 }
@@ -39,7 +37,7 @@ my $mntner = shift @o;
 
 my $email_before = $person->e_mail()->[0];
 
-my $person_id = $person->syncupdates_create($PASSWD);
+my $person_id = $person->syncupdates_create( { password => $PASSWD, align => 8 } );
 ok($person_id);
 
 my $whois = Net::Whois::RIPE->new( hostname => 'whois-test.ripe.net' );
@@ -50,7 +48,7 @@ my $iterator = $whois->query($person_id);
 is_deeply( $person->e_mail(), [$email_before], "Same name from previous" );
 my $email_after = $person->e_mail('arhuman2@gmail.com');
 
-$person->syncupdates_update($PASSWD);
+$person->syncupdates_update( { password => $PASSWD, align => 10 } );
 
 $iterator = $whois->query($person_id);
 ($person) = grep { ( $_->class() eq 'Person' ) and ( $_->nic_hdl eq $person_id ) } Net::Whois::Object->new($iterator);
@@ -59,7 +57,7 @@ is_deeply( $person->e_mail(), $email_after, "Same as set name" );
 
 isa_ok( $person, 'Net::Whois::Object::Person', 'Found a Person' );
 
-$person->syncupdates_delete($PASSWD);
+$person->syncupdates_delete( { password => $PASSWD } );
 
 $whois = Net::Whois::RIPE->new( hostname => 'whois-test.ripe.net' );
 $iterator = $whois->query($person_id);

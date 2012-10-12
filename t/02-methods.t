@@ -82,12 +82,16 @@ can_ok $class,
     ok $c->unfiltered, '->new can set the unfiltered flag';
 }
 
-{
     my $c = $class->new( disconnected => 1 );
 
     # connect()
     # TODO: implement a test that doesn't requires internet connection
-    lives_ok { $c->connect } 'The client connected without dying.';
+    eval { $c->connect };
+
+SKIP: {
+    skip "Network issue",14 if ( $@ =~ /IO::Socket::INET/ );
+
+    ok (!$@, "The client connected without dying. $@");
 
     # is_connected()
     ok $c->is_connected, 'The client is connected.';
