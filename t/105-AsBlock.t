@@ -112,11 +112,13 @@ my $align = Net::Whois::Object::AsBlock->new(
     changed   =>   'arhuman@gmail.com 20120701',
     source    =>   'RIPE # Filtered',
 );
-$align->align(30);
 
-for (split /\n/, $align->dump) {
+for (split /\n/, $align->dump({align => 30})) {
     ok $_ =~ /^.{29}\s\S/, "Line '$_' is aligned to column 30";
 }
+
+# Test 'as_block' on aligned data
+is( $align->as_block(), 'AS30720 - AS30895', 'aligned as-block properly parsed' );
 
 # Common tests
 do 't/common.pl';
