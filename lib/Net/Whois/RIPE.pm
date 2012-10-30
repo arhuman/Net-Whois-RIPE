@@ -32,7 +32,7 @@ Version 2.00_019 - BETA
 
 =cut
 
-our $VERSION = 2.00_019;
+our $VERSION = 2.00_020;
 
 =head1 SYNOPSIS
 

@@ -1,3 +1,9 @@
+libnet-whois-ripe-perl (2.00021) lenny; urgency=low
+
+  * Debugging of GPG stuff
+
+ -- Moritz Lenz <mlenz@noris.net>  Tue, 30 Oct 2012 17:19:00 +0100
+
 libnet-whois-ripe-perl (2.00019-1) lenny; urgency=low
 
   * Update to upstream 2.00_019

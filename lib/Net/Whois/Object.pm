@@ -740,6 +740,10 @@ sub _pgp_sign {
     my @opts   = @{ $auth->{pgpopts} || [] };
 
     $key_id =~ s/^0x//;
+    if ($ENV{RIPE_GPG_DEBUG}) {
+        warn "DEBUG: gpg signing with command: "
+            . join ' ', map "'$_'",  $binary, "--local-user=$key_id", '--clearsign', @opts ;
+    }
     my $pid = open2( my $child_out, my $child_in, $binary, "--local-user=$key_id", '--clearsign', @opts );
     print {$child_in} $text;
     close $child_in;
