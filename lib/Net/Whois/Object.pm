@@ -700,7 +700,7 @@ sub _syncupdates_submit {
     my ( $self, $text, $options ) = @_;
 
     if ( exists $options->{pgpkey} ) {
-        $text = $self->_pgp_sign( $text, { pgpkey => $options->{pgpkey} } );
+        $text = $self->_pgp_sign( $text, $options );
     } elsif ( exists $options->{password} ) {
         my $password = $options->{password};
         chomp $password;
