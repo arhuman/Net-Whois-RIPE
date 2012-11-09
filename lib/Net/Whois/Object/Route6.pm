@@ -24,15 +24,13 @@ use base qw/Net::Whois::Object/;
 # changed:       [mandatory]  [multiple]   [ ]
 # source:        [mandatory]  [single]     [ ]
 
-# From http://www.apnic.net/apnic-info/whois_search/using-whois/guide/route6
-# country:       [optional]   [single]     [ ]
-#
+
 BEGIN {
     __PACKAGE__->attributes( 'primary',   ['route6'] );
     __PACKAGE__->attributes( 'mandatory', [ 'route6', 'origin', 'descr', 'mnt_by', 'changed', 'source' ] );
-    __PACKAGE__->attributes( 'optional', [ 'holes', 'org', 'member_of', 'inject', 'aggr_mtd', 'aggr_bndry', 'export_comps', 'components', 'remarks', 'notify', 'mnt_lower', 'mnt_routes', 'country' ] );
+    __PACKAGE__->attributes( 'optional', [ 'pingable', 'ping_hdl', 'holes', 'org', 'member_of', 'inject', 'aggr_mtd', 'aggr_bndry', 'export_comps', 'components', 'remarks', 'notify', 'mnt_lower', 'mnt_routes', 'country' ] );
     __PACKAGE__->attributes( 'single', [ 'route6', 'origin', 'aggr_mtd', 'aggr_bndry', 'export_comps', 'components', 'source', 'country' ] );
-    __PACKAGE__->attributes( 'multiple', [ 'descr', 'mnt_by', 'changed', 'holes', 'org', 'member_of', 'inject', 'remarks', 'notify', 'mnt_lower', 'mnt_routes' ] );
+    __PACKAGE__->attributes( 'multiple', [ 'descr', 'mnt_by', 'changed', 'pingable', 'ping_hdl', 'holes', 'org', 'member_of', 'inject', 'remarks', 'notify', 'mnt_lower', 'mnt_routes' ] );
 }
 
 =head1 NAME
@@ -80,17 +78,46 @@ always return the current descr array.
 Accessor to the origin attribute.
 Accepts an optional origin, always return the current origin.
 
-=head2 B<org( [$org] )>
+=head2 B<pingable( [$pingable] )>
 
-Accessor to the org attribute.
-Accepts an optional org to be added to the org array,
-always return the current org array.
+Accessor to the pingable attribute.
+Accepts an optional pingable line to be added to the pingable array,
+always return the current pingable array.
+
+An IPv4 or an IPv6 address allowing a network operator to advertise an IP address of a node
+that should be reachable from outside networks. This node can be
+used as a destination address for diagnostic tests.
+The IP address must be within the address range of the prefix
+containing this attribute.
+
+=head2 B<ping_hdl( [$ping_hdl] )>
+
+Accessor to the ping_hdl attribute.
+Accepts an optional ping_hdl line to be added to the ping_hdl array,
+always return the current ping_hdl array.
+
+References a person or role capable of responding to queries
+concerning the IP address(es) specified in the 'pingable'
+attribute.
 
 =head2 B<holes( [$hole] )>
 
 Accessor to the holes attribute.
 Accepts an optional hole to be added to the holes array,
 always return the current holes array.
+
+=head2 B<org( [$org] )>
+
+Accessor to the org attribute.
+Accepts an optional org, always return the current org.
+
+Points to an existing organisation object representing the entity that
+holds the resource.
+
+The 'ORG-' string followed by 2 to 4 characters, followed by up to 5 digits
+followed by a source specification.  The first digit must not be "0".
+Source specification starts with "-" followed by source name up to
+9-character length.
 
 =head2 B<member_of( [$member_of] )>
 

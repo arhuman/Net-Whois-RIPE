@@ -34,7 +34,7 @@ __PACKAGE__->attributes( 'primary', ['nic_hdl'] );
 __PACKAGE__->attributes( 'mandatory', [ 'role', 'address', 'e_mail', 'tech_c', 'admin_c', 'nic_hdl', 'changed', 'source' ] );
 __PACKAGE__->attributes( 'optional', [ 'phone', 'fax_no', 'org', 'trouble', 'remarks', 'notify', 'mnt_by', 'abuse_mailbox' ] );
 __PACKAGE__->attributes( 'single', [ 'role', 'nic_hdl', 'source' ] );
-__PACKAGE__->attributes( 'multiple', [ 'address', 'e_mail',' org', 'tech_c', 'admin_c', 'changed', 'phone', 'fax_no', 'trouble', 'remarks', 'notify', 'mnt_by', 'abuse_mailbox' ] );
+__PACKAGE__->attributes( 'multiple', [ 'address', 'e_mail', 'org', 'tech_c', 'admin_c', 'changed', 'phone', 'fax_no', 'trouble', 'remarks', 'notify', 'mnt_by', 'abuse_mailbox' ] );
 
 
 =head1 NAME
