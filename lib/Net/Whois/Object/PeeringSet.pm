@@ -5,26 +5,35 @@ use base qw/Net::Whois::Object/;
 # http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-19
 # http://www.apnic.net/apnic-info/whois_search/using-whois/guide/peering-set
 #
-# peering-set:   [mandatory]  [single]     [primary/look-up key]
-# descr:         [mandatory]  [multiple]   [ ]
-# peering:       [mandatory]  [multiple]   [ ]
-# remarks:       [optional]   [multiple]   [ ]
-# tech-c:        [mandatory]  [multiple]   [inverse key]
-# admin-c:       [mandatory]  [multiple]   [inverse key]
-# notify:        [optional]   [multiple]   [inverse key]
-# mnt-by:        [mandatory]  [multiple]   [inverse key]
-# changed:       [mandatory]  [multiple]   [ ]
-# source:        [mandatory]  [single]     [ ]
-
-# From http://www.apnic.net/apnic-info/whois_search/using-whois/guide/peering-set
-#
+# From : whois -t peering-set 
+# % This is the RIPE Database query service.
+# % The objects are in RPSL format.
+# %
+# % The RIPE Database is subject to Terms and Conditions.
+# % See http://www.ripe.net/db/support/db-terms-conditions.pdf
+# 
+# peering-set:    [mandatory]  [single]     [primary/lookup key]
+# descr:          [mandatory]  [multiple]   [ ]
+# peering:        [optional]   [multiple]   [ ]
 # mp-peering:     [optional]   [multiple]   [ ]
+# remarks:        [optional]   [multiple]   [ ]
+# org:            [optional]   [multiple]   [inverse key]
+# tech-c:         [mandatory]  [multiple]   [inverse key]
+# admin-c:        [mandatory]  [multiple]   [inverse key]
+# notify:         [optional]   [multiple]   [inverse key]
+# mnt-by:         [mandatory]  [multiple]   [inverse key]
 # mnt-lower:      [optional]   [multiple]   [inverse key]
+# changed:        [mandatory]  [multiple]   [ ]
+# source:         [mandatory]  [single]     [ ]
+# 
+# % This query was served by the RIPE Database Query Service version 1.38 (WHOIS2)
+
+
 __PACKAGE__->attributes( 'primary', ['peering_set'] );
 __PACKAGE__->attributes( 'mandatory', [ 'peering_set', 'descr', 'peering', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
-__PACKAGE__->attributes( 'optional', [ 'remarks',     'notify', 'mp_peering', 'mnt_lower' ] );
+__PACKAGE__->attributes( 'optional', [ 'remarks', 'org', 'notify', 'mp_peering', 'mnt_lower' ] );
 __PACKAGE__->attributes( 'single',    [ 'peering_set', 'source' ] );
-__PACKAGE__->attributes( 'multiple',  [ 'descr',       'peering', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'remarks', 'notify', 'mp_peering', 'mnt_lower' ] );
+__PACKAGE__->attributes( 'multiple',  [ 'descr', 'peering', 'mp_peering', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'remarks', 'org', 'notify', 'mnt_lower' ] );
 
 
 =head1 NAME
@@ -78,6 +87,19 @@ always return the current peering array.
 Accessor to the remarks attribute.
 Accepts an optional remark to be added to the remarks array,
 always return the current remarks array.
+
+=head2 B<org( [$org] )>
+
+Accessor to the org attribute.
+Accepts an optional org, always return the current org.
+
+Points to an existing organisation object representing the entity that
+holds the resource.
+
+The 'ORG-' string followed by 2 to 4 characters, followed by up to 5 digits
+followed by a source specification.  The first digit must not be "0".
+Source specification starts with "-" followed by source name up to
+9-character length.
 
 =head2 B<tech_c( [$contact] )>
 
