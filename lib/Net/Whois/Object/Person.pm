@@ -5,22 +5,34 @@ use base qw/Net::Whois::Object/;
 # http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-20
 # http://www.apnic.net/apnic-info/whois_search/using-whois/guide/person
 #
-# person:        [mandatory]  [single]     [lookup key]
-# address:       [mandatory]  [multiple]   [ ]
-# phone:         [mandatory]  [multiple]   [ ]
-# fax-no:        [optional]   [multiple]   [ ]
-# e-mail:        [optional]   [multiple]   [lookup key]
-# nic-hdl:       [mandatory]  [single]     [primary/look-up key]
-# remarks:       [optional]   [multiple]   [ ]
-# notify:        [optional]   [multiple]   [inverse key]
-# mnt-by:        [optional]   [multiple]   [inverse key]
-# changed:       [mandatory]  [multiple]   [ ]
-# source:        [mandatory]  [single]     [ ]
+# From :  whois -t person
+# % This is the RIPE Database query service.
+# % The objects are in RPSL format.
+# %
+# % The RIPE Database is subject to Terms and Conditions.
+# % See http://www.ripe.net/db/support/db-terms-conditions.pdf
+# 
+# person:         [mandatory]  [single]     [lookup key]
+# address:        [mandatory]  [multiple]   [ ]
+# phone:          [mandatory]  [multiple]   [ ]
+# fax-no:         [optional]   [multiple]   [ ]
+# e-mail:         [optional]   [multiple]   [lookup key]
+# org:            [optional]   [multiple]   [inverse key]
+# nic-hdl:        [mandatory]  [single]     [primary/lookup key]
+# remarks:        [optional]   [multiple]   [ ]
+# notify:         [optional]   [multiple]   [inverse key]
+# abuse-mailbox:  [optional]   [multiple]   [inverse key]
+# mnt-by:         [mandatory]  [multiple]   [inverse key]
+# changed:        [mandatory]  [multiple]   [ ]
+# source:         [mandatory]  [single]     [ ]
+# 
+# % This query was served by the RIPE Database Query Service version 1.38 (WHOIS2
+
 __PACKAGE__->attributes( 'primary', ['nic_hdl'] );
 __PACKAGE__->attributes( 'mandatory', [ 'person', 'address', 'phone', 'nic_hdl', 'changed', 'source' ] );
-__PACKAGE__->attributes( 'optional', [ 'fax_no', 'e_mail', 'remarks', 'notify', 'mnt_by' ] );
+__PACKAGE__->attributes( 'optional', [ 'fax_no', 'e_mail', 'org', 'remarks', 'notify', 'abuse_mailbox', 'mnt_by' ] );
 __PACKAGE__->attributes( 'single', [ 'person', 'nic_hdl', 'source' ] );
-__PACKAGE__->attributes( 'multiple', [ 'address', 'phone', 'changed', 'fax_no', 'e_mail', 'remarks', 'notify', 'mnt_by' ] );
+__PACKAGE__->attributes( 'multiple', [ 'address', 'phone', 'changed', 'fax_no', 'e_mail', 'org', 'remarks', 'notify', 'abuse_mailbox', 'mnt_by' ] );
 
 
 =head1 NAME
@@ -80,6 +92,19 @@ Accessor to the e_mail attribute.
 Accepts an optional e_mail to be added to the e_mail array,
 always return the current e_mail array.
 
+=head2 B<org( [$org] )>
+
+Accessor to the org attribute.
+Accepts an optional org, always return the current org array.
+
+Points to an existing organisation object representing the entity that
+holds the resource.
+
+The 'ORG-' string followed by 2 to 4 characters, followed by up to 5 digits
+followed by a source specification.  The first digit must not be "0".
+Source specification starts with "-" followed by source name up to
+9-character length.
+
 =head2 B<nic_hdl( [$nic_hdl] )>
 
 Accessor to the nic_hdl attribute.
@@ -96,6 +121,12 @@ always return the current remarks array.
 Accessor to the notify attribute.
 Accepts an optional notify value to be added to the notify array,
 always return the current notify array.
+
+=head2 B<abuse_mailbox( [$abuse_mailbox] )>
+
+Accessor to the abuse_mailbox attribute.
+Accepts an optional abuse_mailbox value to be added to the abuse_mailbox array,
+always return the current abuse_mailbox array.
 
 =head2 B<mnt_by( [$mnt_by] )>
 
