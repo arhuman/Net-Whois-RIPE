@@ -2,8 +2,30 @@ package Net::Whois::Object::AsSet;
 
 use base qw/Net::Whois::Object/;
 
-# http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-8
-# http://www.apnic.net/apnic-info/whois_search/using-whois/guide/as-set
+# From : whois -t as-set  
+#
+# % This is the RIPE Database query service.
+# % The objects are in RPSL format.
+# %
+# % The RIPE Database is subject to Terms and Conditions.
+# % See http://www.ripe.net/db/support/db-terms-conditions.pdf
+# 
+# as-set:         [mandatory]  [single]     [primary/lookup key]
+# descr:          [mandatory]  [multiple]   [ ]
+# members:        [optional]   [multiple]   [ ]
+# mbrs-by-ref:    [optional]   [multiple]   [inverse key]
+# remarks:        [optional]   [multiple]   [ ]
+# org:            [optional]   [multiple]   [inverse key]
+# tech-c:         [mandatory]  [multiple]   [inverse key]
+# admin-c:        [mandatory]  [multiple]   [inverse key]
+# notify:         [optional]   [multiple]   [inverse key]
+# mnt-by:         [mandatory]  [multiple]   [inverse key]
+# mnt-lower:      [optional]   [multiple]   [inverse key]
+# changed:        [mandatory]  [multiple]   [ ]
+# source:         [mandatory]  [single]     [ ]
+# 
+# % This query was served by the RIPE Database Query Service version 1.38 (WHOIS4)
+
 #
 # as-set:       [mandatory]  [single]     [primary/look-up key]
 # descr:        [mandatory]  [multiple]   [ ]
@@ -18,9 +40,9 @@ use base qw/Net::Whois::Object/;
 # source:       [mandatory]  [single]     [ ]
 __PACKAGE__->attributes( 'primary', ['as_set'] );
 __PACKAGE__->attributes( 'mandatory', [ 'as_set', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
-__PACKAGE__->attributes( 'optional', [ 'members', 'mbrs_by_ref', 'remarks', 'notify' ] );
+__PACKAGE__->attributes( 'optional', [ 'members', 'mbrs_by_ref', 'remarks', 'org', 'notify', 'mnt_lower' ] );
 __PACKAGE__->attributes( 'single', [ 'as_set', 'source' ] );
-__PACKAGE__->attributes( 'multiple', [ 'descr', 'members', 'mbrs_by_ref', 'remarks', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'changed' ] );
+__PACKAGE__->attributes( 'multiple', [ 'descr', 'members', 'mbrs_by_ref', 'remarks', 'org', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'mnt_lower', 'changed' ] );
 
 =head1 NAME
 
@@ -104,6 +126,19 @@ always return the current remarks array.
 Information about the object that cannot be stated in other attributes.
 May include a URL or email address.
 
+=head2 B<org( [$org] )>
+
+Accessor to the org attribute.
+Accepts an optional org, always return the current org.
+
+Points to an existing organisation object representing the entity that
+holds the resource.
+
+The 'ORG-' string followed by 2 to 4 characters, followed by up to 5 digits
+followed by a source specification.  The first digit must not be "0".
+Source specification starts with "-" followed by source name up to
+9-character length.
+
 =head2 B<tech_c( [$tech_c] )>
 
 Accessor to the tech_c attribute.
@@ -151,6 +186,19 @@ object.
 When your database details are protected by a 'mntner' object, then
 only persons with access to the security information of that 'mntner'
 object will be able to change details.
+
+=head2 B<mnt_lower( [$mnt] )>
+
+Accessor to the mnt_lower attribute.
+Accepts an optional mnt to be added to the mnt_lower array,
+always return the current mnt_lower array.
+
+Specifies the identifier of a registered mntner object used
+for hierarchical authorisation.  Protects creation of objects
+directly (one level) below in the hierarchy of an object type.
+The authentication method of this maintainer object will then
+be used upon creation of any object directly below the object
+that contains the "mnt-lower:" attribute.
 
 =head2 B<changed( [$changed] )>
 
