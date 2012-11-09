@@ -2,34 +2,40 @@ package Net::Whois::Object::Organisation;
 
 use base qw/Net::Whois::Object/;
 
-# http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-18
-# APNIC ??
+# From  : whois -t organisation
+# % This is the RIPE Database query service.
+# % The objects are in RPSL format.
+# %
+# % The RIPE Database is subject to Terms and Conditions.
+# % See http://www.ripe.net/db/support/db-terms-conditions.pdf
 #
-# organisation:  [mandatory]  [single]     [primary/look-up key]
-# org-name:      [mandatory]  [single]     [look-up key]
-# org-type:      [mandatory]  [single]     [ ]
-# descr:         [optional]   [multiple]   [ ]
-# remarks:       [optional]   [multiple]   [ ]
-# address:       [mandatory]  [multiple]   [ ]
-# phone:         [optional]   [multiple]   [ ]
-# fax-no:        [optional]   [multiple]   [ ]
-# e-mail:        [mandatory]  [multiple]   [look-up key]
-# org:           [optional]   [multiple]   [inverse key]
-# admin-c:       [optional]   [multiple]   [inverse key]
-# tech-c:        [optional]   [multiple]   [inverse key]
-# ref-nfy:       [optional]   [multiple]   [inverse key]
-# mnt-ref:       [mandatory]  [multiple]   [inverse key]
-# notify:        [optional]   [multiple]   [inverse key]
-# mnt-by:        [mandatory]  [multiple]   [inverse key]
-# changed:       [mandatory]  [multiple]   [ ]
-# source:        [mandatory]  [single]     [ ]
-#
+# organisation:   [mandatory]  [single]     [primary/lookup key]
+# org-name:       [mandatory]  [single]     [lookup key]
+# org-type:       [mandatory]  [single]     [ ]
+# descr:          [optional]   [multiple]   [ ]
+# remarks:        [optional]   [multiple]   [ ]
+# address:        [mandatory]  [multiple]   [ ]
+# phone:          [optional]   [multiple]   [ ]
+# fax-no:         [optional]   [multiple]   [ ]
+# e-mail:         [mandatory]  [multiple]   [lookup key]
+# geoloc:         [optional]   [single]     [ ]
+# language:       [optional]   [multiple]   [ ]
+# org:            [optional]   [multiple]   [inverse key]
+# admin-c:        [optional]   [multiple]   [inverse key]
+# tech-c:         [optional]   [multiple]   [inverse key]
+# ref-nfy:        [optional]   [multiple]   [inverse key]
+# mnt-ref:        [mandatory]  [multiple]   [inverse key]
+# notify:         [optional]   [multiple]   [inverse key]
+# abuse-mailbox:  [optional]   [multiple]   [inverse key]
+# mnt-by:         [mandatory]  [multiple]   [inverse key]
+# changed:        [mandatory]  [multiple]   [ ]
+# source:         [mandatory]  [single]     [ ]
+
 __PACKAGE__->attributes( 'primary',   ['organisation'] );
 __PACKAGE__->attributes( 'mandatory', [ 'organisation', 'org_name', 'org_type', 'address', 'e_mail', 'mnt_ref', 'mnt_by', 'changed', 'source' ] );
-__PACKAGE__->attributes( 'optional', [ 'descr', 'remarks', 'phone', 'fax_no', 'org', 'admin_c', 'tech_c', 'ref_nfy', 'notify' ] );
-__PACKAGE__->attributes( 'single', [ 'organisation', 'org_name', 'org_type', 'source' ] );
-__PACKAGE__->attributes( 'multiple', [ 'descr', 'remarks', 'address', 'phone', 'fax_no', 'e_mail', 'org', 'admin_c', 'tech_c', 'ref_nfy', 'mnt_ref', 'notify', 'mnt_by', 'changed' ] );
-
+__PACKAGE__->attributes( 'optional',  [ 'descr', 'remarks', 'phone', 'fax_no', 'geoloc', 'language', 'org', 'admin_c', 'tech_c', 'ref_nfy', 'notify', 'abuse_mailbox' ] );
+__PACKAGE__->attributes( 'single', [ 'organisation', 'org_name', 'org_type', 'geoloc','source' ] );
+__PACKAGE__->attributes( 'multiple', [ 'descr', 'remarks', 'address', 'phone', 'fax_no', 'e_mail','language', 'org', 'admin_c', 'tech_c', 'ref_nfy', 'mnt_ref', 'notify','abuse_mailbox', 'mnt_by', 'changed' ] );
 
 =head1 NAME
 
@@ -81,6 +87,14 @@ Registries, and OTHER for all other organisations.
 Accessor to the org attribute.
 Accepts an optional org, always return the current org.
 
+Points to an existing organisation object representing the entity that
+holds the resource.
+
+The 'ORG-' string followed by 2 to 4 characters, followed by up to 5 digits
+followed by a source specification.  The first digit must not be "0".
+Source specification starts with "-" followed by source name up to
+9-character length.
+
 =head2 B<address( [$address] )>
 
 Accessor to the address attribute.
@@ -104,6 +118,17 @@ always return the current fax_no array.
 Accessor to the e_mail attribute.
 Accepts an optional e_mail to be added to the e_mail array,
 always return the current e_mail array.
+
+=head2 B<geoloc( [$geoloc] )>
+
+Accessor to the geoloc attribute.
+Accepts an optional geoloc, always return the current geoloc.
+
+=head2 B<language( [$language] )>
+
+Accessor to the language attribute.
+Accepts an optional language to be added to the language array,
+always return the current language array.
 
 =head2 B<admin_c( [$contact] )>
 
