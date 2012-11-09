@@ -5,25 +5,36 @@ use base qw/Net::Whois::Object/;
 # http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-27
 # http://www.apnic.net/apnic-info/whois_search/using-whois/guide/rtr-set
 #
-# rtr-set:       [mandatory]  [single]     [primary/look-up key]
-# descr:         [mandatory]  [multiple]   [ ]
-# members:       [optional]   [multiple]   [ ]
-# mbrs-by-ref:   [optional]   [multiple]   [inverse key]
-# remarks:       [optional]   [multiple]   [ ]
-# tech-c:        [mandatory]  [multiple]   [inverse key]
-# admin-c:       [mandatory]  [multiple]   [inverse key]
-# notify:        [optional]   [multiple]   [inverse key]
-# mnt-by:        [mandatory]  [multiple]   [inverse key]
-# changed:       [mandatory]  [multiple]   [ ]
-# source:        [mandatory]  [single]     [ ]
+# From : whois -t route-set
+# % This is the RIPE Database query service.
+# % The objects are in RPSL format.
+# %
+# % The RIPE Database is subject to Terms and Conditions.
+# % See http://www.ripe.net/db/support/db-terms-conditions.pdf
+# 
+# route-set:      [mandatory]  [single]     [primary/lookup key]
+# descr:          [mandatory]  [multiple]   [ ]
+# members:        [optional]   [multiple]   [ ]
+# mp-members:     [optional]   [multiple]   [ ]
+# mbrs-by-ref:    [optional]   [multiple]   [inverse key]
+# remarks:        [optional]   [multiple]   [ ]
+# org:            [optional]   [multiple]   [inverse key]
+# tech-c:         [mandatory]  [multiple]   [inverse key]
+# admin-c:        [mandatory]  [multiple]   [inverse key]
+# notify:         [optional]   [multiple]   [inverse key]
+# mnt-by:         [mandatory]  [multiple]   [inverse key]
+# mnt-lower:      [optional]   [multiple]   [inverse key]
+# changed:        [mandatory]  [multiple]   [ ]
+# source:         [mandatory]  [single]     [ ]
+#
+# % This query was served by the RIPE Database Query Service version 1.38 (WHOIS2)
 
-# From http://www.apnic.net/apnic-info/whois_search/using-whois/guide/rtr-set
-# mp-members:    [optional]   [multiple]   [ ]
+
 __PACKAGE__->attributes( 'primary', ['rtr_set'] );
 __PACKAGE__->attributes( 'mandatory', [ 'rtr_set', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
-__PACKAGE__->attributes( 'optional', [ 'members', 'mbrs_by_ref', 'remarks', 'notify', 'mp_members' ] );
+__PACKAGE__->attributes( 'optional', [ 'members', 'mbrs_by_ref', 'remarks', 'org', 'notify', 'mp_members' ] );
 __PACKAGE__->attributes( 'single', [ 'rtr_set', 'source' ] );
-__PACKAGE__->attributes( 'multiple', [ 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'members', 'mbrs_by_ref', 'remarks', 'notify', 'mp_members' ] );
+__PACKAGE__->attributes( 'multiple', [ 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'members', 'mbrs_by_ref', 'remarks', 'org', 'notify', 'mp_members' ] );
 
 =head1 NAME
 
@@ -82,6 +93,19 @@ always return the current mbrs_by_ref array.
 Accessor to the remarks attribute.
 Accepts an optional remark to be added to the remarks array,
 always return the current remarks array.
+
+=head2 B<org( [$org] )>
+
+Accessor to the org attribute.
+Accepts an optional org, always return the current org.
+
+Points to an existing organisation object representing the entity that
+holds the resource.
+
+The 'ORG-' string followed by 2 to 4 characters, followed by up to 5 digits
+followed by a source specification.  The first digit must not be "0".
+Source specification starts with "-" followed by source name up to
+9-character length.
 
 =head2 B<tech_c( [$contact] )>
 
