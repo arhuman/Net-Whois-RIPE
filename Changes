@@ -1,8 +1,22 @@
 Revision history for net-whois-ripe
 
+
+2.00020     2012-11-14
             - Changes date format in Changes file 
             (to comply to Test-Changes spec)
             - Add new attributes (geoloc, language, abuse_mailbox) to Organisation object
+            Add 'geoloc', 'language', 'abuse_mailbox' to the Organisation object
+            Add 'org' to the PeeringSet object
+            Add 'org' attribute to the RtrSet object
+            Add 'org' attribute to the RouteSet object
+            Add 'pingable', 'ping_hdl' and 'org' attribute to the Route(6) objects
+            Add 'org' attribute to the Role object
+            Add 'org' and 'abuse_mailbox' attribute to the Person object
+            Add 'geoloc' and 'language' attribute to the InetNum object
+            Add 'geoloc' and 'language' attribute to Inet6Num object
+            Add 'org' and 'mnt_lower' attribute to AsSet object
+            Update tests accordingly
+
 
 2.00019     2012-10-12
             - **** API CHANGES ****
