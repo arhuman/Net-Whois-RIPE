@@ -56,6 +56,12 @@ is_deeply( $object->remarks(), ['No remarks'], 'remarks properly parsed' );
 $object->remarks('Added remarks');
 is( $object->remarks()->[1], 'Added remarks', 'remarks properly added' );
 
+# Test 'org'
+$tested{'org'}++;
+is_deeply( $object->org(), ['ORG-MISC01-RIPE'], 'org properly parsed' );
+$object->org('ORG-MISC02-RIPE');
+is( $object->org()->[1], 'ORG-MISC02-RIPE', 'org properly added' );
+
 # Test 'tech_c'
 $tested{'tech_c'}++;
 is_deeply( $object->tech_c(), ['TECH-CTCT'], 'tech_c properly parsed' );
@@ -110,6 +116,7 @@ peering:        PRNG-OTHER
 peering:        AS1 at 9.9.9.1
 mp-peering:     PRNG-OTHERV6
 remarks:        No remarks
+org:            ORG-MISC01-RIPE
 tech-c:         TECH-CTCT
 admin-c:        ADM-CTCT
 notify:         watcher@somewhere.com

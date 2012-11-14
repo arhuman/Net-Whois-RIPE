@@ -44,6 +44,12 @@ is_deeply( $object->remarks(), [ '**********************', '*      Remarks      
 $object->remarks('Added remarks');
 is( $object->remarks()->[3], 'Added remarks', 'remarks properly added' );
 
+# Test 'org'
+$tested{'org'}++;
+is_deeply( $object->org(), ['ORG-MISC01-RIPE'], 'org properly parsed' );
+$object->org('ORG-MISC02-RIPE');
+is( $object->org()->[1], 'ORG-MISC02-RIPE', 'org properly added' );
+
 # Test 'members'
 $tested{'members'}++;
 is_deeply( $object->members(), [ 'AS1', 'AS11', 'AS21', 'AS1211' ], 'members properly parsed' );
@@ -80,6 +86,12 @@ is_deeply( $object->mnt_by(), ['THE-MNT'], 'mnt_by properly parsed' );
 $object->mnt_by('Added mnt_by');
 is( $object->mnt_by()->[1], 'Added mnt_by', 'mnt_by properly added' );
 
+# Test 'mnt_lower'
+$tested{'mnt_lower'}++;
+is_deeply( $object->mnt_lower(), ['THE-LMNT'], 'mnt_lower properly parsed' );
+$object->mnt_lower('Added mnt_lower');
+is( $object->mnt_lower()->[1], 'Added mnt_lower', 'mnt_lower properly added' );
+
 # Test 'changed'
 $tested{'changed'}++;
 is_deeply( $object->changed(), [ 'someone@somewhere.net 20080422', 'someoneelese@somewere.net 20090429' ], 'changed properly parsed' );
@@ -103,6 +115,7 @@ descr:          A description
 remarks:        **********************
 remarks:        *      Remarks       *
 remarks:        **********************
+org:            ORG-MISC01-RIPE
 members:        AS1
 members:        AS11
 members:        AS21
@@ -115,6 +128,7 @@ tech-c:         CXXX-RIPE
 tech-c:         CXXXXX-RIPE
 notify:         watcher@somewhere.com
 mnt-by:         THE-MNT
+mnt-lower:      THE-LMNT
 changed:        someone@somewhere.net 20080422
 changed:        someoneelese@somewere.net 20090429
 source:         RIPE # Filtered

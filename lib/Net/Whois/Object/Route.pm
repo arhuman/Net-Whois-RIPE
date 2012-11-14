@@ -5,34 +5,42 @@ use base qw/Net::Whois::Object/;
 # http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-25
 # http://www.apnic.net/apnic-info/whois_search/using-whois/guide/route
 #
-# route:         [mandatory]  [single]     [primary/look-up key]
-# descr:         [mandatory]  [multiple]   [ ]
-# origin:        [mandatory]  [single]     [primary/inverse key]
-# holes:         [optional]   [multiple]   [ ]
-# member-of:     [optional]   [multiple]   [inverse key]
-# inject:        [optional]   [multiple]   [ ]
-# aggr-mtd:      [optional]   [single]     [ ]
-# aggr-bndry:    [optional]   [single]     [ ]
-# export-comps:  [optional]   [single]     [ ]
-# components:    [optional]   [single]     [ ]
-# remarks:       [optional]   [multiple]   [ ]
-# cross-mnt:     [optional]   [multiple]   [inverse key]
-# cross-nfy:     [optional]   [multiple]   [inverse key]
-# notify:        [optional]   [multiple]   [inverse key]
-# mnt-lower:     [optional]   [multiple]   [inverse key]
-# mnt-routes:    [optional]   [multiple]   [inverse key]
-# mnt-by:        [mandatory]  [multiple]   [inverse key]
-# changed:       [mandatory]  [multiple]   [ ]
-# source:        [mandatory]  [single]     [ ]
-
-# From http://www.apnic.net/apnic-info/whois_search/using-whois/guide/route
-# country:       [optional]   [single]     [ ]
+# From : whois -t route
+# % This is the RIPE Database query service.
+# % The objects are in RPSL format.
+# %
+# % The RIPE Database is subject to Terms and Conditions.
+# % See http://www.ripe.net/db/support/db-terms-conditions.pdf
+# 
+# route:          [mandatory]  [single]     [primary/lookup key]
+# descr:          [mandatory]  [multiple]   [ ]
+# origin:         [mandatory]  [single]     [primary/inverse key]
+# pingable:       [optional]   [multiple]   [ ]
+# ping-hdl:       [optional]   [multiple]   [inverse key]
+# holes:          [optional]   [multiple]   [ ]
+# org:            [optional]   [multiple]   [inverse key]
+# member-of:      [optional]   [multiple]   [inverse key]
+# inject:         [optional]   [multiple]   [ ]
+# aggr-mtd:       [optional]   [single]     [ ]
+# aggr-bndry:     [optional]   [single]     [ ]
+# export-comps:   [optional]   [single]     [ ]
+# components:     [optional]   [single]     [ ]
+# remarks:        [optional]   [multiple]   [ ]
+# notify:         [optional]   [multiple]   [inverse key]
+# mnt-lower:      [optional]   [multiple]   [inverse key]
+# mnt-routes:     [optional]   [multiple]   [inverse key]
+# mnt-by:         [mandatory]  [multiple]   [inverse key]
+# changed:        [mandatory]  [multiple]   [ ]
+# source:         [mandatory]  [single]     [ ]
 #
+# % This query was served by the RIPE Database Query Service version 1.38 (WHOIS4)
+
+
 __PACKAGE__->attributes( 'primary',   ['route'] );
 __PACKAGE__->attributes( 'mandatory', [ 'route', 'origin', 'descr', 'mnt_by', 'changed', 'source' ] );
-__PACKAGE__->attributes( 'optional', [ 'holes', 'member_of', 'inject', 'aggr_mtd', 'aggr_bndry', 'export_comps', 'components', 'remarks', 'cross_mnt', 'cross_nfy', 'notify', 'mnt_lower', 'mnt_routes', 'country' ] );
+__PACKAGE__->attributes( 'optional', [ 'pingable', 'ping_hdl', 'holes', 'org', 'member_of', 'inject', 'aggr_mtd', 'aggr_bndry', 'export_comps', 'components', 'remarks', 'cross_mnt', 'cross_nfy', 'notify', 'mnt_lower', 'mnt_routes', 'country' ] );
 __PACKAGE__->attributes( 'single', [ 'route', 'origin', 'aggr_mtd', 'aggr_bndry', 'export_comps', 'components', 'source', 'country' ] );
-__PACKAGE__->attributes( 'multiple', [ 'descr', 'mnt_by', 'changed', 'holes', 'member_of', 'inject', 'remarks', 'cross_mnt', 'cross_nfy', 'notify', 'mnt_lower', 'mnt_routes' ] );
+__PACKAGE__->attributes( 'multiple', [ 'descr', 'mnt_by', 'changed','pingable', 'ping_hdl', 'holes', 'org', 'member_of', 'inject', 'remarks', 'cross_mnt', 'cross_nfy', 'notify', 'mnt_lower', 'mnt_routes' ] );
 
 =head1 NAME
 
@@ -81,11 +89,46 @@ always return the current descr array.
 Accessor to the origin attribute.
 Accepts an optional origin, always return the current origin.
 
+=head2 B<pingable( [$pingable] )>
+
+Accessor to the pingable attribute.
+Accepts an optional pingable line to be added to the pingable array,
+always return the current pingable array.
+
+An IPv4 or an IPv6 address allowing a network operator to advertise an IP address of a node
+that should be reachable from outside networks. This node can be
+used as a destination address for diagnostic tests.
+The IP address must be within the address range of the prefix
+containing this attribute.
+
+=head2 B<ping_hdl( [$ping_hdl] )>
+
+Accessor to the ping_hdl attribute.
+Accepts an optional ping_hdl line to be added to the ping_hdl array,
+always return the current ping_hdl array.
+
+References a person or role capable of responding to queries
+concerning the IP address(es) specified in the 'pingable'
+attribute.
+
 =head2 B<holes( [$hole] )>
 
 Accessor to the holes attribute.
 Accepts an optional hole to be added to the holes array,
 always return the current holes array.
+
+=head2 B<org( [$org] )>
+
+Accessor to the org attribute.
+Accepts an optional org, always return the current org.
+
+Points to an existing organisation object representing the entity that
+holds the resource.
+
+The 'ORG-' string followed by 2 to 4 characters, followed by up to 5 digits
+followed by a source specification.  The first digit must not be "0".
+Source specification starts with "-" followed by source name up to
+9-character length.
 
 =head2 B<member_of( [$member_of] )>
 

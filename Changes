@@ -1,6 +1,24 @@
 Revision history for net-whois-ripe
 
-2.00019     12 Oct 2012
+
+2.00020     2012-11-14
+            - Changes date format in Changes file 
+            (to comply to Test-Changes spec)
+            - Add new attributes (geoloc, language, abuse_mailbox) to Organisation object
+            Add 'geoloc', 'language', 'abuse_mailbox' to the Organisation object
+            Add 'org' to the PeeringSet object
+            Add 'org' attribute to the RtrSet object
+            Add 'org' attribute to the RouteSet object
+            Add 'pingable', 'ping_hdl' and 'org' attribute to the Route(6) objects
+            Add 'org' attribute to the Role object
+            Add 'org' and 'abuse_mailbox' attribute to the Person object
+            Add 'geoloc' and 'language' attribute to the InetNum object
+            Add 'geoloc' and 'language' attribute to Inet6Num object
+            Add 'org' and 'mnt_lower' attribute to AsSet object
+            Update tests accordingly
+
+
+2.00019     2012-10-12
             - **** API CHANGES ****
              Now pass the credentials through option hashref
               ('password' handled the same way as 'pgpkey')
@@ -13,7 +31,7 @@ Revision history for net-whois-ripe
 
 
 
-2.00018     27 Sep 2012
+2.00018     2012-09-27
             Another big contribution from Moritz Lenz :
             - drop dependency on Iterator::Util
             - Add abuse_mailbox to Role
@@ -23,7 +41,7 @@ Revision history for net-whois-ripe
             - Improve error detection in syncupdates_create
 
 
-2.00017     19 Sep 2012
+2.00017     2012-09-19
             A big thank you to Moritz Lenz from Noris Network AG
             for all his patches :
             - Add PGP key authentication
@@ -32,22 +50,22 @@ Revision history for net-whois-ripe
             - Fix regex in syncupdates_create
             - Various typos fixed, documentation addition...
 
-2.00016     11 Sep 2012
+2.00016     2012-09-11
             - Depend on LWP::UserAgent instead of WWW::Mechanize
               (Thanks to Moritz Lenz)
             - Make tests more portable
 
 
-2.00015     17 Jul 2012
+2.00015     2012-07-17
             - Change the way to test if t/common.pl was well loaded
               (remove $! checking which caused issue with old Perl versions)
             - Minor fix in pod documentation
             - Enable RIPE database update (and not only RIPE TEST database)
 
-2.00014     07 Jul 2012
+2.00014     2012-07-07
             - Add missing optional dependency to WWW::Mechanize for update features
 
-2.00013     06 Jul 2012
+2.00013     2012-07-06
             - Add RIPE SyncUpdates prototype implementation (Create, Update, Delete)
             - Add type on attributes and the following methods :
                 attributes()
@@ -60,7 +78,7 @@ Revision history for net-whois-ripe
             - Complete the documentation, with some examples
 
 
-2.00012     05 Jun 2012
+2.00012     2012-06-05
             Fix previous broken release (merge goof)
             Fix some tests
                 to skip when there's a Network issue
@@ -72,29 +90,29 @@ Revision history for net-whois-ripe
             (to fix name collision with FilterSet filter attribute)
             Enhance the documentation
 
-2.00011     05 Jun 2012
+2.00011     2012-06-05
             Broken release on github.
 
-2.00010     20 Apr 2012
+2.00010     2012-04-20
             Net::Whois::Object addition (By Arnaud "Arhuman" Assad)
 
-2.00009     23 Nov 2011
+2.00009     2011-11-23
 
-2.00008     26 Oct 2011
+2.00008     2011-10-26
 
-2.00003     13 Feb 2011
+2.00003     2011-02-13
 
-2.00002     28 Jan 2010
+2.00002     2010-01-28
 
-1.31        23 Aug 2009
+1.31        2009-08-23
 
-1.30        10 Jul 2009
+1.30        2009-07-10
 
-1.23        17 Apr 2006
+1.23        2006-04-17
 
-1.22        09 May 2005
+1.22        2005-05-09
 
-1.20        07 Nov 2004
+1.20        2004-11-07
 
-1.19        23 Jul 2002
+1.19        2002-07-23
 

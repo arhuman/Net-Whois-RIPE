@@ -92,6 +92,12 @@ is_deeply( $object->remarks(), ['No remarks'], 'remarks properly parsed' );
 $object->remarks('Added remarks');
 is( $object->remarks()->[1], 'Added remarks', 'remarks properly added' );
 
+# Test 'org'
+$tested{'org'}++;
+is_deeply( $object->org(), ['ORG-MISC01-RIPE'], 'org properly parsed' );
+$object->org('ORG-MISC02-RIPE');
+is( $object->org()->[1], 'ORG-MISC02-RIPE', 'org properly added' );
+
 # Test 'source'
 $tested{'source'}++;
 is( $object->source(), 'RIPE', 'source properly parsed' );
@@ -120,5 +126,6 @@ mnt-by:         MAINT-EXAMPLENET-AP
 notify:         watcher@example.com
 changed:        abc@examplenet.com 20101231
 remarks:        No remarks
+org:            ORG-MISC01-RIPE
 source:         RIPE
 

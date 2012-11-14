@@ -5,33 +5,41 @@ use base qw/Net::Whois::Object/;
 # http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-13
 # http://www.apnic.net/apnic-info/whois_search/using-whois/guide/inetnum
 #
-# inetnum:       [mandatory]  [single]     [primary/look-up key]
-# netname:       [mandatory]  [single]     [lookup key]
-# descr:         [mandatory]  [multiple]   [ ]
-# country:       [mandatory]  [multiple]   [ ]
-# org:           [optional]   [single]     [inverse key]
-# admin-c:       [mandatory]  [multiple]   [inverse key]
-# tech-c:        [mandatory]  [multiple]   [inverse key]
-# status:        [mandatory]  [single]     [ ]
-# remarks:       [optional]   [multiple]   [ ]
-# notify:        [optional]   [multiple]   [inverse key]
-# mnt-by:        [mandatory]  [multiple]   [inverse key]
-# mnt-lower:     [optional]   [multiple]   [inverse key]
-# mnt-routes:    [optional]   [multiple]   [inverse key]
-# mnt-domains:   [optional]   [multiple]   [inverse key]
-# mnt-irt:       [optional]   [multiple]   [inverse key]
-# changed:       [mandatory]  [multiple]   [ ]
-# source:        [mandatory]  [single]     [ ]
+# From :  whois -t inetnum 
+# % This is the RIPE Database query service.
+# % The objects are in RPSL format.
+# %
+# % The RIPE Database is subject to Terms and Conditions.
+# % See http://www.ripe.net/db/support/db-terms-conditions.pdf
+# 
+# inetnum:        [mandatory]  [single]     [primary/lookup key]
+# netname:        [mandatory]  [single]     [lookup key]
+# descr:          [mandatory]  [multiple]   [ ]
+# country:        [mandatory]  [multiple]   [ ]
+# geoloc:         [optional]   [single]     [ ]
+# language:       [optional]   [multiple]   [ ]
+# org:            [optional]   [single]     [inverse key]
+# admin-c:        [mandatory]  [multiple]   [inverse key]
+# tech-c:         [mandatory]  [multiple]   [inverse key]
+# status:         [mandatory]  [single]     [ ]
+# remarks:        [optional]   [multiple]   [ ]
+# notify:         [optional]   [multiple]   [inverse key]
+# mnt-by:         [mandatory]  [multiple]   [inverse key]
+# mnt-lower:      [optional]   [multiple]   [inverse key]
+# mnt-domains:    [optional]   [multiple]   [inverse key]
+# mnt-routes:     [optional]   [multiple]   [inverse key]
+# mnt-irt:        [optional]   [multiple]   [inverse key]
+# changed:        [mandatory]  [multiple]   [ ]
+# source:         [mandatory]  [single]     [ ]
+# 
+# % This query was served by the RIPE Database Query Service version 1.38 (WHOIS3)
 
-# From  http://www.apnic.net/apnic-info/whois_search/using-whois/guide/inetnum?view=text-only
-#
-# mnt-irt:        [mandatory]  [multiple]   [inverse key]
-#
+
 __PACKAGE__->attributes( 'primary', ['inetnum'] );
 __PACKAGE__->attributes( 'mandatory', [ 'inetnum', 'netname', 'descr', 'country', 'tech_c', 'admin_c', 'status', 'mnt_by', 'changed', 'source' ] );
-__PACKAGE__->attributes( 'optional', [ 'org', 'remarks', 'notify', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt' ] );
-__PACKAGE__->attributes( 'single', [ 'inetnum', 'netname', 'org', 'status', 'source' ] );
-    __PACKAGE__->attributes( 'multiple', [ 'descr', 'country', 'tech_c', 'admin_c', 'remarks', 'notify', 'mnt_by', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt', 'changed' ] );
+__PACKAGE__->attributes( 'optional', [ 'geoloc', 'language', 'org', 'remarks', 'notify', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt' ] );
+__PACKAGE__->attributes( 'single', [ 'inetnum', 'netname', 'geoloc', 'org', 'status', 'source' ] );
+__PACKAGE__->attributes( 'multiple', [ 'descr', 'country', 'language', 'tech_c', 'admin_c', 'remarks', 'notify', 'mnt_by', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt', 'changed' ] );
 
 
 =head1 NAME
@@ -83,6 +91,25 @@ Accessor to the country attribute.
 Accepts an optional country to be added to the country array,
 always return the current country array.
 
+=head2 B<geoloc( [$geoloc] )>
+
+Accessor to the geoloc attribute.
+Accepts an optional geoloc, always return the current geoloc.
+
+The location coordinates for the resource
+
+Location coordinates of the resource. Can take one of the following forms:
+[-90,90][-180,180]
+
+=head2 B<language( [$language] )>
+
+Accessor to the language attribute.
+Accepts an optional language to be added to the language array,
+always return the current language array.
+
+Identifies the language.
+
+Valid two-letter ISO 639-1 language code.
 =head2 B<org( [$org] )>
 
 Accessor to the 'org' attribute.

@@ -64,6 +64,12 @@ is( $object->certif()->[28], '=opxg',                                           
 $object->certif('Added certif');
 is( $object->certif()->[30], 'Added certif', 'certif properly added' );
 
+# Test 'org'
+$tested{'org'}++;
+is_deeply( $object->org(), ['ORG-MISC01-RIPE'], 'org properly parsed' );
+$object->org('ORG-MISC02-RIPE');
+is( $object->org()->[1], 'ORG-MISC02-RIPE', 'org properly added' );
+
 # Test 'notify'
 $tested{'notify'}++;
 is_deeply( $object->notify(), ['watcher@somewhere.com'], 'notify properly parsed' );
@@ -146,6 +152,7 @@ certif:         EwIbDAAKCRBoulTzThfGZ/VlAKCjxj+twQmuEyfNc8GzXTAelPTqCgCdES0n233p
 certif:         nfIPaiJtK2pPOSViTGk=
 certif:         =opxg
 certif:         -----END PGP PUBLIC KEY BLOCK-----
+org:            ORG-MISC01-RIPE
 notify:         watcher@somewhere.com
 mnt-by:         MAINT-EXAMPLECOM
 admin-c:        FR123-AP

@@ -5,28 +5,36 @@ use base qw/Net::Whois::Object/;
 # http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-23
 # http://www.apnic.net/apnic-info/whois_search/using-whois/guide/role
 #
-# role:          [mandatory]  [single]     [lookup key]
-# address:       [mandatory]  [multiple]   [ ]
-# phone:         [optional]   [multiple]   [ ]
-# fax-no:        [optional]   [multiple]   [ ]
-# e-mail:        [mandatory]  [multiple]   [lookup key]
-# trouble:       [optional]   [multiple]   [ ]
-# admin-c:       [mandatory]  [multiple]   [inverse key]
-# tech-c:        [mandatory]  [multiple]   [inverse key]
-# nic-hdl:       [mandatory]  [single]     [primary/look-up key]
-# remarks:       [optional]   [multiple]   [ ]
-# notify:        [optional]   [multiple]   [inverse key]
-# mnt-by:        [optional]   [multiple]   [inverse key]
-# changed:       [mandatory]  [multiple]   [ ]
-# source:        [mandatory]  [single]     [ ]
+# From: whois -t role
+# % This is the RIPE Database query service.
+# % The objects are in RPSL format.
+# %
+# % The RIPE Database is subject to Terms and Conditions.
+# % See http://www.ripe.net/db/support/db-terms-conditions.pdf
+# 
+# role:           [mandatory]  [single]     [lookup key]
+# address:        [mandatory]  [multiple]   [ ]
+# phone:          [optional]   [multiple]   [ ]
+# fax-no:         [optional]   [multiple]   [ ]
+# e-mail:         [mandatory]  [multiple]   [lookup key]
+# org:            [optional]   [multiple]   [inverse key]
+# admin-c:        [mandatory]  [multiple]   [inverse key]
+# tech-c:         [mandatory]  [multiple]   [inverse key]
+# nic-hdl:        [mandatory]  [single]     [primary/lookup key]
+# remarks:        [optional]   [multiple]   [ ]
+# notify:         [optional]   [multiple]   [inverse key]
+# abuse-mailbox:  [optional]   [multiple]   [inverse key]
+# mnt-by:         [mandatory]  [multiple]   [inverse key]
+# changed:        [mandatory]  [multiple]   [ ]
+# source:         [mandatory]  [single]     [ ]
+# 
+# % This query was served by the RIPE Database Query Service version 1.38 (WHOIS2)
 
-# inferred from whois -r -h whois-test.ripe.net AA2-TEST
-# abuse-mailbox: [optional]   [multiple]   [ ]
 __PACKAGE__->attributes( 'primary', ['nic_hdl'] );
 __PACKAGE__->attributes( 'mandatory', [ 'role', 'address', 'e_mail', 'tech_c', 'admin_c', 'nic_hdl', 'changed', 'source' ] );
-__PACKAGE__->attributes( 'optional', [ 'phone', 'fax_no', 'trouble', 'remarks', 'notify', 'mnt_by', 'abuse_mailbox' ] );
+__PACKAGE__->attributes( 'optional', [ 'phone', 'fax_no', 'org', 'trouble', 'remarks', 'notify', 'mnt_by', 'abuse_mailbox' ] );
 __PACKAGE__->attributes( 'single', [ 'role', 'nic_hdl', 'source' ] );
-__PACKAGE__->attributes( 'multiple', [ 'address', 'e_mail', 'tech_c', 'admin_c', 'changed', 'phone', 'fax_no', 'trouble', 'remarks', 'notify', 'mnt_by', 'abuse_mailbox' ] );
+__PACKAGE__->attributes( 'multiple', [ 'address', 'e_mail', 'org', 'tech_c', 'admin_c', 'changed', 'phone', 'fax_no', 'trouble', 'remarks', 'notify', 'mnt_by', 'abuse_mailbox' ] );
 
 
 =head1 NAME
@@ -89,6 +97,19 @@ always return the current fax_no array.
 Accessor to the e_mail attribute.
 Accepts an optional e_mail to be added to the e_mail array,
 always return the current e_mail array.
+
+=head2 B<org( [$org] )>
+
+Accessor to the org attribute.
+Accepts an optional org, always return the current org.
+
+Points to an existing organisation object representing the entity that
+holds the resource.
+
+The 'ORG-' string followed by 2 to 4 characters, followed by up to 5 digits
+followed by a source specification.  The first digit must not be "0".
+Source specification starts with "-" followed by source name up to
+9-character length.
 
 =head2 B<trouble( [$trouble] )>
 

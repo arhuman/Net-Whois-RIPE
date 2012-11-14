@@ -149,11 +149,11 @@ The parameters are passed through a hash ref, and can be the maintener
 authentication credentials ('password' or 'pgpkey') and the 'reason' parameter
 See L</Create> for more information on the authentication methods.
 
-    $object->syncupdates_update( { pgpkey => $keyID } );
+    $object->syncupdates_delete( { pgpkey => $keyID } );
 
 An additional parameter can be used as a reason for the deletion.
 
-    $object->syncupdates_update( { pgpkey => $keyID, reason =>  'Obsoleted by XXX' } );
+    $object->syncupdates_delete( { pgpkey => $keyID, reason =>  'Obsoleted by XXX' } );
 
 If no reason is provided, a default one ('Not needed anymore') is used.
     
@@ -416,7 +416,7 @@ sub dump {
     return $result;
 }
 
-=head2 B<syncupdates_update( $password, [\%options] )>
+=head2 B<syncupdates_update([\%options] )>
 
 Update the RIPE database through the web syncupdates interface.
 Use the password passed as parameter to authenticate.
@@ -700,7 +700,7 @@ sub _syncupdates_submit {
     my ( $self, $text, $options ) = @_;
 
     if ( exists $options->{pgpkey} ) {
-        $text = $self->_pgp_sign( $text, { pgpkey => $options->{pgpkey} } );
+        $text = $self->_pgp_sign( $text, $options );
     } elsif ( exists $options->{password} ) {
         my $password = $options->{password};
         chomp $password;

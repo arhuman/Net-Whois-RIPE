@@ -55,6 +55,18 @@ is_deeply( $object->country(), ['FR'], 'country properly parsed' );
 $object->country('Added country');
 is( $object->country()->[1], 'Added country', 'country properly added' );
 
+# Test 'geoloc'
+$tested{'geoloc'}++;
+is( $object->geoloc(), '[-90,90]', 'geoloc properly parsed' );
+$object->geoloc('[-90,91]');
+is( $object->geoloc(), '[-90,91]', 'geoloc properly set' );
+
+# Test 'language'
+$tested{'language'}++;
+is_deeply( $object->language(), ['FR','EN'], 'language properly parsed' );
+$object->language('ES');
+is( $object->language()->[2], 'ES', 'language properly added' );
+
 # Test 'org'
 $tested{'org'}++;
 is( $object->org(), 'ORG-MISC01-RIPE', 'org properly parsed' );
@@ -138,7 +150,10 @@ remarks:        No remarks
 netname:        EXAMPLENET-AP
 descr:          Example net Pty Ltd
 country:        FR
+language:       FR
+language:       EN
 org:            ORG-MISC01-RIPE
+geoloc:         [-90,90]
 admin-c:        FR123-AP
 tech-c:         FR123-AP
 status:         ALLOCATED PA

@@ -55,6 +55,18 @@ is_deeply( $object->fax_no(), ['+33 1 44 01 01 46'], 'fax_no properly parsed' );
 $object->fax_no('Added fax_no');
 is( $object->fax_no()->[1], 'Added fax_no', 'fax_no properly added' );
 
+# Test 'e_mail'
+$tested{'e_mail'}++;
+is_deeply( $object->e_mail(), ['role@somewhere.com'], 'e_mail properly parsed' );
+$object->e_mail('role2@elsewhere.com');
+is( $object->e_mail()->[1], 'role2@elsewhere.com', 'e_mail properly added' );
+
+# Test 'org'
+$tested{'org'}++;
+is_deeply( $object->org(), ['ORG-MISC01-RIPE'], 'org properly parsed' );
+$object->org('ORG-MISC02-RIPE');
+is( $object->org()->[1], 'ORG-MISC02-RIPE', 'org properly added' );
+
 # Test 'admin_c'
 $tested{'admin_c'}++;
 is_deeply( $object->admin_c(), ['CPY01-RIPE'], 'admin_c properly parsed' );
@@ -126,6 +138,8 @@ address:        75001 Paris
 address:        France
 phone:          +33 1 44 01 01 00
 fax-no:         +33 1 44 01 01 46
+e-mail:         role@somewhere.com
+org:            ORG-MISC01-RIPE
 admin-c:        CPY01-RIPE
 tech-c:         CPY01-RIPE
 tech-c:         C???-RIPE
