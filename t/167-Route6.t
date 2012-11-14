@@ -51,6 +51,18 @@ is( $object->origin(), 'AS1234', 'origin properly parsed' );
 $object->origin('AS12');
 is( $object->origin(), 'AS12', 'origin properly set' );
 
+# Test 'pingable'
+$tested{'pingable'}++;
+is_deeply( $object->pingable(), ['10.0.0.1'], 'pingable properly parsed' );
+$object->pingable('192.168.1.34');
+is( $object->pingable()->[1], '192.168.1.34', 'pingable properly added' );
+
+# Test 'ping_hdl'
+$tested{'ping_hdl'}++;
+is_deeply( $object->ping_hdl(), ['PING-EXAMPLECOM'], 'ping_hdl properly parsed' );
+$object->ping_hdl('PING2-EXAMPLECOM');
+is( $object->ping_hdl()->[1], 'PING2-EXAMPLECOM', 'ping_hdl properly added' );
+
 # Test 'org'
 $tested{'org'}++;
 my $orgs = $object->org();
@@ -166,6 +178,8 @@ notify:         watcher@somewhere.com
 mnt-by:         MAINT-EXAMPLECOM
 mnt-lower:      MAINT-EXAMPLECOM
 mnt-routes:     MAINT-EXAMPLECOM
+pingable:       10.0.0.1
+ping-hdl:       PING-EXAMPLECOM
 changed:        abc@somewhere.com 20120131
 source:         RIPE
 

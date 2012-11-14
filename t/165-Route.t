@@ -51,6 +51,18 @@ is( $object->origin(), 'AS1234', 'origin properly parsed' );
 $object->origin('AS12');
 is( $object->origin(), 'AS12', 'origin properly set' );
 
+# Test 'pingable'
+$tested{'pingable'}++;
+is_deeply( $object->pingable(), ['10.0.0.1'], 'pingable properly parsed' );
+$object->pingable('192.168.1.34');
+is( $object->pingable()->[1], '192.168.1.34', 'pingable properly added' );
+
+# Test 'ping_hdl'
+$tested{'ping_hdl'}++;
+is_deeply( $object->ping_hdl(), ['PING-EXAMPLECOM'], 'ping_hdl properly parsed' );
+$object->ping_hdl('PING2-EXAMPLECOM');
+is( $object->ping_hdl()->[1], 'PING2-EXAMPLECOM', 'ping_hdl properly added' );
+
 # Test 'cross_mnt'
 $tested{'cross_mnt'}++;
 is_deeply( $object->cross_mnt(), ['CROSS-MAINT01'], 'cross_mnt properly parsed' );
@@ -68,6 +80,12 @@ $tested{'holes'}++;
 is_deeply( $object->holes(), ['192.168.1.23'], 'holes properly parsed' );
 $object->holes('192.168.1.123');
 is( $object->holes()->[1], '192.168.1.123', 'holes properly added' );
+
+# Test 'org'
+$tested{'org'}++;
+is_deeply( $object->org(), ['ORG-MISC01-RIPE'], 'org properly parsed' );
+$object->org('ORG-MISC02-RIPE');
+is( $object->org()->[1], 'ORG-MISC02-RIPE', 'org properly added' );
 
 # Test 'member_of'
 $tested{'member_of'}++;
@@ -160,6 +178,7 @@ origin:         AS1234
 cross-mnt:      CROSS-MAINT01
 cross-nfy:      watcher2@somewhere.com
 holes:          192.168.1.23
+org:            ORG-MISC01-RIPE
 member_of:      RTES-SET01
 inject:         RTR01
 aggr_mtd:       AAAAAAA
@@ -171,6 +190,8 @@ notify:         watcher@somewhere.com
 mnt-by:         MAINT-EXAMPLECOM
 mnt-lower:      MAINT-EXAMPLECOM
 mnt-routes:     MAINT-EXAMPLECOM
+pingable:       10.0.0.1
+ping-hdl:       PING-EXAMPLECOM
 changed:        abc@somewhere.com 20120131
 source:         RIPE
 

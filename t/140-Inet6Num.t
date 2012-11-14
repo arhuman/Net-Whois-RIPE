@@ -51,6 +51,18 @@ is_deeply( $object->country(), ['AP'], 'country properly parsed' );
 $object->country('FR');
 is( $object->country()->[1], 'FR', 'country properly added' );
 
+# Test 'geoloc'
+$tested{'geoloc'}++;
+is( $object->geoloc(), '[-90,90]', 'geoloc properly parsed' );
+$object->geoloc('[-90,91]');
+is( $object->geoloc(), '[-90,91]', 'geoloc properly set' );
+
+# Test 'language'
+$tested{'language'}++;
+is_deeply( $object->language(), ['FR','EN'], 'language properly parsed' );
+$object->language('ES');
+is( $object->language()->[2], 'ES', 'language properly added' );
+
 # Test 'remarks'
 $tested{'remarks'}++;
 is_deeply( $object->remarks(), ['Example subnet'], 'remarks properly parsed' );
@@ -143,6 +155,9 @@ admin-c:     FR123-AP
 tech-c:      FR123-AP
 status:      ALLOCATED PORTABLE
 notify:      abc@examplenet.com
+geoloc:      [-90,90]
+language:    FR
+language:    EN
 mnt-by:      MAINT-EXAMPLENET-AP
 mnt-lower:   MAINT-EXAMPLENET-AP
 mnt-routes:  MAINT-EXAMPLENET-AP

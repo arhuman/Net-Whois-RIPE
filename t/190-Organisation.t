@@ -74,6 +74,18 @@ is_deeply( $object->e_mail(), ['someone@somewhere.com'], 'e_mail properly parsed
 $object->e_mail('someone@elsewhere.com');
 is( $object->e_mail()->[1], 'someone@elsewhere.com', 'e_mail properly added' );
 
+# Test 'geoloc'
+$tested{'geoloc'}++;
+is( $object->geoloc(), 'OTHER', 'geoloc properly parsed' );
+$object->geoloc('IANA');
+is( $object->geoloc(), 'IANA', 'geoloc properly set' );
+
+# Test 'language'
+$tested{'language'}++;
+is_deeply( $object->language(), ['FR','EN'], 'language properly parsed' );
+$object->language('ES');
+is( $object->language()->[2], 'ES', 'language properly added' );
+
 # Test 'admin_c'
 $tested{'admin_c'}++;
 is_deeply( $object->admin_c(), ['CPNY-ADM'], 'admin_c properly parsed' );
@@ -109,6 +121,12 @@ $tested{'notify'}++;
 is_deeply( $object->notify(), ['CPNY-MNT'], 'notify properly parsed' );
 $object->notify('CPNY-MNT2');
 is( $object->notify()->[1], 'CPNY-MNT2', 'notify properly added' );
+
+# Test 'abuse_mailbox'
+$tested{'abuse_mailbox'}++;
+is_deeply( $object->abuse_mailbox(), ['abuse1@somewhere.com','abuse2@somewhere.com'], 'abuse_mailbox properly parsed' );
+$object->abuse_mailbox('abuse3@somewhere.com');
+is( $object->abuse_mailbox()->[2], 'abuse3@somewhere.com', 'abuse_mailbox properly added' );
 
 # Test 'descr'
 $tested{'descr'}++;
@@ -151,12 +169,17 @@ address:        France
 phone:          +33 1 75 75 75 01
 fax-no:         +33 1 75 75 75 91
 e-mail:         someone@somewhere.com
+geoloc:         OTHER
+language:       FR
+language:       EN
 admin-c:        CPNY-ADM
 tech-c:         CPNY-TCH
 ref-nfy:        someone@somewhere.com
 mnt-ref:        CPNY-MNT
 mnt-by:         CPNY-MNT
 notify:         CPNY-MNT
+abuse-mailbox:  abuse1@somewhere.com
+abuse-mailbox:  abuse2@somewhere.com
 changed:        someone@somewhere.com 20120131
 source:         RIPE
 

@@ -56,6 +56,12 @@ is_deeply( $object->e_mail(), ['xxx@somewhere.com'], 'e_mail properly parsed' );
 $object->e_mail('Added e_mail');
 is( $object->e_mail()->[1], 'Added e_mail', 'e_mail properly added' );
 
+# Test 'org'
+$tested{'org'}++;
+is_deeply( $object->org(), ['ORG-MISC01-RIPE', 'ORG-MISC02-RIPE'], 'org properly parsed' );
+$object->org('ORG-MISC03-RIPE');
+is( $object->org()->[2], 'ORG-MISC03-RIPE', 'org properly added' );
+
 # Test 'nic_hdl'
 $tested{'nic_hdl'}++;
 is( $object->nic_hdl(), 'NC123-RIPE', 'nic_hdl properly parsed' );
@@ -73,6 +79,12 @@ $tested{'notify'}++;
 is_deeply( $object->notify(), ['MAIN-FR-MNT'], 'notify properly parsed' );
 $object->notify('Added notify');
 is( $object->notify()->[1], 'Added notify', 'notify properly added' );
+
+# Test 'abuse_mailbox'
+$tested{'abuse_mailbox'}++;
+is_deeply( $object->abuse_mailbox(), ['abuse@somewhere.com'], 'abuse_mailbox properly parsed' );
+$object->abuse_mailbox('abuse2@elsewhere.com');
+is( $object->abuse_mailbox()->[1], 'abuse2@elsewhere.com', 'abuse_mailbox properly added' );
 
 # Test 'remarks'
 $tested{'remarks'}++;
@@ -106,9 +118,12 @@ address:      75001 PARIS
 phone:        +33 1 72 44 01 00
 fax-no:       +33 1 72 44 01 46
 e-mail:       xxx@somewhere.com
+org:          ORG-MISC01-RIPE
+org:          ORG-MISC02-RIPE
 nic-hdl:      NC123-RIPE
 mnt-by:       MAIN-FR-MNT
 notify:       MAIN-FR-MNT
+abuse-mailbox: abuse@somewhere.com
 changed:      xxx@somewhere.com 20121016
 source:       RIPE # Filtered
 
