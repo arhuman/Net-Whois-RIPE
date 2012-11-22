@@ -1,19 +1,14 @@
-Net::Whois::RIPE
+# Net::Whois::RIPE
 
 A pure-perl programming interface to the RIPE Database Whois service.
 
-This is a complete rewrite of the old version of the module I inherited from
-Paul Gampe. It incorporates new concepts I've learned while I worked at the
-RIPE NCC between Nov 2007 and Jan 2010. 
+This is a complete rewrite of the old version of the module Luis Motta Campos inherited from
+Paul Gampe. 
 
-I've strived to maintain backward compatibility while providing a modern perl
-implementation featuring all the currently available features of a RIPE
-Database client.
+This repository (try to) follow the git-flow development model, so please use the 'develop' branch
+for your work/pull request.
 
-For more information about the RIPE Database, please refer to the RIPE NCC
-website at http://www.ripe.net/whois
-
-INSTALLATION
+## INSTALLATION
 
 To install this module, run the following commands:
 
@@ -22,7 +17,7 @@ To install this module, run the following commands:
 	make test
 	make install
 
-SUPPORT AND DOCUMENTATION
+## SUPPORT AND DOCUMENTATION
 
 After installing, you can find documentation for this module with the
 perldoc command.
@@ -31,15 +26,14 @@ perldoc command.
 
 You can also look for information at:
 
-    GitHub 
+    GitHub.
         https://github.com/arhuman/Net-Whois-RIPE
 
 
     Search CPAN
         http://search.cpan.org/dist/net-whois-ripe
 
-
-COPYRIGHT AND LICENCE
+## COPYRIGHT AND LICENCE
 
 Copyright (C) 2010 Luis Motta Campos
 
