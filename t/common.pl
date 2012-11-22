@@ -6,7 +6,7 @@ can_ok $class,
     qw( new ),
 
     # OO Support
-    qw( attributes attribute_is filtered_attributes displayed_attributes dump
+    qw( attributes attribute_is filtered_attributes clone displayed_attributes dump
     syncupdates_update syncupdates_delete syncupdates_create _object_factory
     _single_attribute_setget _multiple_attribute_setget _syncupdates_submit );
 

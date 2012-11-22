@@ -42,6 +42,26 @@ is_deeply( [ $o[0]->attributes() ],      [ 'comment', 'opt1', 'opt2', 'opt3' ] )
 is( $o[2]->dump, "% Information related to 'AS30720 - AS30895'\n" );
 is( $o[2]->dump( { align => 8 } ), "% Information related to 'AS30720 - AS30895'\n" );
 
+my $clone = $o[3]->clone;
+isa_ok($clone, ref $o[3], "Clone object has the same type of source");
+is_deeply($clone, $o[3], "Clone object deeply similar to source");
+
+$clone = $o[3]->clone({remove => ['source','remarks','org', 'admin-c', 'tech-c', 'mnt-by','mnt-lower']});
+is_deeply($clone, { class => 'AsBlock', order => ['as_block', 'descr'], as_block => 'AS30720 - AS30895', descr => ['RIPE NCC ASN block'] }, "Clone object similar with removed attribute");
+
+$clone->mnt_by({value =>['MNT1-ADD','MNT2-ADD']});
+is_deeply($clone->mnt_by,['MNT1-ADD','MNT2-ADD'],'Array properly added to empty multiple attribute');
+$clone->mnt_by({value =>['MNT3-ADD','MNT4-ADD']});
+is_deeply($clone->mnt_by,['MNT1-ADD','MNT2-ADD','MNT3-ADD','MNT4-ADD'],'Array properly added to multiple attribute');
+$clone->mnt_by({mode => 'replace', value => { old => 'MNT3-ADD', new => 'MNT3-RPL'}});
+is_deeply($clone->mnt_by,['MNT1-ADD','MNT2-ADD','MNT3-RPL','MNT4-ADD'],'Array properly added to multiple attribute');
+eval { $clone->mnt_by({mode => 'unknown', value => { old => 'MNT3-ADD', new => 'MNT3-RPL'}}); };
+like($@ ,qr/Unknown mode/, "Unknown mode detected in accessor");
+eval { $clone->mnt_by({mode => 'replace', value => { old => 'MNT3-ADD'}}); };
+like($@ ,qr/new.*replace mode/, "new=>... expected in replace mode");
+eval { $clone->mnt_by({mode => 'replace', value => { new => 'MNT3-ADD'}}); };
+like($@ ,qr/old.*replace mode/, "old=>... expected in replace mode");
+
 my @objects;
 eval { @objects = Net::Whois::Object->query('AS30781', {attribute => 'remarks'}) };
 

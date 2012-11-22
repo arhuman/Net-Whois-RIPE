@@ -36,10 +36,9 @@ Net::Whois::Object - Object encapsulating RPSL data returned by Whois queries
     push @objects, Net::Whois::Object->new($iterator);
 
     for my $object (@objects) {
-        # process the Net::Whois::Object::xxx objects... 
+        # process Net::Whois::Object::xxx objects... 
         # Type of object is available via class() method
     }
-
 
 =head1 USAGE
 
@@ -49,11 +48,11 @@ Net::Whois::Object - Object encapsulating RPSL data returned by Whois queries
     my $whois = Net::Whois::RIPE->new( %options );
     $iterator = $whois->query('POLK-RIPE');
 
-=head2 Filter the objects
+=head2 Filter objects
 
 Before you had to filter objects using the class() method.
 
-    # Then to only get the Person object (and ignore the Information objects)
+    # Then to only get the Person object (and ignore Information objects)
     my ($person) = grep {$_->class() eq 'Person'} Net::Whois::Object->new($iterator);
 
 But now the query() method allows you to filter more easily
@@ -70,11 +69,32 @@ are strings and no more Net::Whois::Objects.
 =head2 Modify the data
 
     # Add a phone number
-    $person->phone(' +33 4 88 00 65 15')
+    $person->phone(' +33 4 88 00 65 15');
+
+Some attributes can have multiple value (remarks, mnt-by...) first implementation allowed only to
+add one value
+
+    # Add one maintener
+    $person->mnt_by('CPNY-MNT');
+    
+New implementation (post 2.00020) allow to do:
+
+    $person->mnt_by({mode => 'append', value => 'CPNY-MNT'});
+
+Which is a verbose way to do exactly as the default mode above, but also
+
+    # Append multiple values at once
+    $person->mnt_by({mode => 'append', value => ['CPNY-MNT2','CPNY-MNT3']});
+
+Or even
+
+    # Replace CPNY-MNT2 by REPL-MNT
+    $person->mnt_by({mode => 'replace', value => {old => 'CPNY-MNT2', old => 'REPL-MNT'}});
+
 
 =head2 Dump the current state of the data
 
-The dump() method, permit to print the object under the classic
+The dump() method, enable to print the object under the classic
 text form, made of 'attribute:  value' lines.
 
     # Dump the modified data
@@ -130,10 +150,10 @@ $object->attribute('primary')
 
 =head4 Update
 
-An object existing in the RIPE database, can be retrived, modified locally
-and the updated through the syncupdates_update() method.
+An object existing in the RIPE database, can be retrieved, modified locally
+and then updated through the syncupdates_update() method.
 
-The parameters are passed through a hash ref, and can be the maintener
+Parameters are passed through a hash ref, and can be the maintener
 authentication credentials ('password' or 'pgpkey') and the 'align' parameter
 See L</Create> for more information on the authentication methods.
 
@@ -143,9 +163,9 @@ See L</Create> for more information on the authentication methods.
 
 =head4 Delete
 
-An object existing in the RIPE database, can be retrived, and deleted in
+An object existing in the RIPE database, can be retrieved, and deleted in
 the databased through the syncupdates_delete() method.
-The parameters are passed through a hash ref, and can be the maintener
+Parameters are passed through a hash ref, and can be the maintener
 authentication credentials ('password' or 'pgpkey') and the 'reason' parameter
 See L</Create> for more information on the authentication methods.
 
@@ -261,6 +281,48 @@ sub new {
     return grep {defined} @results;
 }
 
+=head2 B<clone( [\%options] )>
+
+Return a clone from a Net::Whois::RIPE object
+
+Current allowed option is remove => [attribute1, ..., attributen] where the specified
+attribute AREN'T copied to the clone object (for example to ignore the 'changed' values)
+
+=cut
+
+sub clone {
+    my ( $self, $rh_options ) = @_;
+
+    my $clone;
+    my %filtered;
+
+    for my $option ( keys %$rh_options ) {
+        if ( $option =~ /remove/i ) {
+            for my $att ( @{ $rh_options->{$option} } ) {
+                $filtered{ lc $att } = 1;
+            }
+        } else {
+            croak "Unknown option $option used while cloning a ", ref $self;
+        }
+    }
+
+    my @lines;
+    my @tofilter = split /\n/, $self->dump;
+
+    for my $line (@tofilter) {
+        if ( $line =~ /^(.+?):/ and $filtered{ lc $1 } ) {
+            next;
+        }
+        push @lines, $line;
+
+    }
+
+    eval { ($clone) = Net::Whois::Object->new( @lines, $/ ); };
+    croak $@ if $@;
+
+    return $clone;
+}
+
 =head2 B<attributes( [$type [, \@attributes]] )>
 
 Accessor to the attributes of the object. 
@@ -297,7 +359,6 @@ sub attributes {
         };
 
         for my $a ( @{$ra_attributes} ) {
-            my $attr_name = $a;
             unless ( exists $symbol_table->{$a} ) {
                 my $accessor = $type eq 'single' ? sub { _single_attribute_setget( $_[0], $a, $_[1] ) } : sub { _multiple_attribute_setget( $_[0], $a, $_[1] ) };
                 no strict 'refs';
@@ -657,13 +718,47 @@ Generic setter/getter for multivalue attribute.
 
 sub _multiple_attribute_setget {
     my ( $self, $attribute, $value ) = @_;
+    my $mode = 'append';
+
+    if ( ref $value eq 'HASH' ) {
+        my %options = %$value;
+
+        if ( $options{mode} ) {
+            $mode = $options{mode};
+        }
+
+        if ( $options{value} ) {
+            $value = $options{value};
+        } else {
+            croak "Unable to determine attribute $attribute value";
+        }
+
+    }
 
     if ( defined $value ) {
 
-        # Store attribute order for dump
-        push @{ $self->{order} }, $attribute;
-
-        push @{ $self->{$attribute} }, $value;
+        if ( $mode eq 'append' ) {
+            if ( ref $value eq 'ARRAY' ) {
+                push @{ $self->{$attribute} }, @$value;
+                push @{ $self->{order} }, map {$attribute} @$value;
+            } elsif ( !ref $value ) {
+                push @{ $self->{$attribute} }, $value;
+                push @{ $self->{order} }, $attribute;
+            } else {
+                croak "Trying to append weird data to $attribute: ", $value;
+            }
+        } elsif ( $mode eq 'replace' ) {
+            if ( ref $value ne 'HASH' or !$value->{old} or !$value->{new} ) {
+                croak " {old=>..., new=>} expected as value for $attribute update in replace mode";
+            } else {
+                my $old = $value->{old};
+                for ( @{ $self->{$attribute} } ) {
+                    $_ = $value->{new} if $_ =~ /$old/;
+                }
+            }
+        } else {
+            croak "Unknown mode $mode for attribute $attribute";
+        }
     }
 
     croak "$attribute $self" unless ref $self;

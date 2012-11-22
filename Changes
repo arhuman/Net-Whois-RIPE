@@ -1,5 +1,10 @@
 Revision history for net-whois-ripe
 
+2.001000    2012-11-22
+            - Add the clone() method to Net::Whois::Object
+            - Enhance accessor for multiple value attributes
+              (enable multiple values in default append mode, add a replace mode)
+            - Add a README.md skeleton for github
 
 2.00020     2012-11-14
             - Changes date format in Changes file 
