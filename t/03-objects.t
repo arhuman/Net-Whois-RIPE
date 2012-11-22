@@ -42,6 +42,13 @@ is_deeply( [ $o[0]->attributes() ],      [ 'comment', 'opt1', 'opt2', 'opt3' ] )
 is( $o[2]->dump, "% Information related to 'AS30720 - AS30895'\n" );
 is( $o[2]->dump( { align => 8 } ), "% Information related to 'AS30720 - AS30895'\n" );
 
+my $clone = $o[3]->clone;
+isa_ok($clone, ref $o[3], "Clone object has the same type of source");
+is_deeply($clone, $o[3], "Clone object deeply similar to source");
+
+$clone = $o[3]->clone({remove => ['source','remarks','org', 'admin-c', 'tech-c', 'mnt-by','mnt-lower']});
+is_deeply($clone, { class => 'AsBlock', order => ['as_block', 'descr'], as_block => 'AS30720 - AS30895', descr => ['RIPE NCC ASN block'] }, "Clone object similar with removed attribute");
+
 my @objects;
 eval { @objects = Net::Whois::Object->query('AS30781', {attribute => 'remarks'}) };
 

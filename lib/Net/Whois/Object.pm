@@ -261,6 +261,47 @@ sub new {
     return grep {defined} @results;
 }
 
+=head2 B<clone( [\%options] )>
+
+Return a clone from a Net::Whois::RIPE object
+
+Current allowed option is remove => [attribute1, ..., attributen] where the specified
+attribute AREN'T copied to the clone object (for example to ignore the 'changed' values)
+
+=cut
+
+sub clone {
+    my ( $self, $rh_options ) = @_;
+
+    my $clone;
+    my %filtered;
+
+    for my $option (keys %$rh_options) {
+        if ( $option =~ /remove/i ) {
+            for my $att ( @{ $rh_options->{$option} } ) {
+                $filtered{ lc $att } = 1;
+            }
+        } else {
+            croak "Unknown option $option used while cloning a ", ref $self;
+        }
+    }
+
+    my @lines;
+    my @tofilter = split /\n/, $self->dump;
+    for my $line (@tofilter) {
+        if ( $line =~ /^(.+?):/ and $filtered{ lc $1 } ) {
+            next;
+        }
+        push @lines, $line;
+
+    }
+
+    eval { ($clone) = Net::Whois::Object->new( @lines, $/ ); };
+    croak $@ if $@;
+
+    return $clone;
+}
+
 =head2 B<attributes( [$type [, \@attributes]] )>
 
 Accessor to the attributes of the object. 
