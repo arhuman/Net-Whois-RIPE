@@ -2,7 +2,7 @@ package Net::Whois::Object::Organisation;
 
 use base qw/Net::Whois::Object/;
 
-# From  : whois -t organisation
+# From: whois -t organisation
 # % This is the RIPE Database query service.
 # % The objects are in RPSL format.
 # %
@@ -77,7 +77,7 @@ Accepts an optional org_name, always return the current org_name.
 Accessor to the org_type attribute.
 Accepts an optional org_type, always return the current org_type.
 
-Possible values are :
+Possible values are:
 IANA for Internet Assigned Numbers Authority, RIR for Regional Internet
 Registries, NIR for National Internet Registries, LIR for Local Internet
 Registries, and OTHER for all other organisations. 

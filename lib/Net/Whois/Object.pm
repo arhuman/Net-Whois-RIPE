@@ -71,7 +71,7 @@ are strings and no more Net::Whois::Objects.
     # Add a phone number
     $person->phone(' +33 4 88 00 65 15');
 
-Some attributes can have multiple value (remarks, mnt-by...) first implementation allowed only to
+Some attributes can have multiple values (remarks, mnt-by...) first implementation allowed only to
 add one value
 
     # Add one maintener
@@ -89,7 +89,14 @@ Which is a verbose way to do exactly as the default mode above, but also
 Or even
 
     # Replace CPNY-MNT2 by REPL-MNT
-    $person->mnt_by({mode => 'replace', value => {old => 'CPNY-MNT2', old => 'REPL-MNT'}});
+    $person->mnt_by({mode => 'replace', value => {old => 'CPNY-MNT2', new => 'REPL-MNT'}});
+
+From release 2.002 you can also use the 'delete' mode to remove a specific attribute value
+
+    $person->mnt_by({mode => 'delete', value => {old => 'REPL-MNT'}});
+    
+    # Or if you want to remove all remarks (the regex '.' meaning any char, will match all remarks values)
+    $person->remarks({mode => 'delete', value => {old => '.'}});
 
 
 =head2 Dump the current state of the data
@@ -107,7 +114,8 @@ dump() handle the 'align' parameter passed though a hash ref.
 =head2 Update the RIPE database
 
 The RIPE database update is currently under heavy development.
-*The update code is to be considered as experimental.*
+
+B<*The update code is still to be considered as experimental.*>
 
 We plan to offer several ways to update the RIPE database
 
@@ -146,7 +154,7 @@ array reference of additional options to pass to the signing binary.
 
 The primary key of the object created is returned.
 The attribute used as primary key can be obtained through 
-$object->attribute('primary') 
+C<$object->attribute('primary')>
 
 =head4 Update
 
@@ -277,7 +285,7 @@ sub new {
 
     }
 
-    # TODO : fix the trailing undef
+    # TODO: fix the trailing undef
     return grep {defined} @results;
 }
 
@@ -326,7 +334,7 @@ sub clone {
 =head2 B<attributes( [$type [, \@attributes]] )>
 
 Accessor to the attributes of the object. 
-$type can be 
+C<$type> can be 
 
     'primary'   Primary/Lookup key
     'mandatory' Required for update creation
@@ -336,7 +344,7 @@ $type can be
     'all'       You can't specify attributes for this special type
                 which provides all the attributes which have a type
 
-If no $type is specified, 'all' is assumed.
+If no C<$type> is specified, 'all' is assumed.
 Returns a list of attributes of the required type.
 
 =cut
@@ -383,7 +391,7 @@ sub class {
 
 =head2 B<attribute_is ( $attribute, $type )>
 
-This method return true if $attribute is of type $type.
+This method return true if C<$attribute> is of type C<$type>
 
 =cut
 
@@ -426,7 +434,7 @@ sub displayed_attributes {
 Simple naive way to display a text form of the class.
 Try to be as close as possible as the submited text.
 
-Currently the only option available is 'align' which accept a $column number as
+Currently the only option available is 'align' which accept a C<$column> number as
 parameter so that all C<< $self->dump >> produces values that are aligned
 vertically on column C<$column>.
 
@@ -582,10 +590,10 @@ Query the RIPE database and return Net::Whois::Objects
 
 This method accepts 2 optional parameters
 
-'type' which is a regex used to filter the query result :
+'type' which is a regex used to filter the query result:
 Only the object whose type matches the 'type' parameter are returned
 
-'attribute' which is a regex used to filter the query result :
+'attribute' which is a regex used to filter the query result:
 Only the value of the attributes matching the 'attribute' parameter are
 returned
 
@@ -755,6 +763,13 @@ sub _multiple_attribute_setget {
                 for ( @{ $self->{$attribute} } ) {
                     $_ = $value->{new} if $_ =~ /$old/;
                 }
+            }
+        } elsif ( $mode eq 'delete' ) {
+            if ( ref $value ne 'HASH' or !$value->{old} ) {
+                croak " {old=>...} expected as value for $attribute update in delete mode";
+            } else {
+                my $old = $value->{old};
+                $self->{$attribute} = [grep {!/$old/} @{$self->{$attribute}}];
             }
         } else {
             croak "Unknown mode $mode for attribute $attribute";

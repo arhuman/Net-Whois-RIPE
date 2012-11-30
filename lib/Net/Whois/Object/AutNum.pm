@@ -2,7 +2,7 @@ package Net::Whois::Object::AutNum;
 
 use base qw/Net::Whois::Object/;
 
-# from : whois -t aut-num
+# from: whois -t aut-num
 # % This is the RIPE Database query service.
 # % The objects are in RPSL format.
 # %

@@ -2,7 +2,7 @@ package Net::Whois::Object::AsSet;
 
 use base qw/Net::Whois::Object/;
 
-# From : whois -t as-set  
+# From: whois -t as-set  
 #
 # % This is the RIPE Database query service.
 # % The objects are in RPSL format.
