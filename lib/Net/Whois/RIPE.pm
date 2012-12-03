@@ -28,11 +28,11 @@ Net::Whois::RIPE - a pure-Perl implementation of the RIPE Database client.
 
 =head1 VERSION
 
-Version 2.001000
+Version 2.002000
 
 =cut
 
-our $VERSION = 2.001000;
+our $VERSION = 2.002000;
 
 =head1 SYNOPSIS
 
