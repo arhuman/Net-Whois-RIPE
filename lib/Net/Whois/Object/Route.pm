@@ -5,7 +5,7 @@ use base qw/Net::Whois::Object/;
 # http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-25
 # http://www.apnic.net/apnic-info/whois_search/using-whois/guide/route
 #
-# From : whois -t route
+# From: whois -t route
 # % This is the RIPE Database query service.
 # % The objects are in RPSL format.
 # %

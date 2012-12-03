@@ -1,5 +1,9 @@
 Revision history for net-whois-ripe
 
+2.002000    2012-12-03
+            - Add 'delete' mode to attribute update
+            - Minor documentation fix
+
 2.001000    2012-11-22
             - Add the clone() method to Net::Whois::Object
             - Enhance accessor for multiple value attributes

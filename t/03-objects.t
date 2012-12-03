@@ -30,6 +30,9 @@ can_ok $o[5], qw( aut_num as_name org source ), qw( descr member_of import mp_im
     mnt_lower mnt_by mnt_routes changed);
 ok( !$o[5]->can('bogusmethod'), "No AUTOLOAD interference with ${class}::AutNum tests" );
 
+#
+# 'attributes' method
+#
 is_deeply( [ $o[0]->attributes('mandatory') ], ['comment'] );
 
 is_deeply( [ $o[0]->attributes('optional') ], [] );
@@ -39,20 +42,32 @@ is_deeply( [ $o[0]->attributes('optional') ], [ 'opt1', 'opt2', 'opt3' ] );
 is_deeply( [ $o[0]->attributes('all') ], [ 'comment', 'opt1', 'opt2', 'opt3' ] );
 is_deeply( [ $o[0]->attributes() ],      [ 'comment', 'opt1', 'opt2', 'opt3' ] );
 
+#
+# 'dump' method
+#
 is( $o[2]->dump, "% Information related to 'AS30720 - AS30895'\n" );
 is( $o[2]->dump( { align => 8 } ), "% Information related to 'AS30720 - AS30895'\n" );
 
+#
+# 'clone' method
+#
 my $clone = $o[3]->clone;
 isa_ok($clone, ref $o[3], "Clone object has the same type of source");
 is_deeply($clone, $o[3], "Clone object deeply similar to source");
-
 $clone = $o[3]->clone({remove => ['source','remarks','org', 'admin-c', 'tech-c', 'mnt-by','mnt-lower']});
 is_deeply($clone, { class => 'AsBlock', order => ['as_block', 'descr'], as_block => 'AS30720 - AS30895', descr => ['RIPE NCC ASN block'] }, "Clone object similar with removed attribute");
 
+#
+# default 'append' mode in attribute modification
+#
 $clone->mnt_by({value =>['MNT1-ADD','MNT2-ADD']});
 is_deeply($clone->mnt_by,['MNT1-ADD','MNT2-ADD'],'Array properly added to empty multiple attribute');
 $clone->mnt_by({value =>['MNT3-ADD','MNT4-ADD']});
 is_deeply($clone->mnt_by,['MNT1-ADD','MNT2-ADD','MNT3-ADD','MNT4-ADD'],'Array properly added to multiple attribute');
+
+#
+# 'replace' mode in attribute modification
+#
 $clone->mnt_by({mode => 'replace', value => { old => 'MNT3-ADD', new => 'MNT3-RPL'}});
 is_deeply($clone->mnt_by,['MNT1-ADD','MNT2-ADD','MNT3-RPL','MNT4-ADD'],'Array properly added to multiple attribute');
 eval { $clone->mnt_by({mode => 'unknown', value => { old => 'MNT3-ADD', new => 'MNT3-RPL'}}); };
@@ -61,6 +76,16 @@ eval { $clone->mnt_by({mode => 'replace', value => { old => 'MNT3-ADD'}}); };
 like($@ ,qr/new.*replace mode/, "new=>... expected in replace mode");
 eval { $clone->mnt_by({mode => 'replace', value => { new => 'MNT3-ADD'}}); };
 like($@ ,qr/old.*replace mode/, "old=>... expected in replace mode");
+
+#
+# 'delete' mode in attribute modification
+#
+$clone->mnt_by({mode => 'delete', value => { old => 'MNT3-RPL'}});
+is_deeply($clone->mnt_by,['MNT1-ADD','MNT2-ADD','MNT4-ADD'],'Array properly deleted in to multiple attribute');
+eval { $clone->mnt_by({mode => 'delete', value => { new => 'MNT3-ADD'}}); };
+like($@ ,qr/old.*delete mode/, "old=>... expected in delete mode");
+$clone->mnt_by({mode => 'delete', value => { old => '.'}});
+is_deeply($clone->mnt_by,[],'Array properly emptyed through delete wildcard');
 
 my @objects;
 eval { @objects = Net::Whois::Object->query('AS30781', {attribute => 'remarks'}) };

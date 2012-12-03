@@ -2,7 +2,7 @@ package Net::Whois::Object::Limerick;
 
 use base qw/Net::Whois::Object/;
 
-# RIPE : Deprecated
+# RIPE: Deprecated
 #
 #
 # limerick:      [mandatory]  [single]     [primary/look-up key]
