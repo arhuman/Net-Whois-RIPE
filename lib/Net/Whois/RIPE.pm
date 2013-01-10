@@ -437,7 +437,8 @@ sub disconnect {
     if ( $self->is_connected ) {
         my $socket = $self->{__state}{socket};
         $socket->close;
-        $self->{__state}{ioselect}->remove($socket);
+        $self->{__state}{ioselect}->remove($socket)
+            if $self->{__state}{ioselect};
         delete $self->{__state}{socket};
     }
 }
