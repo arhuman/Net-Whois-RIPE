@@ -588,7 +588,7 @@ sub syncupdates_create {
             Person       => 1,
             Role         => 1,
         );
-        if ($obj_types_with_autogen_key{$self->class}) {
+        if ($self->class && $obj_types_with_autogen_key{$self->class}) {
             $self->_single_attribute_setget( $key, $value );
             return $value;
         }
