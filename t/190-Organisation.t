@@ -20,7 +20,7 @@ isa_ok $object, $class;
 
 # Non-inherited methods
 can_ok $object, qw( organisation org_name org_type descr remarks address phone
-    e_mail fax_no org admin_c tech_c ref_nfy mnt_ref notify mnt_by changed source);
+    e_mail fax_no org abuse_c admin_c tech_c ref_nfy mnt_ref notify mnt_by changed source);
 
 # Check if typed attributes are correct
 can_ok $object, $object->attributes('mandatory');
@@ -85,6 +85,11 @@ $tested{'language'}++;
 is_deeply( $object->language(), ['FR','EN'], 'language properly parsed' );
 $object->language('ES');
 is( $object->language()->[2], 'ES', 'language properly added' );
+
+# Test 'abuse_c'
+$tested{'abuse_c'}++;
+$object->abuse_c('CPNY-ADM2');
+is( $object->abuse_c()->[0], 'CPNY-ADM2', 'abuse_c properly added' );
 
 # Test 'admin_c'
 $tested{'admin_c'}++;
