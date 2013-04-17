@@ -279,8 +279,11 @@ sub new {
 
         if ( !$object ) {
             $object = _object_factory( $block, $value ) unless $object;
-        } elsif ($attribute) {
+        } elsif ($object->can($attribute)) {
             $object->$attribute($value);
+        } else {
+            warn "Objects of type " . ref($object)
+                . " do not support attribute '$attribute', but it was supplied with value '$value'\n";
         }
 
     }
