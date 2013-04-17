@@ -28,11 +28,11 @@ Net::Whois::RIPE - a pure-Perl implementation of the RIPE Database client.
 
 =head1 VERSION
 
-Version 2.002000
+Version 2.003000
 
 =cut
 
-our $VERSION = 2.002000;
+our $VERSION = 2.003000;
 
 =head1 SYNOPSIS
 
@@ -437,7 +437,8 @@ sub disconnect {
     if ( $self->is_connected ) {
         my $socket = $self->{__state}{socket};
         $socket->close;
-        $self->{__state}{ioselect}->remove($socket);
+        $self->{__state}{ioselect}->remove($socket)
+            if $self->{__state}{ioselect};
         delete $self->{__state}{socket};
     }
 }

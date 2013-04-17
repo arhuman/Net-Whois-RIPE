@@ -39,8 +39,8 @@ use base qw/Net::Whois::Object/;
 # mnt-irt:       [mandatory]  [single]     [inverse key]
 __PACKAGE__->attributes( 'primary',   ['inet6num'] );
 __PACKAGE__->attributes( 'mandatory', [ 'inet6num', 'netname', 'status', 'source' ] );
-__PACKAGE__->attributes( 'optional', ['geoloc', 'language', 'org', 'remarks', 'notify', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt' ] );
-__PACKAGE__->attributes( 'single', [ 'inet6num', 'netname', 'geoloc', 'org', 'status', 'source' ] );
+__PACKAGE__->attributes( 'optional', ['geoloc', 'language', 'org', 'remarks', 'notify', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt', 'assignment_size' ] );
+__PACKAGE__->attributes( 'single', [ 'inet6num', 'netname', 'geoloc', 'org', 'status', 'source', 'assignment_size' ] );
 __PACKAGE__->attributes( 'multiple', [ 'descr', 'country','language', 'tech_c', 'admin_c', 'remarks', 'notify', 'mnt_by', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt', 'changed' ] );
 
 =head1 NAME

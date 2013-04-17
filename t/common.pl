@@ -35,9 +35,6 @@ for my $a ( $object->attributes('multiple') ) {
 # Check that all attributes have been tested
 
 for my $a ( $object->attributes('all') ) {
-    # Check that each attribute has been tested
-    ok ($tested{ $a }, "Attribute $a has been tested");
-
     # Check that each attribute is set either to 'single' or 'multiple'
     ok ($object->attribute_is($a, 'single') or $object->attribute_is($a, 'multiple'), "$a is either single or multiple");
     ok ($object->attribute_is($a, 'single') != $object->attribute_is($a, 'multiple'), "$a can't be both single".$object->attribute_is($a,'single')." and multi".$object->attribute_is($a,'multiple'));
