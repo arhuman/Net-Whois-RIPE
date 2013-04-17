@@ -1,5 +1,11 @@
 Revision history for net-whois-ripe
 
+2.003000    2013-04-17
+            Another contribution from Moritz Lenz :
+            - Add abuse_c field to Organisation
+            - Inet6num has an attribute 'assignment_size'
+            - Unknown attributes in Object->new do not die anymore
+
 2.002000    2012-12-03
             - Add 'delete' mode to attribute update
             - Minor documentation fix
