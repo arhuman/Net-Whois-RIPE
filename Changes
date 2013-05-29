@@ -2,6 +2,7 @@ Revision history for net-whois-ripe
 
 2.004000    2013-05-29
             - Fix 'delete' mode on accessor
+            - Add awhois.pl script
 
 2.003000    2013-04-17
             Another contribution from Moritz Lenz :
