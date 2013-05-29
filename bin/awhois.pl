@@ -12,45 +12,57 @@ use Data::Dumper;
 
 my $DEBUG;
 my @EXCLUDES;
+my $HELP;
 my $KEY;
 my $ONLY;
-my $OWNER;
 my $QUERY;
 my %QUERY_OPTIONS;
-my $VERSION = '0.000.001';
 my @TYPES;
-
+my $VERSION;
 
 ####################################################################################
 #
 # Processing
 
 # Get options value from command line
-GetOptions( 'admin=s'    => \$OWNER,
-            'debug'      => \$DEBUG,
+GetOptions( 'debug'      => \$DEBUG,
             'excludes=s' => \@EXCLUDES,
+            'help'       => \$HELP,
             'key=s'      => \$KEY,
             'only=s'     => \$ONLY,
             'query=s'    => \$QUERY,
             'type=s'     => \@TYPES,
+            'version'    => \$VERSION,
 ) or die usage();
 
-# Query can be implicit or explicit
-$QUERY = $ARGV[0]   unless $QUERY;
+if ($HELP) {
+    print usage();
+    exit 0;
+}
 
+if ($VERSION) {
+    print "$0  -  using Net::Whois::RIPE $Net::Whois::RIPE::VERSION\n";
+    exit 0;
+}
+
+# Query can be implicit or explicit
+$QUERY = $ARGV[0] unless $QUERY;
 
 # You can now do
 if (@TYPES) {
-my $query_types = lc join '|',@TYPES;
-$QUERY_OPTIONS{type} = $query_types;
+    my $query_types = lc join '|', @TYPES;
+    $query_types =~ s/-//g;
+    $QUERY_OPTIONS{type} = $query_types;
 }
 
 if ($KEY) {
-$QUERY = "-i $KEY ".$ARGV[0]   unless $QUERY =~ /-i/;
+    $QUERY = "-i $KEY " . $ARGV[0] unless $QUERY =~ /-i/;
 }
 
-warn "QUERY=($QUERY)";
-warn "OTIONS=",Dumper \%QUERY_OPTIONS;
+if ($DEBUG) {
+    print "QUERY=($QUERY)";
+    print "OTIONS=", Dumper \%QUERY_OPTIONS;
+}
 
 my @objects = Net::Whois::Object->query( $QUERY, \%QUERY_OPTIONS );
 
@@ -65,7 +77,7 @@ exit 0;
 sub excluded {
     my $tested = shift;
 
-    return 0    unless @EXCLUDES;
+    return 0 unless @EXCLUDES;
 
     if ($ONLY) {
         return 1 unless $tested =~ /$ONLY/msi;
@@ -104,14 +116,29 @@ OPTIONS
 
     Print a brief help message and exits.
 
+--debug
+
+    Display debugging information
+
+--exclude
+
+    Not yet implemented
 
 --key
 
     The attribute to be used as the key for the search
 
+--only
+
+    Not yet implemented
+
 --type
 
     The type of record to be returned (example: person, role, inetnum, route...)
+
+--version
+
+    Display version information
 
 
 DESCRIPTION
