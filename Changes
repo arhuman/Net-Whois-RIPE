@@ -1,5 +1,8 @@
 Revision history for net-whois-ripe
 
+2.004000    2013-05-29
+            - Fix 'delete' mode on accessor
+
 2.003000    2013-04-17
             Another contribution from Moritz Lenz :
             - Add abuse_c field to Organisation
