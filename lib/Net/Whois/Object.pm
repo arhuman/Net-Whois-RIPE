@@ -754,36 +754,8 @@ sub _single_attribute_setget {
             if ( ref $value ne 'HASH' or !$value->{old} ) {
                 croak " {old=>...} expected as value for $attribute update in delete mode";
             } else {
-                my $old = $value->{old};
-                my @lines;
-
-                if ($self->{$attribute} =~ /$old/) {
-
-                for my $a ( @{ $self->{order} } ) {
-                    my $val = ref $self->{$a} ? shift @{ $self->{$a} } : $self->{$a};
-                    push @lines, [ $a, $val ];
-                }
-
-                @lines = grep {$attribute ne $_->[0] or $_->[1] !~ /$old/} @lines;
-                delete $self->{$attribute}  if $self->{$attribute} =~ /$old/;
-
-                $self->{order} = [];
-                for my $l (@lines) {
-                        $self->{ $l->[0] } = []     if  ref( $self->{ $l->[0] } )  ;
-                }
-
-                for my $i ( 0 .. $#lines ) {
-                    push @{ $self->{order} }, $lines[$i]->[0];
-                    if ( $self->attribute_is( $lines[$i]->[0], 'multiple' ) ) {
-                        push @{ $self->{ $lines[$i]->[0] } }, $lines[$i]->[1];
-                    } else {
-                        $self->{ $lines[$i]->[0] } = $lines[$i]->[1];
-
-                    }
-
-                }
+                $self->_delete_attribute($attribute,$value->{old});
             }
-        }
         }
     }
     return $self->{$attribute};
@@ -839,7 +811,27 @@ sub _multiple_attribute_setget {
             if ( ref $value ne 'HASH' or !$value->{old} ) {
                 croak " {old=>...} expected as value for $attribute update in delete mode";
             } else {
-                my $old = $value->{old};
+                # $self->{$attribute} = [grep {!/$old/} @{$self->{$attribute}}];
+                $self->_delete_attribute($attribute,$value->{old});
+            }
+        } else {
+            croak "Unknown mode $mode for attribute $attribute";
+        }
+    }
+
+    croak "$attribute $self" unless ref $self;
+    return $self->{$attribute};
+}
+
+=head2 B<_delete_attribute( $attribute, $pattern )>
+
+Delete an attribute if its value match the pattern value 
+
+=cut
+
+sub _delete_attribute {
+    my ( $self, $attribute, $pattern ) = @_;
+
                 my @lines;
 
                 for my $a ( @{ $self->{order} } ) {
@@ -847,7 +839,8 @@ sub _multiple_attribute_setget {
                     push @lines, [ $a, $val ];
                 }
 
-                @lines = grep {$attribute ne $_->[0] or $_->[1] !~ /$old/} @lines;
+                @lines = grep {$attribute ne $_->[0] or $_->[1] !~ /$pattern/} @lines;
+                delete $self->{$attribute}  if $self->attribute_is($attribute, 'single') and $self->{$attribute} =~ /$pattern/;
 
                 $self->{order} = [];
                 for my $l (@lines) {
@@ -865,16 +858,9 @@ sub _multiple_attribute_setget {
 
                 }
 
-                # $self->{$attribute} = [grep {!/$old/} @{$self->{$attribute}}];
-            }
-        } else {
-            croak "Unknown mode $mode for attribute $attribute";
-        }
-    }
-
-    croak "$attribute $self" unless ref $self;
-    return $self->{$attribute};
 }
+
+
 
 =head2 B<_init( @options )>
 
