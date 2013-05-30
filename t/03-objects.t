@@ -51,10 +51,10 @@ is( $o[2]->dump( { align => 8 } ), "% Information related to 'AS30720 - AS30895'
 #
 # 'clone' method
 #
-my $clone = $o[3]->clone;
-isa_ok($clone, ref $o[3], "Clone object has the same type of source");
-is_deeply($clone, $o[3], "Clone object deeply similar to source");
-$clone = $o[3]->clone({remove => ['source','remarks','org', 'admin-c', 'tech-c', 'mnt-by','mnt-lower']});
+my $full_clone = $o[3]->clone;
+isa_ok($full_clone, ref $o[3], "Clone object has the same type of source");
+is_deeply($full_clone, $o[3], "Clone object deeply similar to source");
+my $clone = $o[3]->clone({remove => ['source','remarks','org', 'admin-c', 'tech-c', 'mnt-by','mnt-lower']});
 is_deeply($clone, { class => 'AsBlock', order => ['as_block', 'descr'], as_block => 'AS30720 - AS30895', descr => ['RIPE NCC ASN block'] }, "Clone object similar with removed attribute");
 
 #
@@ -86,6 +86,13 @@ eval { $clone->mnt_by({mode => 'delete', value => { new => 'MNT3-ADD'}}); };
 like($@ ,qr/old.*delete mode/, "old=>... expected in delete mode");
 $clone->mnt_by({mode => 'delete', value => { old => '.'}});
 is_deeply($clone->mnt_by,[],'Array properly emptyed through delete wildcard');
+like($clone->dump,qr/as-block:\s+AS30720 - AS30895\ndescr:\s+RIPE NCC ASN block\n/,"Dump of deleted attributes ok");
+my $delete_clone = $full_clone->clone({remove=>['remarks']});
+like($full_clone->dump,qr/as-block:\s+AS30720 - AS30895\ndescr:\s+RIPE NCC ASN block\nremarks:\s+These AS Numbers are further assigned to network\nremarks:\s+operators in the RIPE NCC service region. AS\nremarks:\s+assignment policy is documented in:\nremarks:\s+<http:\/\/www.ripe.net\/ripe\/docs\/asn-assignment.html>\nremarks:\s+RIPE NCC members can request AS Numbers using the\nremarks:\s+form available in the LIR Portal or at:\nremarks:\s+<http:\/\/www.ripe.net\/ripe\/docs\/asnrequestform.html>\norg:\s+ORG-NCC1-RIPE\nadmin-c:\s+CREW-RIPE\ntech-c:\s+RD132-RIPE\nmnt-by:\s+RIPE-DBM-MNT\nmnt-lower:\s+RIPE-NCC-HM-MNT\nsource:\s+RIPE # Filtered\n/,"org full clone stil ok");
+$full_clone->mnt_lower({mode=>'delete', value => {old => 'RIPE-NCC-HM-MNT'}});
+like($full_clone->dump,qr/as-block:\s+AS30720 - AS30895\ndescr:\s+RIPE NCC ASN block\nremarks:\s+These AS Numbers are further assigned to network\nremarks:\s+operators in the RIPE NCC service region. AS\nremarks:\s+assignment policy is documented in:\nremarks:\s+<http:\/\/www.ripe.net\/ripe\/docs\/asn-assignment.html>\nremarks:\s+RIPE NCC members can request AS Numbers using the\nremarks:\s+form available in the LIR Portal or at:\nremarks:\s+<http:\/\/www.ripe.net\/ripe\/docs\/asnrequestform.html>\norg:\s+ORG-NCC1-RIPE\nadmin-c:\s+CREW-RIPE\ntech-c:\s+RD132-RIPE\nmnt-by:\s+RIPE-DBM-MNT\nsource:\s+RIPE # Filtered\n$/,"non last attribute deletion ok");
+$full_clone->source({mode=>'delete', value => {old => 'RIPE'}});
+like($full_clone->dump,qr/as-block:\s+AS30720 - AS30895\ndescr:\s+RIPE NCC ASN block\nremarks:\s+These AS Numbers are further assigned to network\nremarks:\s+operators in the RIPE NCC service region. AS\nremarks:\s+assignment policy is documented in:\nremarks:\s+<http:\/\/www.ripe.net\/ripe\/docs\/asn-assignment.html>\nremarks:\s+RIPE NCC members can request AS Numbers using the\nremarks:\s+form available in the LIR Portal or at:\nremarks:\s+<http:\/\/www.ripe.net\/ripe\/docs\/asnrequestform.html>\norg:\s+ORG-NCC1-RIPE\nadmin-c:\s+CREW-RIPE\ntech-c:\s+RD132-RIPE\nmnt-by:\s+RIPE-DBM-MNT\n$/,"last attribute deletion ok");
 
 my @objects;
 eval { @objects = Net::Whois::Object->query('AS30781', {attribute => 'remarks'}) };
