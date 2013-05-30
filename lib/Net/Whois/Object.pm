@@ -726,13 +726,65 @@ Generic setter/getter for singlevalue attribute.
 
 sub _single_attribute_setget {
     my ( $self, $attribute, $value ) = @_;
+    my $mode = 'replace';
+
+    if ( ref $value eq 'HASH' ) {
+        my %options = %$value;
+
+        if ( $options{mode} ) {
+            $mode = $options{mode};
+        }
+
+        if ( $options{value} ) {
+            $value = $options{value};
+        } else {
+            croak "Unable to determine attribute $attribute value";
+        }
+
+    }
 
     if ( defined $value ) {
 
-        # Store attribute order for dump, unless this attribute as already been set
-        push @{ $self->{order} }, $attribute unless $self->{$attribute} or $attribute eq 'class';
+        if ( $mode eq 'replace' ) {
+            # Store attribute order for dump, unless this attribute as already been set
+            push @{ $self->{order} }, $attribute unless $self->{$attribute} or $attribute eq 'class';
 
-        $self->{$attribute} = $value;
+            $self->{$attribute} = $value;
+        } elsif ( $mode eq 'delete' ) {
+            if ( ref $value ne 'HASH' or !$value->{old} ) {
+                croak " {old=>...} expected as value for $attribute update in delete mode";
+            } else {
+                my $old = $value->{old};
+                my @lines;
+
+                if ($self->{$attribute} =~ /$old/) {
+
+                for my $a ( @{ $self->{order} } ) {
+                    my $val = ref $self->{$a} ? shift @{ $self->{$a} } : $self->{$a};
+                    push @lines, [ $a, $val ];
+                }
+
+                @lines = grep {$attribute ne $_->[0] or $_->[1] !~ /$old/} @lines;
+                delete $self->{$attribute}  if $self->{$attribute} =~ /$old/;
+
+                $self->{order} = [];
+                for my $l (@lines) {
+                        $self->{ $l->[0] } = []     if  ref( $self->{ $l->[0] } )  ;
+                }
+
+                for my $i ( 0 .. $#lines ) {
+                    push @{ $self->{order} }, $lines[$i]->[0];
+                    if ( $self->attribute_is( $lines[$i]->[0], 'multiple' ) ) {
+                        push @{ $self->{ $lines[$i]->[0] } }, $lines[$i]->[1];
+                    } else {
+                        $self->{ $lines[$i]->[0] } = $lines[$i]->[1];
+
+                    }
+
+                }
+            }
+        }
+        }
     }
     return $self->{$attribute};
 }
