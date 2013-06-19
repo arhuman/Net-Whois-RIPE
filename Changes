@@ -1,5 +1,9 @@
 Revision history for net-whois-ripe
 
+2.004001    2013-06-19
+            - Remove Test::Exception requirement
+            - Add one test
+
 2.004000    2013-05-29
             - Fix 'delete' mode on accessor
             - Add awhois.pl skeleton script
