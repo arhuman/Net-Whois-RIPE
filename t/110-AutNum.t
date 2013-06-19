@@ -1,7 +1,6 @@
 use strict;
 use warnings;
 use Test::More qw( no_plan );
-use Test::Exception;
 use Net::Whois::Object;
 
 # synchronizes the {error,standard} output of this test.

@@ -1,7 +1,6 @@
 use strict;
 use warnings;
 use Test::More;
-use Test::Exception;
 use Net::Whois::RIPE;
 use Net::Whois::Object;
 

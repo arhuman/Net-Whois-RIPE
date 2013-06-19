@@ -1,3 +1,4 @@
+bin/awhois.pl
 Changes
 lib/Net/Whois/Object.pm
 lib/Net/Whois/Object/AsBlock.pm
@@ -30,6 +31,8 @@ MANIFEST
 META.json			Module JSON meta-data (added by MakeMaker)
 META.yml			Module meta-data (added by MakeMaker)
 README
+README.md
+t/00-changes.t
 t/00-load.t
 t/01-instantiation.t
 t/02-methods.t
@@ -59,6 +62,7 @@ t/200-Information.t
 t/205-Irt.t
 t/210-FilterSet.t
 t/215-SyncUpdates.t
+t/216-SyncUpdates-Signed.t
 t/boilerplate.t
 t/common.pl
 t/pod-coverage.t
