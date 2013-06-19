@@ -22,7 +22,7 @@ WriteMakefile(
                         bugtracker => 'https://github.com/arhuman/Net-Whois-RIPE/issues'
         },
     },
-    BUILD_REQUIRES => { 'Test::Exception' => 0, },
+    BUILD_REQUIRES => { },
     dist           => { COMPRESS          => 'gzip -9f', SUFFIX => 'gz', },
     clean          => { FILES             => 'Net-Whois-RIPE-*' },
 );

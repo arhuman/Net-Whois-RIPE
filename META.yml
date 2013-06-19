@@ -2,8 +2,6 @@
 abstract: 'a pure-Perl implementation of the RIPE Database client.'
 author:
   - 'Luis Motta Campos <lmc@cpan.org>'
-build_requires:
-  Test::Exception: 0
 configure_requires:
   ExtUtils::MakeMaker: 0
 dynamic_config: 1

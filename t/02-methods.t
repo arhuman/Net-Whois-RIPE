@@ -1,7 +1,6 @@
 use strict;
 use warnings;
 use Test::More qw( no_plan );
-use Test::Exception;
 
 # synchronizes the {error,standard} output of this test.
 use IO::Handle;
@@ -97,7 +96,8 @@ SKIP: {
     ok $c->is_connected, 'The client is connected.';
 
     # reconnect()
-    lives_ok { $c->reconnect } 'The client re-connected without dying.';
+    eval {$c->reconnect };
+    ok !$@,'The client re-connected without dying.';
     ok $c->is_connected, 'The client is connected (once more).';
 
     # ios()
@@ -111,17 +111,18 @@ SKIP: {
     # query()
     {
         my $iter;
-        lives_ok { $iter = $c->query('LMC-RIPE') }
-        q{Client performs queries without dying};
+        eval { $iter = $c->query('LMC-RIPE') };
+        ok !$@, q{Client performs queries without dying};
         isa_ok $iter, 'Iterator';
+        last unless $iter;
         ok $iter->isnt_exhausted, q{Iterator contains at least one result};
     }
 
     # object_types()
     {
         my @types;
-        lives_ok { @types = $c->object_types }
-        q{Client can retrieve available object types without dying.};
+        eval { @types = $c->object_types };
+        ok !$@ , q{Client can retrieve available object types without dying.};
         is $#types, 20,
           q{There are 21 known object types in the RIPE Database};
     }
@@ -129,9 +130,9 @@ SKIP: {
     # send()
 
     # disconnect()
-    lives_ok { $c->disconnect } 'The client disconnected without dying.';
+    eval { $c->disconnect };
+    ok !$@ , 'The client disconnected without dying.';
     ok !$c->is_connected, 'The client is not connected (anymore).';
 
     # DESTROY()
 }
-
