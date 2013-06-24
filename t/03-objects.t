@@ -102,18 +102,23 @@ SKIP: {
     for my $object (@objects) {
         ok(!ref($object), "query() : String returned for 'remarks' attribute filter")
     }
+}
 
-    @objects = Net::Whois::Object->query('AS30781');
+eval {    @objects = Net::Whois::Object->query('AS30781') };
+SKIP: {
+    skip "Network issue",14 if ( $@ =~ /IO::Socket::INET/ );
     for my $object (@objects) {
-        ok(ref($object) =~ /Net::Whois::Object/ , "query() : Object returned for 'remarks' attribute filter")
+        ok(ref($object) =~ /Net::Whois::Object/ , "query() : Object ".ref($object)." returned for 'remarks' attribute filter")
     }
 
-    @objects = Net::Whois::Object->query('AS30781', {type => 'asblock', attribute => 'admin_c'});
+}
+eval {    @objects = Net::Whois::Object->query('AS30781', {type => 'asblock', attribute => 'admin_c' })} ;
+SKIP: {
+    skip "Network issue",14 if ( $@ =~ /IO::Socket::INET/ );
     for my $object (@objects) {
         ok($object eq 'CREW-RIPE' , "query() : 'CREW-RIPE' returned for AsBlock and admin-c filter")
     }
 }
-
 __DATA__
 % This is the RIPE Database query service.
 % The objects are in RPSL format.
