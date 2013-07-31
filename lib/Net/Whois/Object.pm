@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 use Carp;
-use Net::Whois::RIPE;
+use Net::Whois::Generic;
 use IPC::Open2 qw/open2/;
 use List::Util qw/max/;
 
@@ -635,7 +635,7 @@ sub query {
         }
     }
 
-    my $whois    = Net::Whois::RIPE->new(%$options);
+    my $whois    = Net::Whois::Generic->new(%$options);
     my $iterator = $whois->query($query);
 
     my @objects = Net::Whois::Object->new($iterator);
@@ -697,7 +697,7 @@ sub _object_factory {
                   rtr_set      => 'RtrSet',
     );
 
-    die "Unrecognized Object (first attribute: $type = $value)" unless $class{$type};
+    die "Unrecognized Object (first attribute: $type = $value)" unless defined $type and $class{$type};
 
     my $class = "Net::Whois::Object::" . $class{$type};
 
