@@ -65,6 +65,11 @@ is_deeply( $object->tech_c(), ['NC345-RIPE'], 'tech_c properly parsed' );
 $object->tech_c('Added tech_c');
 is( $object->tech_c()->[1], 'Added tech_c', 'tech_c properly added' );
 
+# Test 'abuse_c'
+$tested{'abuse_c'}++;
+is_deeply( $object->abuse_c(), 'NC789-RIPE', 'abuse_c properly parsed' );
+
+is( $object->tech_c()->[1], 'Added tech_c', 'tech_c properly added' );
 # Test 'mnt_by'
 $tested{'mnt_by'}++;
 is_deeply( $object->mnt_by(), [ 'RIPE-NCC-END-MNT', 'MAIN-FR-MNT' ], 'mnt_by properly parsed' );
@@ -148,6 +153,7 @@ descr:           FRANCE
 org:             ORG-MISC01-RIPE
 admin-c:         NC123-RIPE
 tech-c:          NC345-RIPE
+abuse-c:         NC789-RIPE
 mnt-by:          RIPE-NCC-END-MNT
 mnt-by:          MAIN-FR-MNT
 notify:          MAIN-FR-MNT

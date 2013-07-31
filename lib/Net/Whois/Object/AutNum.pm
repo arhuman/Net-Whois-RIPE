@@ -34,8 +34,8 @@ use base qw/Net::Whois::Object/;
 
 __PACKAGE__->attributes( 'primary',   ['aut_num'] );
 __PACKAGE__->attributes( 'mandatory', [ 'aut_num', 'as_name', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
-__PACKAGE__->attributes( 'optional', [ 'member_of', 'import', 'mp_import', 'export', 'mp_export', 'default', 'mp_default', 'remarks', 'org', 'notify', 'mnt_lower', 'mnt_routes'  ] );
-__PACKAGE__->attributes( 'single', [ 'aut_num', 'as_name', 'org', 'source' ] );
+__PACKAGE__->attributes( 'optional', [ 'member_of', 'import', 'mp_import', 'export', 'mp_export', 'default', 'mp_default', 'remarks', 'org', 'notify', 'mnt_lower', 'mnt_routes', 'abuse_c'  ] );
+__PACKAGE__->attributes( 'single', [ 'aut_num', 'as_name', 'org', 'source', 'abuse_c' ] );
 __PACKAGE__->attributes( 'multiple', [ 'descr', 'member_of', 'import', 'mp_import', 'export', 'mp_export', 'default', 'mp_default', 'remarks', 'admin_c', 'tech_c', 'notify', 'mnt_lower', 'mnt_routes', 'mnt_by', 'changed' ] );
 
 

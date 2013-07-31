@@ -1,5 +1,9 @@
 Revision history for net-whois-ripe
 
+2.004002    2013-07-31
+            - Add 'abuse_c' to AutNum object
+              (https://www.ripe.net/ripe/docs/ripe-563)
+
 2.004001    2013-06-19
             - Remove Test::Exception requirement
             - Add one test
