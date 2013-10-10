@@ -13,36 +13,21 @@ use constant {
 	SOON                    => 30,
 	END_OF_OBJECT_MARK      => "\n\n",
 	EOL                     => "\015\012",
-	QUERY_KEEPALIVE         => q{-k },
-	QUERY_NON_RECURSIVE     => q{-r },
-	QUERY_REFERRAL          => q{-R },
-	QUERY_GROUPING          => q{-G },
-	QUERY_UNFILTERED        => q{-B },
 	QUERY_LIST_OBJECTS      => q{-qtypes },
-	QUERY_LIST_SOURCES      => q{-qsources },
-	QUERY_FETCH_TEMPLATE    => q{-t%s },
-	QUERY_LIMIT_OBJECT_TYPE => q{-T%s },
 };
 
+# simplify if all servers happen to accept same options
 our %RIR = (
-	apnic   => { SERVER => 'whois.apnic.net',   QUERY => \&apnic_query },
-	ripe    => { SERVER => 'whois.ripe.net',    QUERY => \&ripe_query },
-	arin    => { SERVER => 'whois.arin.net',    QUERY => \&arin_query },
-	lacnic  => { SERVER => 'whois.lacnic.net',  QUERY => \&lacnic_query },
-	afrinic => { SERVER => 'whois.afrinic.net', QUERY => \&afrinic_query },
+	apnic   => { SERVER => 'whois.apnic.net',   QUERY_NON_RECURSIVE =>  q{-r }, QUERY_REFERRAL => q{-R }, QUERY_UNFILTERED => q{-B },},
+	ripe    => { SERVER => 'whois.ripe.net',    QUERY_NON_RECURSIVE =>  q{-r }, QUERY_REFERRAL => q{-R }, QUERY_UNFILTERED => q{-B },},
+	arin    => { SERVER => 'whois.arin.net',    QUERY_NON_RECURSIVE =>  q{-r }, QUERY_REFERRAL => q{-R }, QUERY_UNFILTERED => q{-B },},
+	lacnic  => { SERVER => 'whois.lacnic.net',  QUERY_NON_RECURSIVE =>  q{-r }, QUERY_REFERRAL => q{-R }, QUERY_UNFILTERED => q{-B },},
+	afrinic => { SERVER => 'whois.afrinic.net', QUERY_NON_RECURSIVE =>  q{-r }, QUERY_REFERRAL => q{-R }, QUERY_UNFILTERED => q{-B },},
 );
 
 =head1 NAME
 
 Net::Whois::Generic - a pure-Perl implementation of the RIPE Database client.
-
-=head1 VERSION
-
-Version 2.004001
-
-=cut
-
-our $VERSION = 2.004001;
 
 =head1 SYNOPSIS
 
@@ -80,12 +65,6 @@ The TCP port of the service to connect to
 =item B<timeout> (integer, default is C<5>)
 
 The time-out (in seconds) for the TCP connection.
-
-=item B<keepalive> (boolean, default is C<false>)
-
-Wherever we want (C<true>) or not (C<false>) to keep the connection to the
-server open. This option implements the functionality available through RIPE
-Database's "-k" parameter.
 
 =item B<referral> (boolean, default is C<false>)
 
@@ -137,7 +116,6 @@ connection to the RIPE Database service desired.
 		hostname     => 'whois.ripe.net',
 		port         => '43',
 		timeout      => 5,
-		keepalive    => 0,
 		referral     => 0,
 		recursive    => 0,
 		grouping     => 1,
@@ -226,19 +204,6 @@ sub __boolean_accessor
 	return $self->{__options}{$attribute};
 }
 
-=head2 B<keepalive()>
-
-Accessor to the keepalive configuration option. Accepts an optional keepalive,
-always return the current keepalive.
-
-=cut
-
-sub keepalive
-{
-	my $self = shift;
-	return $self->__boolean_accessor('keepalive', @_);
-}
-
 =head2 B<referral()>
 
 Accessor to the referral configuration option. Accepts an optional referral,
@@ -321,9 +286,6 @@ sub connect
 	else {
 		$self->{__state}{ioselect} = IO::Select->new($socket);
 	}
-
-	# Set RIPE Database's "keepalive" capability
-	$self->send(QUERY_KEEPALIVE) if $self->keepalive;
 }
 
 =head2 B<ios()>
@@ -498,14 +460,9 @@ sub adapt_query
 
 	# determine RIR unless $rir;
 	$rir = $self->_find_rir($query) unless $rir;
+
 	if ($rir eq 'ripe') {
 		$self->hostname($RIR{ripe}{SERVER});
-		my $parameters = "";
-		$parameters .= q{ } . QUERY_KEEPALIVE  if $self->keepalive;
-		$parameters .= q{ } . QUERY_UNFILTERED if $self->unfiltered;
-		$parameters .= q{ } . QUERY_NON_RECURSIVE unless $self->recursive;
-		$parameters .= q{ } . QUERY_REFERRAL if $self->referral;
-		$fullquery = $parameters . $query;
 	}
 	elsif ($rir eq 'afrinic') {
 		$fullquery = '-V Md5.0 ' . $query;
@@ -518,9 +475,15 @@ sub adapt_query
 		$self->hostname($RIR{lacnic}{SERVER});
 	}
 	elsif ($rir eq 'apnic') {
-		$fullquery = $query;
 		$self->hostname($RIR{apnic}{SERVER});
 	}
+
+    my $parameters = "";
+    $parameters .= q{ } . $RIR{$rir}{QUERY_UNFILTERED} if $self->unfiltered;
+    $parameters .= q{ } . $RIR{$rir}{QUERY_NON_RECURSIVE} unless $self->recursive;
+    $parameters .= q{ } . $RIR{$rir}{QUERY_REFERRAL} if $self->referral;
+    $fullquery = $parameters . $query;
+
 	return $fullquery;
 }
 
@@ -583,7 +546,6 @@ sub __query
 
 	$self->connect;
 
-	# $self->reconnect unless $self->keepalive;
 	# die "Not connected" unless $self->is_connected;
 
 	if ($self->ios->can_write(SOON + $self->timeout)) {
@@ -591,7 +553,7 @@ sub __query
 
 		return Iterator->new(
 			sub {
-				local $/ = "\n\n";
+				local $/ = END_OF_OBJECT_MARK;
 				if ($self->ios->can_read(SOON + $self->timeout)) {
 					my $block = $self->socket->getline;
 					return $block if defined $block;

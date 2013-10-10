@@ -17,7 +17,7 @@ can_ok $class,
   qw( ios socket ),
 
   # Read-Write Accessors
-  qw( hostname port timeout keepalive referral recursive grouping ),
+  qw( hostname port timeout referral recursive grouping ),
 
   # Connection Methods
   qw( connect disconnect reconnect is_connected ),

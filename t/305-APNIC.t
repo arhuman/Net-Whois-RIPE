@@ -5,13 +5,13 @@ use Test::More qw(no_plan);
 
 use_ok 'Net::Whois::Generic';
 
-my $c = Net::Whois::Generic->new( disconnected => 1, unfiltered => 1 );
+my $c = Net::Whois::Generic->new( disconnected => 1, unfiltered => 0 );
 isa_ok $c, 'Net::Whois::Generic';
 
-my $org;
-eval { ($org) = $c->query( 'MAINT-APNIC-AP', { type => 'role' } ) };
+my $mntner;
+eval { ($mntner) = $c->query( 'MAINT-APNIC-AP', { type => 'mntner' } ) };
 ok !$@, qq{Client performs queries without dying $@};
-isa_ok $org, 'Net::Whois::Object::Role::APNIC';
+isa_ok $mntner, 'Net::Whois::Object::Mntner::APNIC';
 
 my $inetnum;
 my @o;
