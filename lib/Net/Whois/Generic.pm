@@ -7,6 +7,7 @@ use IO::Socket::INET;
 use IO::Select;
 use Iterator;
 use Net::Whois::Object;
+use Data::Dumper;
 
 use constant {
 	SOON                    => 30,
@@ -45,74 +46,14 @@ our $VERSION = 2.004001;
 
 =head1 SYNOPSIS
 
-This is a complete rewrite of version 1.31 of the module, which I inherited
-from Paul Gampe during the time I've worked for the RIPE NCC, between Nov 2007
-and Feb 2010.
+Net::Whois::Generic is my first attempt to unify Whois information from different sources.
+Historically Net::Whois::RIPE was the first written, then Net::Whois::Object was added to provide
+a RPSL encapsultation of the data returned from RIPE database, with an API more object oriented.
 
-It intends to provide a cleaner, simpler, and complete implementation of a RIPE
-Database client.
-
-The usage should remain mostly the same:
-
-  use Net::Whois::Generic;
-
-  my $whois = Net::Whois::Generic->new( %options );
-  $iterator = $whois->query( 'AS333' );
-
-If you prefer to manipulate full-fledged objects you can now use
-
-  use Net::Whois::Object;
-
-  my @objects = Net::Whois::Object->query( 'AS333' );
-
-Of course, comments are more than welcome. If you believe you can help, please
-do not hesitate in contacting me.
-
-=head1 BACKWARD COMPATIBILITY
-
-I've choose to break backwards compatibility with older versions of the L<Net::Whois::Generic> module for several different reasons. I will try to explain and justify them here, as design documentation. I will also strive to provide practical solutions for porting problems, if any.
-
-=head2 Architecture
-
-The old module provided it's own L<Iterator> implementation. This was common
-practice 10 years ago, when the module was initially written. I believe Perl
-has a stable and useful standard implementation of L<Iterators> now, and
-adopted it instead of maintaining my own. This allows me to reduce the
-necessary code base without losing features.
-
-=head2 Query Options
-
-From release 2.0 onwards, L<Net::Whois::Generic> will allow almost all query
-options understanded by the RIPE Database Server. I bumped in the lack of
-options myself, sometimes, and I believe other programmers can also use the
-extra features offered.
-
-There are nice, sane defaults provided for most of the options. This should
-make it possible for a beginner to just ignore all options and settings and
-still be able to make some use of the module.
-
-=head2 Memory Footprint
-
-I had the intention of reducing the memory footprint of this module when doing
-heavy-lifting. I still don't have measurements, but that was the idea behind
-adopting an L<Iterator> wrapping the L<IO::Socket> used to return results.
-
-=head2 Better Data Structures
-
-A production release of this module will be able to feed a L<RPSL::Parser> with
-RPSL objects extracted from the RIPE Database and return full-fledged objects
-containing a parsed version of the text (way more useful than a text blob, I
-believe). 
-L<Net::Whois::Object> (from release 2.00_010) is the first attempt toward this
-goal.
-
-  # You can now do
-  my @objects = Net::Whois::Object->query( 'AS333' );
-
-  # And manipulate the object the OO ways
-  for my $object (@objects) {
-    print $object->remarks();
-  }
+Net::Whois::Generic is a new interface designed to be more generic and encapsulated data from 
+various sources (RIPE, but also AFRINIC, APNIC...)
+The current implementation is barely a proof of concept, and AFINIC is the only other source implemented,
+but I expect to turn it into a generic/robust implementation based on the users feedback.
 
 =head1 METHODS
 
@@ -518,7 +459,7 @@ sub _find_rir
 	{
 		$rir = 'afrinic';
 	}
-	if (    (          $query =~ /^(23|34|50|64|64|65|66|67|68|69|70|71|72|73|74|75|76|96|97|98|9|100|104|107|108|135|136|142|147|162|166|172|173|174|184|192|198|199|204|205|206|207|208|209|216)/
+	elsif (    (          $query =~ /^(23|34|50|64|64|65|66|67|68|69|70|71|72|73|74|75|76|96|97|98|9|100|104|107|108|135|136|142|147|162|166|172|173|174|184|192|198|199|204|205|206|207|208|209|216)/
 			or ($query =~ /^(2001:0400|2001:1800|2001:4800:|2600|2610:0000):/)
 			or $query =~ /ARIN/
 		)
@@ -560,7 +501,6 @@ sub adapt_query
 	elsif ($rir eq 'afrinic') {
 		$fullquery = '-V Md5.0 ' . $query;
 		$self->hostname($RIR{afrinic}{SERVER});
-		warn "set hostname to ", $self->hostname;
 	}
 	elsif ($rir eq 'arin') {
 		$self->hostname($RIR{arin}{SERVER});
@@ -690,13 +630,17 @@ Process a response (error code, error message...)
 
 sub _process_response
 {
+    my $self = shift;
 	my $response = shift;
 	my $code;
 	my $msg;
 
+    eval { $response->comment };
+    die "Dump : ".Dumper $response    if $@; 
+
 	if ($response->response =~ /ERROR.*:.*?(\d+)/) {
 		$code = $1;
-		$msg = join '', $response->comments();
+		$msg = join '', $response->comment();
 	}
 }
 
@@ -708,20 +652,20 @@ Arnaud "Arhuman" Assad, C<< <arhuman at gmail.com> >>
 
 =over 4
 
-=item B<No IPv6 Support>
+=item B<Update>
 
-There's no support for IPv6 still on this module. I'm planning to add it in a
-future version.
+Update of objects from database other than RIPE is not currently implemented...
 
-=item B<Tests Depend On Connectivity>
+=item B<Sources>
 
-As this is the initial alpha release, there is still some work to do in terms
-of testing. One of the first things I must work on is to eliminate the
-dependency on connectivity to the RIPE Database.
+Currently the only sources implemented are RIPE, and AFRINIC.
 
-=item B<Current Interface is not Backwards-Compatible>
+=item B<Maturity>
 
-I plan to implement a drop-in replacement to the old interface soon, as an extension to this module. For now, this module just breaks compatibility with the old interface. Please read the full discussion about compatibility with older version of the L<NET::Whois::Generic> in the L</"BACKWARD COMPATIBILITY"> section.
+The Net::Whois::Generic interface is highly experimental.
+There are probably bugs, without any doubt missing documentation and
+examples but please don't hesitate to contact me to suggest corrections
+and improvments.
 
 =back
 
@@ -766,7 +710,7 @@ L<http://search.cpan.org/dist/net-whois-ripe>
 
 =head1 ACKNOWLEDGEMENTS
 
-This module is inspired by Net::Whois::IANA (which doesn't seems to be maintened anymore, and doesn't cover all my needs)
+Thanks to Jaguar Networks which grants me time to work on this module.
 
 =head1 COPYRIGHT & LICENSE
 

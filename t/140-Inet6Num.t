@@ -130,9 +130,9 @@ is( $object->changed()->[1], 'abc@examplenet.com 20121231', 'changed properly ad
 
 # Test 'source'
 $tested{'source'}++;
-is( $object->source(), 'APNIC', 'source properly parsed' );
-$object->source('RIPE');
-is( $object->source(), 'RIPE', 'source properly set' );
+is( $object->source(), 'RIPE', 'source properly parsed' );
+$object->source('APNIC');
+is( $object->source(), 'APNIC', 'source properly set' );
 
 # Test 'org'
 $tested{'org'}++;
@@ -163,5 +163,5 @@ mnt-routes:  MAINT-EXAMPLENET-AP
 mnt-domains: MAINT-EXAMPLENET-AP
 mnt-irt:     IRT-EXAMPLENET-AP
 changed:     abc@examplenet.com 20101231
-source:      APNIC
+source:      RIPE
 

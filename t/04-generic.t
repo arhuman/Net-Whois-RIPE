@@ -67,8 +67,6 @@ SKIP: {
         eval { ($as_set) = $c->query('AS-JAGUAR', {type => 'AsSet'}) };
         ok !$@, q{Client performs queries without dying $@};
         isa_ok $as_set, 'Net::Whois::Object::AsSet';
-        
-         
     }
 
     # object_types()
@@ -86,23 +84,6 @@ SKIP: {
     eval { $c->disconnect };
     ok !$@ , 'The client disconnected without dying.';
     ok !$c->is_connected, 'The client is not connected (anymore).';
-
-    # query() AFRINIC
-    {
-        my $org;
-        my @o;
-        #eval { ($org) = $c->query('ORG-AFNC1-AFRINIC', { type => 'organization'}) };
-        eval { @o = $c->query('ORG-AFNC1-AFRINIC') };
-        diag Dumper \@o; 
-        ok !$@, q{Client performs queries without dying};
-        isa_ok $org, 'Net::Whois::Object::Organization';
-
-
-        my $inetnum;
-        eval { ($inetnum) = $c->query('105.0.0.1', { type => 'inetnum'}) };
-        ok !$@, qq{Client performs queries without dying $@};
-        isa_ok $inetnum, 'Net::Whois::Object::InetNum';
-    }
 
     # DESTROY()
 }
