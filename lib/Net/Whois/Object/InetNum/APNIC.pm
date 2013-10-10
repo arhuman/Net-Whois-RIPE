@@ -1,12 +1,12 @@
-package Net::Whois::Object::Inet6Num::APNIC;
+package Net::Whois::Object::InetNum::APNIC;
 
 use base qw/Net::Whois::Object/;
 
-# whois -h whois.apnic.net -t inet6num
+# whois -h whois.apnic.net -t inetnum
 # % [whois.apnic.net]
 # % Whois data copyright terms    http://www.apnic.net/db/dbcopyright.html
 # 
-# inet6num:       [mandatory]  [single]     [primary/lookup key]
+# inetnum:        [mandatory]  [single]     [primary/lookup key]
 # netname:        [mandatory]  [single]     [lookup key]
 # descr:          [mandatory]  [multiple]   [ ]
 # country:        [mandatory]  [multiple]   [ ]
@@ -24,28 +24,29 @@ use base qw/Net::Whois::Object/;
 # mnt-irt:        [mandatory]  [multiple]   [inverse key]
 # changed:        [mandatory]  [multiple]   [ ]
 # source:         [mandatory]  [single]     [ ]
+# 
+# % This query was served by the APNIC Whois Service version 1.68.5 (WHOIS4)
 
-
-__PACKAGE__->attributes( 'primary',   [ 'inet6num'] );
-__PACKAGE__->attributes( 'mandatory', [ 'inet6num', 'netname', 'descr', 'country', 'admin_c', 'tech_c', 'status', 'mnt_by', 'mnt_irt', 'changed', 'source' ] );
+__PACKAGE__->attributes( 'primary',   [ 'inetnum' ] );
+__PACKAGE__->attributes( 'mandatory', [ 'inetnum', 'netname', 'descr', 'country', 'admin_c', 'tech_c', 'status', 'mnt_by', 'mnt_irt', 'changed', 'source' ] );
 __PACKAGE__->attributes( 'optional',  [ 'geoloc', 'language', 'org', 'remarks', 'notify', 'mnt_lower', 'mnt_routes' ] );
-__PACKAGE__->attributes( 'single',    [ 'inet6num', 'netname', 'geoloc', 'org', 'status', 'source' ] );
+__PACKAGE__->attributes( 'single',    [ 'inetnum', 'netname', 'geoloc', 'org', 'status', 'source' ] );
 __PACKAGE__->attributes( 'multiple',  [ 'descr', 'country', 'language', 'admin_c', 'tech_c', 'remarks', 'notify', 'mnt_by', 'mnt_lower', 'mnt_routes', 'mnt_irt', 'changed' ] );
 
 =head1 NAME
 
-Net::Whois::Object::Inet6Num::APNIC - an object representation of a RPSL Inet6Num block
+Net::Whois::Object::InetNum::APNIC - an object representation of a RPSL InetNum block
 
 =head1 DESCRIPTION
 
-An inet6num object contains information on allocations and assignments
-of IPv6 address space.
+An inetnum object contains information on allocations and assignments
+of IPv4 address space.
 
 =head1 METHODS
 
 =head2 new ( @options )
 
-Constructor for the Net::Whois::Object::Inet6Num::APNIC class
+Constructor for the Net::Whois::Object::InetNum::APNIC class
 
 =cut
 
@@ -53,50 +54,33 @@ sub new {
     my ( $class, @options ) = @_;
 
     my $self = bless {}, $class;
+
     $self->_init(@options);
 
     return $self;
 }
 
-=head2 B<inet6num( [$inet6num] )>
+=head2 B<inetnum( [$inetnum] )>
 
-Accessor to the inet6num attribute.
-Accepts an optional inet6num value, always return the current inet6num value.
-
-The inet6num attribute specifies a range of IPv6 addresses that the
-inet6num object presents. The range may be a single address.
-
-Addresses can only be expressed in prefix notation
+Accessor to the inetnum attribute.
+Accepts an optional inetnum value, always return the current inetnum value.
 
 =head2 B<netname( [$netname] )>
 
 Accessor to the netname attribute.
 Accepts an optional netname, always return the current netname.
 
-The netname attribute is the name of a range of IP address space. It is
-recommended that the same netname is used for any set of assignment ranges
-used for a common purpose.
-
 =head2 B<descr( [$descr] )>
 
 Accessor to the descr attribute.
-Accepts an optional descr to be added to the descr array,
+Accepts an optional descr value to be added to the descr array,
 always return the current descr array.
-
-Description of the organization allocated or assigned the address space shown
-in the inet6num.
 
 =head2 B<country( [$country] )>
 
 Accessor to the country attribute.
 Accepts an optional country to be added to the country array,
 always return the current country array.
-
-The country attribute identifies the country. It has never been specified
-if this is the country where the addresses are used, where the issuing
-organisation is based or some transit country in between. There are no rules
-defined for this attribute. It cannot therefore be used in any reliable way to
-map IP addresses to countries.
 
 =head2 B<geoloc( [$geoloc] )>
 
@@ -117,15 +101,13 @@ always return the current language array.
 Identifies the language.
 
 Valid two-letter ISO 639-1 language code.
-
 =head2 B<org( [$org] )>
 
-Accessor to the org attribute.
+Accessor to the 'org' attribute.
 Accepts an optional org, always return the current org.
 
-Only a single value for the org attribute is allowed in the inet6num
-object. This is to ensure only one organisation is responsible for this
-resource.
+Only a single value for the org attribute is allowed in the Inetnum object.
+This is to ensure only one organisation is responsible for this resource.
 
 =head2 B<admin_c( [$contact] )>
 
@@ -133,7 +115,7 @@ Accessor to the admin_c attribute.
 Accepts an optional contact to be added to the admin_c array,
 always return the current admin_c array.
 
-The NIC-handle of an on-site contact 'person' object. As more than one person
+The NIC-handle of an on-site contact Person object. As more than one person
 often fulfills a role function, there may be more than one admin_c listed.
 
 An administrative contact (admin_c) must be someone who is physically
@@ -145,34 +127,47 @@ Accessor to the tech_c attribute.
 Accepts an optional contact to be added to the tech_c array,
 always return the current tech_c array.
 
-The NIC-handle of a technical contact 'person' or 'role' object.  As more than
+The NIC-handle of a technical contact Person or Role object.  As more than
 one person often fulfills a role function, there may be more than one tech_c
 listed.
 
 A technical contact (tech_c) must be a person responsible for the
 day-to-day operation of the network, but does not need to be
+physically located at the site of the network.
 
 =head2 B<status( [$status] )>
 
-Accessor to the status attribute.
+Accessor to the 'status' attribute.
 Accepts an optional status, always return the current status.
 
 The status attribute indicates where the address range represented by an
-inet6num object sits in a hierarchy and how it is used.
+inetnum object sits in a hierarchy and how it is used.
 
 Status can have one of these values:
 
 =over 4
 
-=item ALLOCATED-BY-RIR
+=item ALLOCATED UNSPECIFIED
 
-=item ALLOCATED-BY-LIR
+=item ALLOCATED PA
 
-=item ASSIGNED
+=item ALLOCATED PI
+
+=item LIR-PARTITIONED PA
+
+=item LIR-PARTITIONED PI
+
+=item SUB-ALLOCATED PA
+
+=item ASSIGNED PA
+
+=item ASSIGNED PI
 
 =item ASSIGNED ANYCAST
 
-=item ASSIGNED PI
+=item EARLY-REGISTRATION
+
+=item NOT-SET
 
 =back
 
@@ -200,14 +195,17 @@ Accessor to the mnt_by attribute.
 Accepts an optional mnt_by value to be added to the mnt_by array,
 always return the current mnt_by array.
 
+Lists a registered Mntner used to authorize and authenticate changes to this
+object.
+
 =head2 B<mnt_lower( [$mnt_lower] )>
 
 Accessor to the mnt_lower attribute.
 Accepts an optional mnt_lower value to be added to the mnt_lower array,
 always return the current mnt_lower array.
 
-Sometimes there is a hierarchy of maintainers. In these cases, mnt-lower is
-used as well as 'mnt-by.'
+Sometimes there is a hierarchy of maintainers. In these cases, mnt_lower is
+used as well as mnt_by.
 
 =head2 B<mnt_routes( [$mnt_route] )>
 
@@ -216,27 +214,18 @@ Accepts an optional mnt_route to be added to the mnt_routes array,
 always return the current mnt_routes array.
 
 The identifier of a registered Mntner object used to control the creation of
-Route6 objects associated with the address range specified by the Inet6num
+Route objects associated with the address range specified by the Inetnum
 object.
 
-=head2 B<mnt_domains( [$mnt_route] )>
+=head2 B<mnt_domains( [$mnt_domain] )>
 
 Accessor to the mnt_domains attribute.
-Accepts an optional mnt_route to be added to the mnt_domains array,
+Accepts an optional mnt_domain to be added to the mnt_domains array,
 always return the current mnt_domains array.
 
 The identifier of a registered Mntner object used to control the creation of
-Domain objects associated with the address range specified by the Inet6num
+Domain objects associated with the address range specified by the Inetnum
 object.
-
-=head2 B<mnt_irt( [$mnt_irt] )>
-
-Accessor to the mnt_irt attribute.
-Accepts an optional mnt_irt to be added to the mnt_irt array,
-always return the current mnt_irt array.
-
-mnt_irt references an Irt object. Authorisation is required from the Irt
-object to be able to add this reference.
 
 =head2 B<changed( [$changed] )>
 
@@ -259,6 +248,15 @@ Accessor to the source attribute.
 Accepts an optional source, always return the current source.
 
 The database where the object is registered.
+
+=head2 B<mnt_irt( [$mnt_irt] )>
+
+Accessor to the mnt_irt attribute.
+Accepts an optional mnt_irt value to be added to the mnt_irt array,
+always return the current mnt_irt array.
+
+The identifier of a registered Mntner object used to provide information
+about a Computer Security Incident Response Team (CSIRT).
 
 =cut
 

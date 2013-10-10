@@ -1,54 +1,51 @@
-package Net::Whois::Object::Role::AFRINIC;
+package Net::Whois::Object::Person::APNIC;
 
 use base qw/Net::Whois::Object/;
 
-# whois -t role -h whois.afrinic.net
-# % This is the AfriNIC Whois server.
+# whois -h whois.apnic.net -t person
+# % [whois.apnic.net]
+# % Whois data copyright terms    http://www.apnic.net/db/dbcopyright.html
 # 
-# role:           [mandatory]  [single]     [lookup key]
+# person:         [mandatory]  [single]     [lookup key]
 # address:        [mandatory]  [multiple]   [ ]
-# phone:          [optional]   [multiple]   [ ]
+# country:        [mandatory]  [single]     [ ]
+# phone:          [mandatory]  [multiple]   [ ]
 # fax-no:         [optional]   [multiple]   [ ]
 # e-mail:         [mandatory]  [multiple]   [lookup key]
 # org:            [optional]   [multiple]   [inverse key]
-# admin-c:        [mandatory]  [multiple]   [inverse key]
-# tech-c:         [mandatory]  [multiple]   [inverse key]
-# nic-hdl:        [mandatory]  [single]     [primary/look-up key]
+# nic-hdl:        [mandatory]  [single]     [primary/lookup key]
 # remarks:        [optional]   [multiple]   [ ]
 # notify:         [optional]   [multiple]   [inverse key]
 # abuse-mailbox:  [optional]   [multiple]   [inverse key]
-# mnt-by:         [optional]   [multiple]   [inverse key]
+# mnt-by:         [mandatory]  [multiple]   [inverse key]
 # changed:        [mandatory]  [multiple]   [ ]
 # source:         [mandatory]  [single]     [ ]
-
+# 
+# % This query was served by the APNIC Whois Service version 1.68.5 (WHOIS1)
 
 __PACKAGE__->attributes( 'primary',   [ 'nic_hdl' ] );
-__PACKAGE__->attributes( 'mandatory', [ 'role', 'address', 'e_mail', 'admin_c', 'tech_c', 'nic_hdl', 'changed', 'source' ] );
-__PACKAGE__->attributes( 'optional',  [ 'phone', 'fax_no', 'org', 'remarks', 'notify', 'abuse_mailbox', 'mnt_by' ] );
-__PACKAGE__->attributes( 'single',    [ 'role', 'nic_hdl', 'source' ] );
-__PACKAGE__->attributes( 'multiple',  [ 'address', 'e_mail', 'org', 'tech_c', 'admin_c', 'changed', 'phone', 'fax_no', 'trouble', 'remarks', 'notify', 'mnt_by', 'abuse_mailbox' ] );
+__PACKAGE__->attributes( 'mandatory', [ 'person', 'address', 'country', 'phone', 'email', 'nic_hdl', 'mnt_by', 'changed', 'source' ] );
+__PACKAGE__->attributes( 'optional',  [ 'fax_no', 'org', 'remarks', 'notify', 'abuse_mailbox' ] );
+__PACKAGE__->attributes( 'single',    [ 'person', 'country', 'nic_hdl', 'source' ] );
+__PACKAGE__->attributes( 'multiple',  [ 'address', 'phone', 'fax_no', 'e_mail', 'org', 'remarks', 'notify', 'abuse_mailbox', 'mnt_by', 'changed' ] );
 
 
 =head1 NAME
 
-Net::Whois::Object::Role::AFRINIC - an object representation of the RPSL Role block
+Net::Whois::Object::Person::APNIC - an object representation of the RPSL Person block
 
 =head1 DESCRIPTION
 
-The role class is similar to the person class.  However, instead of
-describing a human being, it describes a role performed by one or more
-human beings.  Examples include help desks, network monitoring
-centres, system administrators, etc.  A role object is particularly
-useful since often a person performing a role may change; however the
-role itself remains. The "nic-hdl:" attributes of the person and role
-classes share the same name space. Once the object is created, the
-value of the "role:" attribute cannot be changed.
+A person object contains information about technical or administrative
+contact responsible for the object where it is referenced. Once the
+object is created, the value of the "person:" attribute cannot be
+changed.
 
 =head1 METHODS
 
 =head2 B<new( %options )>
 
-Constructor for the Net::Whois::Object::Role::AFRINIC class
+Constructor for the Net::Whois::Object::Person::APNIC class
 
 =cut
 
@@ -61,10 +58,10 @@ sub new {
     return $self;
 }
 
-=head2 B<role( [$role] )>
+=head2 B<person( [$person] )>
 
-Accessor to the role attribute.
-Accepts an optional role, always return the current role.
+Accessor to the person attribute.
+Accepts an optional person, always return the current person.
 
 =head2 B<address( [$address] )>
 
@@ -75,7 +72,7 @@ always return the current address array.
 =head2 B<phone( [$phone] )>
 
 Accessor to the phone attribute.
-Accepts an optional phone to be added to the phone array,
+Accepts an optional phone number to be added to the phone array,
 always return the current phone array.
 
 =head2 B<fax_no( [$fax_no] )>
@@ -93,7 +90,7 @@ always return the current e_mail array.
 =head2 B<org( [$org] )>
 
 Accessor to the org attribute.
-Accepts an optional org, always return the current org.
+Accepts an optional org, always return the current org array.
 
 Points to an existing organisation object representing the entity that
 holds the resource.
@@ -102,24 +99,6 @@ The 'ORG-' string followed by 2 to 4 characters, followed by up to 5 digits
 followed by a source specification.  The first digit must not be "0".
 Source specification starts with "-" followed by source name up to
 9-character length.
-
-=head2 B<trouble( [$trouble] )>
-
-Accessor to the trouble attribute.
-Accepts an optional trouble value to be added to the trouble array,
-always return the current trouble array.
-
-=head2 B<admin_c( [$contact] )>
-
-Accessor to the admin_c attribute.
-Accepts an optional contact to be added to the admin_c array,
-always return the current admin_c array.
-
-=head2 B<tech_c( [$contact] )>
-
-Accessor to the tech_c attribute.
-Accepts an optional contact to be added to the tech_c array,
-always return the current tech_c array.
 
 =head2 B<nic_hdl( [$nic_hdl] )>
 
@@ -137,6 +116,12 @@ always return the current remarks array.
 Accessor to the notify attribute.
 Accepts an optional notify value to be added to the notify array,
 always return the current notify array.
+
+=head2 B<abuse_mailbox( [$abuse_mailbox] )>
+
+Accessor to the abuse_mailbox attribute.
+Accepts an optional abuse_mailbox value to be added to the abuse_mailbox array,
+always return the current abuse_mailbox array.
 
 =head2 B<mnt_by( [$mnt_by] )>
 

@@ -455,17 +455,26 @@ sub _find_rir
 	#
 	if (       ($query =~ /^(41|102|105|154|196|197)\.\d+\.\d+\.\d+/)
 		or ($query =~ /AFRINIC/i)
-		or ($query =~ /^2c00::/))
+		or ($query =~ /^2c00::/i))
 	{
 		$rir = 'afrinic';
 	}
 	elsif (    (          $query =~ /^(23|34|50|64|64|65|66|67|68|69|70|71|72|73|74|75|76|96|97|98|9|100|104|107|108|135|136|142|147|162|166|172|173|174|184|192|198|199|204|205|206|207|208|209|216)/
-			or ($query =~ /^(2001:0400|2001:1800|2001:4800:|2600|2610:0000):/)
+			or ($query =~ /^(2001:0400|2001:1800|2001:4800:|2600|2610:0000):/i)
 			or $query =~ /ARIN/
 		)
 		)
 	{
 		$rir = 'arin';
+
+	}
+	elsif (    (          $query =~ /^(10|14|27|36|39|42|49|58|59|60|61|101|103|106|110|111|112|113|114|115|116|117|118|119|120|121|122|123|124|125|126|169\.208|175|180|182|183|202|203|210|211|218|219|220|221|222|223)\.\d+\.\d+/
+			or ($query =~ /^(2001:0200|2001:0C00|2001:0E00|2001:4400|2001:8000|2001:A000|2001:B000|2400:0000|2001:0DC0|2001:0DE8|2001:0DF0|2001:07FA|2001:0DE0|2001:0DB8):/i)
+			or $query =~ /APNIC/
+		)
+		)
+	{
+		$rir = 'apnic';
 
 	}
 	else {
@@ -508,7 +517,10 @@ sub adapt_query
 	elsif ($rir eq 'lacnic') {
 		$self->hostname($RIR{lacnic}{SERVER});
 	}
-
+	elsif ($rir eq 'apnic') {
+		$fullquery = $query;
+		$self->hostname($RIR{apnic}{SERVER});
+	}
 	return $fullquery;
 }
 
@@ -536,13 +548,7 @@ sub query
 	}
 
 	$query = $self->adapt_query($query);
-	my $parameters = "";
-	$parameters .= q{ } . QUERY_KEEPALIVE  if $self->keepalive;
-	$parameters .= q{ } . QUERY_UNFILTERED if $self->unfiltered;
-	$parameters .= q{ } . QUERY_NON_RECURSIVE unless $self->recursive;
-	$parameters .= q{ } . QUERY_REFERRAL if $self->referral;
-	my $fullquery = $parameters . $query;
-	my $iterator  = $self->__query($fullquery);
+	my $iterator  = $self->__query($query);
 
 	my @objects = Net::Whois::Object->new($iterator);
 
