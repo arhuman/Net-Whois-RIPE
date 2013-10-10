@@ -128,9 +128,9 @@ is( $object->changed()->[1], 'someone@demo.com 20120228', 'changed properly adde
 
 # Test 'source'
 $tested{'source'}++;
-is( $object->source(), 'APNIC', 'source properly parsed' );
-$object->source('RIPE');
-is( $object->source(), 'RIPE', 'source properly set' );
+is( $object->source(), 'RIPE', 'source properly parsed' );
+$object->source('APNIC');
+is( $object->source(), 'APNIC', 'source properly set' );
 
 # Common tests
 do 't/common.pl';
@@ -159,6 +159,6 @@ remarks:        24/24 7/7
 remarks:        https://www.demo.com
 changed:        someone@demo.com 20120131
 notify:         someone@demo.com
-source:         APNIC
+source:         RIPE
 
 

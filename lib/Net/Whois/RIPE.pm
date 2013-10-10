@@ -7,19 +7,18 @@ use IO::Socket::INET;
 use IO::Select;
 use Iterator;
 
-use constant {
-    SOON                    => 30,
-    END_OF_OBJECT_MARK      => "\n\n",
-    EOL                     => "\015\012",
-    QUERY_KEEPALIVE         => q{-k },
-    QUERY_NON_RECURSIVE     => q{-r },
-    QUERY_REFERRAL          => q{-R },
-    QUERY_GROUPING          => q{-G },
-    QUERY_UNFILTERED        => q{-B },
-    QUERY_LIST_OBJECTS      => q{-qtypes },
-    QUERY_LIST_SOURCES      => q{-qsources },
-    QUERY_FETCH_TEMPLATE    => q{-t%s },
-    QUERY_LIMIT_OBJECT_TYPE => q{-T%s },
+use constant { SOON                    => 30,
+               END_OF_OBJECT_MARK      => "\n\n",
+               EOL                     => "\015\012",
+               QUERY_KEEPALIVE         => q{-k },
+               QUERY_NON_RECURSIVE     => q{-r },
+               QUERY_REFERRAL          => q{-R },
+               QUERY_GROUPING          => q{-G },
+               QUERY_UNFILTERED        => q{-B },
+               QUERY_LIST_OBJECTS      => q{-qtypes },
+               QUERY_LIST_SOURCES      => q{-qsources },
+               QUERY_FETCH_TEMPLATE    => q{-t%s },
+               QUERY_LIMIT_OBJECT_TYPE => q{-T%s },
 };
 
 =head1 NAME
@@ -28,11 +27,11 @@ Net::Whois::RIPE - a pure-Perl implementation of the RIPE Database client.
 
 =head1 VERSION
 
-Version 2.004002
+Version 2.005000
 
 =cut
 
-our $VERSION = 2.004002;
+our $VERSION = 2.005000;
 
 =head1 SYNOPSIS
 
@@ -56,12 +55,24 @@ If you prefer to manipulate full-fledged objects you can now use
 
   my @objects = Net::Whois::Object->query( 'AS333' );
 
+From version 2.005000 you can also use the  Net::Whois::Generic interface 
+that mimics Net::Whois::Object while offering access to data from other sources
+than RIPE (AFRINIC, APNIC)
+
+  use Net::Whois::Object;
+
+  my @objects = Net::Whois::Generic->query( 'ORG-AFNC1-AFRINIC' );
+
+Please see L<Net::Whois::Generic> documentation for more details
+
 Of course, comments are more than welcome. If you believe you can help, please
 do not hesitate in contacting me.
 
 =head1 BACKWARD COMPATIBILITY
 
-I've choose to break backwards compatibility with older versions of the L<Net::Whois::RIPE> module for several different reasons. I will try to explain and justify them here, as design documentation. I will also strive to provide practical solutions for porting problems, if any.
+I've choose to break backwards compatibility with older versions of the L<Net::Whois::RIPE> 
+module for several different reasons. I will try to explain and justify them here, as design documentation. 
+I will also strive to provide practical solutions for porting problems, if any.
 
 =head2 Architecture
 
@@ -183,25 +194,22 @@ connection to the RIPE Database service desired.
 =cut
 
 {
-    my %default_options = (
-        hostname     => 'whois.ripe.net',
-        port         => '43',
-        timeout      => 5,
-        keepalive    => 0,
-        referral     => 0,
-        recursive    => 0,
-        grouping     => 1,
-        unfiltered   => 0,
-        types        => undef,
-        disconnected => 0,
+    my %default_options = ( hostname     => 'whois.ripe.net',
+                            port         => '43',
+                            timeout      => 5,
+                            keepalive    => 0,
+                            referral     => 0,
+                            recursive    => 0,
+                            grouping     => 1,
+                            unfiltered   => 0,
+                            types        => undef,
+                            disconnected => 0,
     );
 
     sub new {
         my ( $class, %options ) = @_;
         my %known_options;
-        $known_options{$_}
-            = exists $options{$_} ? $options{$_} : $default_options{$_}
-            foreach keys %default_options;
+        $known_options{$_} = exists $options{$_} ? $options{$_} : $default_options{$_} foreach keys %default_options;
 
         my $self = bless { __options => \%known_options }, $class;
 
@@ -340,31 +348,25 @@ Initiates a connection with the current object's configuration.
 =cut
 
 sub connect {
-    my $self       = shift;
-    my %connection = (
-        Proto      => 'tcp',
-        Type       => SOCK_STREAM,
-        PeerAddr   => $self->hostname,
-        PeerPort   => $self->port,
-        Timeout    => $self->timeout,
-        Domain     => AF_INET,
-        Multihomed => 1,
+    my $self = shift;
+    my %connection = ( Proto      => 'tcp',
+                       Type       => SOCK_STREAM,
+                       PeerAddr   => $self->hostname,
+                       PeerPort   => $self->port,
+                       Timeout    => $self->timeout,
+                       Domain     => AF_INET,
+                       Multihomed => 1,
     );
 
     # Create a new IO::Socket object
-    my $socket = $self->{__state}{socket}
-        = IO::Socket::INET->new(%connection);
-    die q{Can't connect to "}
-        . $self->hostname . ':'
-        . $self->port
-        . qq{". Reason: [$@].\n}
+    my $socket = $self->{__state}{socket} = IO::Socket::INET->new(%connection);
+    die q{Can't connect to "} . $self->hostname . ':' . $self->port . qq{". Reason: [$@].\n}
         unless defined $socket;
 
     # Register $socket with the IO::Select object
     if ( my $ios = $self->ios ) {
         $ios->add($socket) unless $ios->exists($socket);
-    }
-    else {
+    } else {
         $self->{__state}{ioselect} = IO::Select->new($socket);
     }
 
@@ -481,7 +483,7 @@ Sends a query to the server. Returns an L<Iterator> object that will return one 
 sub query {
     my ( $self, $query ) = @_;
     my $parameters = "";
-    $parameters .= q{ } . QUERY_KEEPALIVE if $self->keepalive;
+    $parameters .= q{ } . QUERY_KEEPALIVE  if $self->keepalive;
     $parameters .= q{ } . QUERY_UNFILTERED if $self->unfiltered;
     $parameters .= q{ } . QUERY_NON_RECURSIVE unless $self->recursive;
     $parameters .= q{ } . QUERY_REFERRAL if $self->referral;
@@ -528,9 +530,9 @@ connection will be terminated after this query.
 =cut
 
 sub object_types {
-    my $self = shift;
+    my $self     = shift;
     my $iterator = $self->__query(QUERY_LIST_OBJECTS);
-    while (!$iterator->is_exhausted) {
+    while ( !$iterator->is_exhausted ) {
         my $value = $iterator->value;
         return split /\s+/, $value if $value !~ /^%\s/;
     }
