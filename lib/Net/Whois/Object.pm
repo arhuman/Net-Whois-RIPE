@@ -3,9 +3,9 @@ use strict;
 use warnings;
 
 use Carp;
-use Net::Whois::RIPE;
 use IPC::Open2 qw/open2/;
 use List::Util qw/max/;
+use Data::Dumper;
 
 our $LWP;
 
@@ -252,7 +252,7 @@ sub new {
             $block = 'comment' unless $block;
 
             # Comment line
-            $attribute = "comment";
+            $attribute = 'comment';
             $value     = $1;
 
         } elsif ( $line =~ /^[^%]\s*(.+)/ ) {
@@ -263,10 +263,13 @@ sub new {
         } elsif ( $line =~ /^$/ ) {
 
             # Blank line
-            push @results, $object;
-            $attribute = undef;
-            $block     = undef;
-            $object    = undef;
+            if ($object) {
+                $object = _object_factory( $object->{block}, $object->{value}, $object );
+                push @results, $object;
+                $attribute = undef;
+                $block     = undef;
+                $object    = undef;
+            }
             next;
 
         }
@@ -278,12 +281,24 @@ sub new {
         $block = $attribute unless $block;
 
         if ( !$object ) {
-            $object = _object_factory( $block, $value ) unless $object;
-        } elsif ( $object->can($attribute) ) {
-            $object->$attribute($value);
-        } else {
-            warn "Objects of type " . ref($object) . " do not support attribute '$attribute', but it was supplied with value '$value'\n";
+            $object = { block => $block, value => $value, attributes => [] };
+
+            # $object = _object_factory( $block, $value ) unless $object;
+            # } elsif ( $object->can($attribute) ) {
+            # $object->$attribute($value);
+            if ( $block eq 'comment' ) {
+
+                # push @{$object->{attributes}},[ 'comment', $value ];
+                next;
+            }
         }
+
+        # } else {
+        push @{ $object->{attributes} }, [ $attribute, $value ];
+
+        # } else {
+        # warn "Objects of type " . ref($object) . " do not support attribute '$attribute', but it was supplied with value '$value'\n";
+        # }
 
     }
 
@@ -621,43 +636,43 @@ Net::Whois::Objects
 
 =cut
 
-sub query {
-    my ( $class, $query, $options ) = @_;
-
-    my $attribute;
-    my $type;
-
-    for my $opt ( keys %$options ) {
-        if ( $opt =~ /^attribute$/i ) {
-            $attribute = $options->{$opt};
-        } elsif ( $opt =~ /^type$/i ) {
-            $type = $options->{$opt};
-        }
-    }
-
-    my $whois    = Net::Whois::RIPE->new(%$options);
-    my $iterator = $whois->query($query);
-
-    my @objects = Net::Whois::Object->new($iterator);
-
-    if ($type) {
-        @objects = grep { ref($_) =~ /$type/i } @objects;
-    }
-
-    if ($attribute) {
-        return grep {defined} map {
-            my $r;
-            eval { $r = $_->$attribute };
-            $@ ? undef : ref($r) eq 'ARRAY' ? @$r : $r
-        } @objects;
-    } else {
-        return grep {defined} @objects;
-    }
-}
+# sub query {
+#     my ( $class, $query, $options ) = @_;
+#
+#     my $attribute;
+#     my $type;
+#
+#     for my $opt ( keys %$options ) {
+#         if ( $opt =~ /^attribute$/i ) {
+#             $attribute = $options->{$opt};
+#         } elsif ( $opt =~ /^type$/i ) {
+#             $type = $options->{$opt};
+#         }
+#     }
+#
+#     my $whois    = Net::Whois::Generic->new(%$options);
+#     my $iterator = $whois->query($query);
+#
+#     my @objects = Net::Whois::Object->new($iterator);
+#
+#     if ($type) {
+#         @objects = grep { ref($_) =~ /$type/i } @objects;
+#     }
+#
+#     if ($attribute) {
+#         return grep {defined} map {
+#             my $r;
+#             eval { $r = $_->$attribute };
+#             $@ ? undef : ref($r) eq 'ARRAY' ? @$r : $r
+#         } @objects;
+#     } else {
+#         return grep {defined} @objects;
+#     }
+# }
 
 =begin UNDOCUMENTED
 
-=head2 B<_object_factory( $type => $value )>
+=head2 B<_object_factory( $type => $value, $attributes_hashref )>
 
 Private method. Shouldn't be used from other modules.
 
@@ -667,8 +682,12 @@ the type passed as parameter.
 =cut
 
 sub _object_factory {
-    my $type  = shift;
-    my $value = shift;
+    my $type   = shift;
+    my $value  = shift;
+    my $object = shift;
+    my $rir;
+
+    my $object_returned;
 
     my %class = ( as_block     => 'AsBlock',
                   as_set       => 'AsSet',
@@ -684,7 +703,6 @@ sub _object_factory {
                   limerick     => 'Limerick',
                   mntner       => 'Mntner',
                   organisation => 'Organisation',
-                  organisation => 'Organisation',
                   peering_set  => 'PeeringSet',
                   person       => 'Person',
                   poem         => 'Poem',
@@ -697,24 +715,42 @@ sub _object_factory {
                   rtr_set      => 'RtrSet',
     );
 
-    die "Unrecognized Object (first attribute: $type = $value)" unless $class{$type};
+    die "Unrecognized Object (first attribute: $type = $value)\n" . Dumper($object) unless defined $type and $class{$type};
 
     my $class = "Net::Whois::Object::" . $class{$type};
+
+    for my $a ( @{ $object->{attributes} } ) {
+        if ( $a->[0] =~ /source/ ) {
+            $rir = $a->[1];
+            $rir =~ s/^(\S+)\s*#.*/$1/;
+            $rir = uc $rir;
+            $rir = undef if $rir =~ /^(RIPE|TEST)$/;    # For historical/compatibility reason RIPE objects aren't derived
+        }
+    }
+
+    $class .= "::$rir" if $rir;
 
     eval "require $class" or die "Can't require $class ($!)";
 
     # my $object = $class->new( $type => $value );
-    my $object = $class->new( class => $class{$type} );
+    $object_returned = $class->new( class => $class{$type} );
 
     # First attribute is always single valued, except for comments
     if ( $type eq 'comment' ) {
-        $object->_multiple_attribute_setget( $type => $value );
+        $object_returned->_multiple_attribute_setget( $type => $value );
     } else {
-        $object->_single_attribute_setget( $type => $value );
+        $object_returned->_single_attribute_setget( $type => $value );
+    }
+
+    if ( $object->{attributes} ) {
+        for my $a ( @{ $object->{attributes} } ) {
+            my $method = $a->[0];
+            $object_returned->$method( $a->[1] );
+        }
     }
 
     # return $class->new( $type => $value );
-    return $object;
+    return $object_returned;
 
 }
 
@@ -746,6 +782,7 @@ sub _single_attribute_setget {
     if ( defined $value ) {
 
         if ( $mode eq 'replace' ) {
+
             # Store attribute order for dump, unless this attribute as already been set
             push @{ $self->{order} }, $attribute unless $self->{$attribute} or $attribute eq 'class';
 
@@ -754,7 +791,7 @@ sub _single_attribute_setget {
             if ( ref $value ne 'HASH' or !$value->{old} ) {
                 croak " {old=>...} expected as value for $attribute update in delete mode";
             } else {
-                $self->_delete_attribute($attribute,$value->{old});
+                $self->_delete_attribute( $attribute, $value->{old} );
             }
         }
     }
@@ -811,8 +848,9 @@ sub _multiple_attribute_setget {
             if ( ref $value ne 'HASH' or !$value->{old} ) {
                 croak " {old=>...} expected as value for $attribute update in delete mode";
             } else {
+
                 # $self->{$attribute} = [grep {!/$old/} @{$self->{$attribute}}];
-                $self->_delete_attribute($attribute,$value->{old});
+                $self->_delete_attribute( $attribute, $value->{old} );
             }
         } else {
             croak "Unknown mode $mode for attribute $attribute";
@@ -832,35 +870,33 @@ Delete an attribute if its value match the pattern value
 sub _delete_attribute {
     my ( $self, $attribute, $pattern ) = @_;
 
-                my @lines;
+    my @lines;
 
-                for my $a ( @{ $self->{order} } ) {
-                    my $val = ref $self->{$a} ? shift @{ $self->{$a} } : $self->{$a};
-                    push @lines, [ $a, $val ];
-                }
+    for my $a ( @{ $self->{order} } ) {
+        my $val = ref $self->{$a} ? shift @{ $self->{$a} } : $self->{$a};
+        push @lines, [ $a, $val ];
+    }
 
-                @lines = grep {$attribute ne $_->[0] or $_->[1] !~ /$pattern/} @lines;
-                delete $self->{$attribute}  if $self->attribute_is($attribute, 'single') and $self->{$attribute} =~ /$pattern/;
+    @lines = grep { $attribute ne $_->[0] or $_->[1] !~ /$pattern/ } @lines;
+    delete $self->{$attribute} if $self->attribute_is( $attribute, 'single' ) and $self->{$attribute} =~ /$pattern/;
 
-                $self->{order} = [];
-                for my $l (@lines) {
-                        $self->{ $l->[0] } = []     if  ref( $self->{ $l->[0] } )  ;
-                }
+    $self->{order} = [];
+    for my $l (@lines) {
+        $self->{ $l->[0] } = [] if ref( $self->{ $l->[0] } );
+    }
 
-                for my $i ( 0 .. $#lines ) {
-                    push @{ $self->{order} }, $lines[$i]->[0];
-                    if ( $self->attribute_is( $lines[$i]->[0], 'multiple' ) ) {
-                        push @{ $self->{ $lines[$i]->[0] } }, $lines[$i]->[1];
-                    } else {
-                        $self->{ $lines[$i]->[0] } = $lines[$i]->[1];
+    for my $i ( 0 .. $#lines ) {
+        push @{ $self->{order} }, $lines[$i]->[0];
+        if ( $self->attribute_is( $lines[$i]->[0], 'multiple' ) ) {
+            push @{ $self->{ $lines[$i]->[0] } }, $lines[$i]->[1];
+        } else {
+            $self->{ $lines[$i]->[0] } = $lines[$i]->[1];
 
-                    }
+        }
 
-                }
+    }
 
 }
-
-
 
 =head2 B<_init( @options )>
 
