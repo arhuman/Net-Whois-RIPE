@@ -1,19 +1,16 @@
-package Net::Whois::Object::Organisation;
+package Net::Whois::Object::Organisation::APNIC;
 
-use base qw/Net::Whois::Object/;
+use base qw/Net::Whois::Object::Organisation/;
 
-# whois -h whois.ripe.net -t organisation
-# % This is the RIPE Database query service.
-# % The objects are in RPSL format.
-# %
-# % The RIPE Database is subject to Terms and Conditions.
-# % See http://www.ripe.net/db/support/db-terms-conditions.pdf
+# whois -h whois.apnic.net -t organisation
+# % [whois.apnic.net]
+# % Whois data copyright terms    http://www.apnic.net/db/dbcopyright.html
 # 
 # organisation:   [mandatory]  [single]     [primary/lookup key]
 # org-name:       [mandatory]  [single]     [lookup key]
 # org-type:       [mandatory]  [single]     [ ]
 # descr:          [optional]   [multiple]   [ ]
-# remarks:        [optional]   [multiple]   [ ]
+# country:        [optional]   [multiple]   [ ]
 # address:        [mandatory]  [multiple]   [ ]
 # phone:          [optional]   [multiple]   [ ]
 # fax-no:         [optional]   [multiple]   [ ]
@@ -23,7 +20,6 @@ use base qw/Net::Whois::Object/;
 # org:            [optional]   [multiple]   [inverse key]
 # admin-c:        [optional]   [multiple]   [inverse key]
 # tech-c:         [optional]   [multiple]   [inverse key]
-# abuse-c:        [optional]   [single]     [inverse key]
 # ref-nfy:        [optional]   [multiple]   [inverse key]
 # mnt-ref:        [mandatory]  [multiple]   [inverse key]
 # notify:         [optional]   [multiple]   [inverse key]
@@ -32,13 +28,13 @@ use base qw/Net::Whois::Object/;
 # changed:        [mandatory]  [multiple]   [ ]
 # source:         [mandatory]  [single]     [ ]
 # 
-# % This query was served by the RIPE Database Query Service version 1.69 (WHOIS4)
+# % This query was served by the APNIC Whois Service version 1.68.5 (WHOIS2)
 
 __PACKAGE__->attributes( 'primary',   [ 'organisation' ] );
 __PACKAGE__->attributes( 'mandatory', [ 'organisation', 'org_name', 'org_type', 'address', 'e_mail', 'mnt_ref', 'mnt_by', 'changed', 'source' ] );
-__PACKAGE__->attributes( 'optional',  [ 'descr', 'remarks', 'phone', 'fax_no', 'geoloc', 'language', 'org', 'abuse_c', 'admin_c', 'tech_c', 'ref_nfy', 'notify', 'abuse_mailbox' ] );
-__PACKAGE__->attributes( 'single',    [ 'organisation', 'org_name', 'org_type', 'geoloc', 'abuse_c', 'source' ] );
-__PACKAGE__->attributes( 'multiple',  [ 'descr', 'remarks', 'address', 'phone', 'fax_no', 'e_mail','language', 'org', 'admin_c', 'tech_c', 'ref_nfy', 'mnt_ref', 'notify','abuse_mailbox', 'mnt_by', 'changed' ] );
+__PACKAGE__->attributes( 'optional',  [ 'descr', 'country', 'phone', 'fax_no', 'geoloc', 'language', 'org', 'admin_c', 'tech_c', 'ref_nfy', 'notify', 'abuse_mailbox' ] );
+__PACKAGE__->attributes( 'single',    [ 'organisation', 'org_name', 'org_type', 'geoloc', 'source' ] );
+__PACKAGE__->attributes( 'multiple',  [ 'descr', 'country', 'address', 'phone', 'fax_no', 'e_mail', 'language', 'org', 'admin_c', 'tech_c', 'ref_nfy', 'mnt_ref', 'notify', 'abuse_mailbox', 'mnt_by', 'changed' ] );
 
 =head1 NAME
 
@@ -122,10 +118,11 @@ Accessor to the e_mail attribute.
 Accepts an optional e_mail to be added to the e_mail array,
 always return the current e_mail array.
 
-=head2 B<geoloc( [$geoloc] )>
+=head2 B<country( [$country] )>
 
-Accessor to the geoloc attribute.
-Accepts an optional geoloc, always return the current geoloc.
+Accessor to the country attribute.
+Accepts an optional country to be added to the country array,
+always return the current country array.
 
 =head2 B<language( [$language] )>
 
@@ -138,12 +135,6 @@ always return the current language array.
 Accessor to the admin_c attribute.
 Accepts an optional contact to be added to the admin_c array,
 always return the current admin_c array.
-
-=head2 B<abuse_c( [$contact] )>
-
-Accessor to the abuse_c attribute.
-Accepts an optional contact to be added to the abuse_c array,
-always return the current abuse_c array.
 
 =head2 B<tech_c( [$contact] )>
 

@@ -1,6 +1,12 @@
 Revision history for net-whois-ripe
 
             
+2.005001    2013-10-11
+            - Add support for APNIC objects through Net::Whois::Generic
+            - Simplify query options handling in Net::Whois::Generic
+              (remove keepalive options)
+            - Start adding some documentation (far from enough although)
+
 2.005000    2013-10-10
             - Add support for generic objects (from various sources, AFRINIC being the first implemented)
               through Net::Whois::Generic
