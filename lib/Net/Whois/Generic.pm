@@ -27,7 +27,7 @@ our %RIR = (
 
 =head1 NAME
 
-Net::Whois::Generic - a pure-Perl implementation of the RIPE Database client.
+Net::Whois::Generic - a pure-Perl implementation of a multi source Whois client.
 
 =head1 SYNOPSIS
 
@@ -35,10 +35,25 @@ Net::Whois::Generic is my first attempt to unify Whois information from differen
 Historically Net::Whois::RIPE was the first written, then Net::Whois::Object was added to provide
 a RPSL encapsultation of the data returned from RIPE database, with an API more object oriented.
 
-Net::Whois::Generic is a new interface designed to be more generic and encapsulated data from 
+Net::Whois::Generic is a new interface designed to be more generic and to encapsulate data from 
 various sources (RIPE, but also AFRINIC, APNIC...)
-The current implementation is barely a proof of concept, and AFINIC is the only other source implemented,
+The current implementation is barely a proof of concept, AFRINIC and APNIC are the only other sources implemented,
 but I expect to turn it into a generic/robust implementation based on the users feedback.
+
+Usage is very similar to the Net::Whois::Object :
+
+    my $c = Net::Whois::Generic->new( disconnected => 1, unfiltered => 1 );
+
+    my ($org) = $c->query( 'ORG-AFNC1-AFRINIC', { type => 'organisation' } );
+    # $org is a 'Net::Whois::Object::Organisation::AFRINIC' object;
+    
+    
+    my @o = $c->query('101.0.0.0/8');
+    # @o contains various Net::Whois::Object:Inetnum::APNIC, and Net::Whois::Object::Information objects
+
+As Net::Whois::Generic started as an improvment of Net::Whois::RIPE, and have a good amount of code in common,
+for this reason (and some others) it is currently bundled inside the the Net::Whois::RIPE package.
+This might change in the future although.
 
 =head1 METHODS
 
@@ -402,19 +417,6 @@ sub _find_rir
 
 	my $rir;
 
-	#
-	# AFRINIC has been allocated the
-	#    IPv4 address blocks
-	#       41.0.0.0/8
-	#       102.0.0.0/8
-	#       105.0.0.0/8
-	#       154.0.0.0/8
-	#       197.0.0.0/8
-	#       196.0.0.0/8
-	#    IPv6 blocks
-	#       2c00::/12
-	#       2001:4200::/23
-	#
 	if (       ($query =~ /^(41|102|105|154|196|197)\.\d+\.\d+\.\d+/)
 		or ($query =~ /AFRINIC/i)
 		or ($query =~ /^2c00::/i))
@@ -626,7 +628,7 @@ Update of objects from database other than RIPE is not currently implemented...
 
 =item B<Sources>
 
-Currently the only sources implemented are RIPE, and AFRINIC.
+Currently the only sources implemented are RIPE, AFRINIC, and APNIC.
 
 =item B<Maturity>
 
@@ -645,13 +647,23 @@ L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=net-whois-ripe>.  I will be
 notified, and then you'll automatically be notified of progress on your bug as
 I make changes.
 
+=head1 SEE ALSO
 
+There are several tools similar to L<Net::Whois::Generic>, I'll list some of them below and some reasons why Net::Whois::Generic exists anyway:
+
+L<Net::Whois::IANA> - A universal WHOIS extractor: update not possible, no RPSL parser
+
+L<Net::Whois::ARIN> - ARIN whois client: update not possible, only subset of ARIN objects handled
+
+L<Net::Whois::Parser> - Module for parsing whois information: no query handling, parser can (must?) be added
+
+L<Net::Whois::RIPE> - RIPE whois client: the basis for L<Net::Whois::Generic> but only handle RIPE.
+   
 =head1 SUPPORT
 
 You can find documentation for this module with the perldoc command.
 
     perldoc Net::Whois::Generic
-
 
 You can also look for information at:
 

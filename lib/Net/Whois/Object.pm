@@ -999,6 +999,10 @@ sub _TYPE {
     $TYPES{ ref $_[0] || $_[0] } ||= {};
 }
 
+=head1 SEE ALSO
+
+Please take a look at L<Net::Whois::Generic> the more generic whois client built on top of Net::Whois::RIPE.
+
 =head1 TODO
 
 The update part (in RIPE database) still needs a lot of work.
