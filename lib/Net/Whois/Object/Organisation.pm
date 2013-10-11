@@ -2,13 +2,13 @@ package Net::Whois::Object::Organisation;
 
 use base qw/Net::Whois::Object/;
 
-# From: whois -t organisation
+# whois -h whois.ripe.net -t organisation
 # % This is the RIPE Database query service.
 # % The objects are in RPSL format.
 # %
 # % The RIPE Database is subject to Terms and Conditions.
 # % See http://www.ripe.net/db/support/db-terms-conditions.pdf
-#
+# 
 # organisation:   [mandatory]  [single]     [primary/lookup key]
 # org-name:       [mandatory]  [single]     [lookup key]
 # org-type:       [mandatory]  [single]     [ ]
@@ -21,9 +21,9 @@ use base qw/Net::Whois::Object/;
 # geoloc:         [optional]   [single]     [ ]
 # language:       [optional]   [multiple]   [ ]
 # org:            [optional]   [multiple]   [inverse key]
-# abuse-c:        [optional]   [multiple]   [inverse key]
 # admin-c:        [optional]   [multiple]   [inverse key]
 # tech-c:         [optional]   [multiple]   [inverse key]
+# abuse-c:        [optional]   [single]     [inverse key]
 # ref-nfy:        [optional]   [multiple]   [inverse key]
 # mnt-ref:        [mandatory]  [multiple]   [inverse key]
 # notify:         [optional]   [multiple]   [inverse key]
@@ -31,12 +31,14 @@ use base qw/Net::Whois::Object/;
 # mnt-by:         [mandatory]  [multiple]   [inverse key]
 # changed:        [mandatory]  [multiple]   [ ]
 # source:         [mandatory]  [single]     [ ]
+# 
+# % This query was served by the RIPE Database Query Service version 1.69 (WHOIS4)
 
-__PACKAGE__->attributes( 'primary',   ['organisation'] );
+__PACKAGE__->attributes( 'primary',   [ 'organisation' ] );
 __PACKAGE__->attributes( 'mandatory', [ 'organisation', 'org_name', 'org_type', 'address', 'e_mail', 'mnt_ref', 'mnt_by', 'changed', 'source' ] );
 __PACKAGE__->attributes( 'optional',  [ 'descr', 'remarks', 'phone', 'fax_no', 'geoloc', 'language', 'org', 'abuse_c', 'admin_c', 'tech_c', 'ref_nfy', 'notify', 'abuse_mailbox' ] );
-__PACKAGE__->attributes( 'single', [ 'organisation', 'org_name', 'org_type', 'geoloc','source' ] );
-__PACKAGE__->attributes( 'multiple', [ 'descr', 'remarks', 'address', 'phone', 'fax_no', 'e_mail','language', 'org', 'abuse_c', 'admin_c', 'tech_c', 'ref_nfy', 'mnt_ref', 'notify','abuse_mailbox', 'mnt_by', 'changed' ] );
+__PACKAGE__->attributes( 'single',    [ 'organisation', 'org_name', 'org_type', 'geoloc', 'abuse_c', 'source' ] );
+__PACKAGE__->attributes( 'multiple',  [ 'descr', 'remarks', 'address', 'phone', 'fax_no', 'e_mail','language', 'org', 'admin_c', 'tech_c', 'ref_nfy', 'mnt_ref', 'notify','abuse_mailbox', 'mnt_by', 'changed' ] );
 
 =head1 NAME
 
