@@ -13,36 +13,21 @@ use constant {
 	SOON                    => 30,
 	END_OF_OBJECT_MARK      => "\n\n",
 	EOL                     => "\015\012",
-	QUERY_KEEPALIVE         => q{-k },
-	QUERY_NON_RECURSIVE     => q{-r },
-	QUERY_REFERRAL          => q{-R },
-	QUERY_GROUPING          => q{-G },
-	QUERY_UNFILTERED        => q{-B },
 	QUERY_LIST_OBJECTS      => q{-qtypes },
-	QUERY_LIST_SOURCES      => q{-qsources },
-	QUERY_FETCH_TEMPLATE    => q{-t%s },
-	QUERY_LIMIT_OBJECT_TYPE => q{-T%s },
 };
 
+# simplify if all servers happen to accept same options
 our %RIR = (
-	apnic   => { SERVER => 'whois.apnic.net',   QUERY => \&apnic_query },
-	ripe    => { SERVER => 'whois.ripe.net',    QUERY => \&ripe_query },
-	arin    => { SERVER => 'whois.arin.net',    QUERY => \&arin_query },
-	lacnic  => { SERVER => 'whois.lacnic.net',  QUERY => \&lacnic_query },
-	afrinic => { SERVER => 'whois.afrinic.net', QUERY => \&afrinic_query },
+	apnic   => { SERVER => 'whois.apnic.net',   QUERY_NON_RECURSIVE =>  q{-r }, QUERY_REFERRAL => q{-R }, QUERY_UNFILTERED => q{-B },},
+	ripe    => { SERVER => 'whois.ripe.net',    QUERY_NON_RECURSIVE =>  q{-r }, QUERY_REFERRAL => q{-R }, QUERY_UNFILTERED => q{-B },},
+	arin    => { SERVER => 'whois.arin.net',    QUERY_NON_RECURSIVE =>  q{-r }, QUERY_REFERRAL => q{-R }, QUERY_UNFILTERED => q{-B },},
+	lacnic  => { SERVER => 'whois.lacnic.net',  QUERY_NON_RECURSIVE =>  q{-r }, QUERY_REFERRAL => q{-R }, QUERY_UNFILTERED => q{-B },},
+	afrinic => { SERVER => 'whois.afrinic.net', QUERY_NON_RECURSIVE =>  q{-r }, QUERY_REFERRAL => q{-R }, QUERY_UNFILTERED => q{-B },},
 );
 
 =head1 NAME
 
-Net::Whois::Generic - a pure-Perl implementation of the RIPE Database client.
-
-=head1 VERSION
-
-Version 2.004001
-
-=cut
-
-our $VERSION = 2.004001;
+Net::Whois::Generic - a pure-Perl implementation of a multi source Whois client.
 
 =head1 SYNOPSIS
 
@@ -50,10 +35,25 @@ Net::Whois::Generic is my first attempt to unify Whois information from differen
 Historically Net::Whois::RIPE was the first written, then Net::Whois::Object was added to provide
 a RPSL encapsultation of the data returned from RIPE database, with an API more object oriented.
 
-Net::Whois::Generic is a new interface designed to be more generic and encapsulated data from 
+Net::Whois::Generic is a new interface designed to be more generic and to encapsulate data from 
 various sources (RIPE, but also AFRINIC, APNIC...)
-The current implementation is barely a proof of concept, and AFINIC is the only other source implemented,
+The current implementation is barely a proof of concept, AFRINIC and APNIC are the only other sources implemented,
 but I expect to turn it into a generic/robust implementation based on the users feedback.
+
+Usage is very similar to the Net::Whois::Object :
+
+    my $c = Net::Whois::Generic->new( disconnected => 1, unfiltered => 1 );
+
+    my ($org) = $c->query( 'ORG-AFNC1-AFRINIC', { type => 'organisation' } );
+    # $org is a 'Net::Whois::Object::Organisation::AFRINIC' object;
+    
+    
+    my @o = $c->query('101.0.0.0/8');
+    # @o contains various Net::Whois::Object:Inetnum::APNIC, and Net::Whois::Object::Information objects
+
+As Net::Whois::Generic started as an improvment of Net::Whois::RIPE, and have a good amount of code in common,
+for this reason (and some others) it is currently bundled inside the the Net::Whois::RIPE package.
+This might change in the future although.
 
 =head1 METHODS
 
@@ -80,12 +80,6 @@ The TCP port of the service to connect to
 =item B<timeout> (integer, default is C<5>)
 
 The time-out (in seconds) for the TCP connection.
-
-=item B<keepalive> (boolean, default is C<false>)
-
-Wherever we want (C<true>) or not (C<false>) to keep the connection to the
-server open. This option implements the functionality available through RIPE
-Database's "-k" parameter.
 
 =item B<referral> (boolean, default is C<false>)
 
@@ -137,7 +131,6 @@ connection to the RIPE Database service desired.
 		hostname     => 'whois.ripe.net',
 		port         => '43',
 		timeout      => 5,
-		keepalive    => 0,
 		referral     => 0,
 		recursive    => 0,
 		grouping     => 1,
@@ -226,19 +219,6 @@ sub __boolean_accessor
 	return $self->{__options}{$attribute};
 }
 
-=head2 B<keepalive()>
-
-Accessor to the keepalive configuration option. Accepts an optional keepalive,
-always return the current keepalive.
-
-=cut
-
-sub keepalive
-{
-	my $self = shift;
-	return $self->__boolean_accessor('keepalive', @_);
-}
-
 =head2 B<referral()>
 
 Accessor to the referral configuration option. Accepts an optional referral,
@@ -321,9 +301,6 @@ sub connect
 	else {
 		$self->{__state}{ioselect} = IO::Select->new($socket);
 	}
-
-	# Set RIPE Database's "keepalive" capability
-	$self->send(QUERY_KEEPALIVE) if $self->keepalive;
 }
 
 =head2 B<ios()>
@@ -440,32 +417,28 @@ sub _find_rir
 
 	my $rir;
 
-	#
-	# AFRINIC has been allocated the
-	#    IPv4 address blocks
-	#       41.0.0.0/8
-	#       102.0.0.0/8
-	#       105.0.0.0/8
-	#       154.0.0.0/8
-	#       197.0.0.0/8
-	#       196.0.0.0/8
-	#    IPv6 blocks
-	#       2c00::/12
-	#       2001:4200::/23
-	#
 	if (       ($query =~ /^(41|102|105|154|196|197)\.\d+\.\d+\.\d+/)
 		or ($query =~ /AFRINIC/i)
-		or ($query =~ /^2c00::/))
+		or ($query =~ /^2c00::/i))
 	{
 		$rir = 'afrinic';
 	}
 	elsif (    (          $query =~ /^(23|34|50|64|64|65|66|67|68|69|70|71|72|73|74|75|76|96|97|98|9|100|104|107|108|135|136|142|147|162|166|172|173|174|184|192|198|199|204|205|206|207|208|209|216)/
-			or ($query =~ /^(2001:0400|2001:1800|2001:4800:|2600|2610:0000):/)
+			or ($query =~ /^(2001:0400|2001:1800|2001:4800:|2600|2610:0000):/i)
 			or $query =~ /ARIN/
 		)
 		)
 	{
 		$rir = 'arin';
+
+	}
+	elsif (    (          $query =~ /^(10|14|27|36|39|42|49|58|59|60|61|101|103|106|110|111|112|113|114|115|116|117|118|119|120|121|122|123|124|125|126|169\.208|175|180|182|183|202|203|210|211|218|219|220|221|222|223)\.\d+\.\d+/
+			or ($query =~ /^(2001:0200|2001:0C00|2001:0E00|2001:4400|2001:8000|2001:A000|2001:B000|2400:0000|2001:0DC0|2001:0DE8|2001:0DF0|2001:07FA|2001:0DE0|2001:0DB8):/i)
+			or $query =~ /APNIC/
+		)
+		)
+	{
+		$rir = 'apnic';
 
 	}
 	else {
@@ -489,14 +462,9 @@ sub adapt_query
 
 	# determine RIR unless $rir;
 	$rir = $self->_find_rir($query) unless $rir;
+
 	if ($rir eq 'ripe') {
 		$self->hostname($RIR{ripe}{SERVER});
-		my $parameters = "";
-		$parameters .= q{ } . QUERY_KEEPALIVE  if $self->keepalive;
-		$parameters .= q{ } . QUERY_UNFILTERED if $self->unfiltered;
-		$parameters .= q{ } . QUERY_NON_RECURSIVE unless $self->recursive;
-		$parameters .= q{ } . QUERY_REFERRAL if $self->referral;
-		$fullquery = $parameters . $query;
 	}
 	elsif ($rir eq 'afrinic') {
 		$fullquery = '-V Md5.0 ' . $query;
@@ -508,6 +476,15 @@ sub adapt_query
 	elsif ($rir eq 'lacnic') {
 		$self->hostname($RIR{lacnic}{SERVER});
 	}
+	elsif ($rir eq 'apnic') {
+		$self->hostname($RIR{apnic}{SERVER});
+	}
+
+    my $parameters = "";
+    $parameters .= q{ } . $RIR{$rir}{QUERY_UNFILTERED} if $self->unfiltered;
+    $parameters .= q{ } . $RIR{$rir}{QUERY_NON_RECURSIVE} unless $self->recursive;
+    $parameters .= q{ } . $RIR{$rir}{QUERY_REFERRAL} if $self->referral;
+    $fullquery = $parameters . $query;
 
 	return $fullquery;
 }
@@ -536,13 +513,7 @@ sub query
 	}
 
 	$query = $self->adapt_query($query);
-	my $parameters = "";
-	$parameters .= q{ } . QUERY_KEEPALIVE  if $self->keepalive;
-	$parameters .= q{ } . QUERY_UNFILTERED if $self->unfiltered;
-	$parameters .= q{ } . QUERY_NON_RECURSIVE unless $self->recursive;
-	$parameters .= q{ } . QUERY_REFERRAL if $self->referral;
-	my $fullquery = $parameters . $query;
-	my $iterator  = $self->__query($fullquery);
+	my $iterator  = $self->__query($query);
 
 	my @objects = Net::Whois::Object->new($iterator);
 
@@ -577,7 +548,6 @@ sub __query
 
 	$self->connect;
 
-	# $self->reconnect unless $self->keepalive;
 	# die "Not connected" unless $self->is_connected;
 
 	if ($self->ios->can_write(SOON + $self->timeout)) {
@@ -585,7 +555,7 @@ sub __query
 
 		return Iterator->new(
 			sub {
-				local $/ = "\n\n";
+				local $/ = END_OF_OBJECT_MARK;
 				if ($self->ios->can_read(SOON + $self->timeout)) {
 					my $block = $self->socket->getline;
 					return $block if defined $block;
@@ -658,7 +628,7 @@ Update of objects from database other than RIPE is not currently implemented...
 
 =item B<Sources>
 
-Currently the only sources implemented are RIPE, and AFRINIC.
+Currently the only sources implemented are RIPE, AFRINIC, and APNIC.
 
 =item B<Maturity>
 
@@ -677,13 +647,23 @@ L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=net-whois-ripe>.  I will be
 notified, and then you'll automatically be notified of progress on your bug as
 I make changes.
 
+=head1 SEE ALSO
 
+There are several tools similar to L<Net::Whois::Generic>, I'll list some of them below and some reasons why Net::Whois::Generic exists anyway:
+
+L<Net::Whois::IANA> - A universal WHOIS extractor: update not possible, no RPSL parser
+
+L<Net::Whois::ARIN> - ARIN whois client: update not possible, only subset of ARIN objects handled
+
+L<Net::Whois::Parser> - Module for parsing whois information: no query handling, parser can (must?) be added
+
+L<Net::Whois::RIPE> - RIPE whois client: the basis for L<Net::Whois::Generic> but only handle RIPE.
+   
 =head1 SUPPORT
 
 You can find documentation for this module with the perldoc command.
 
     perldoc Net::Whois::Generic
-
 
 You can also look for information at:
 

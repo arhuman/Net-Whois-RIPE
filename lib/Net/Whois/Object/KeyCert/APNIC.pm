@@ -1,11 +1,12 @@
-package Net::Whois::Object::KeyCert::AFRINIC;
+ackage Net::Whois::Object::KeyCert::APNIC;
 
 use base qw/Net::Whois::Object/;
 
-# whois -t key-cert -h whois.afrinic.net
-# % This is the AfriNIC Whois server.
+# whois -h whois.apnic.net -t key-cert
+# % [whois.apnic.net]
+# % Whois data copyright terms    http://www.apnic.net/db/dbcopyright.html
 # 
-# key-cert:       [mandatory]  [single]     [primary/look-up key]
+# key-cert:       [mandatory]  [single]     [primary/lookup key]
 # method:         [generated]  [single]     [ ]
 # owner:          [generated]  [multiple]   [ ]
 # fingerpr:       [generated]  [single]     [inverse key]
@@ -18,17 +19,19 @@ use base qw/Net::Whois::Object/;
 # mnt-by:         [mandatory]  [multiple]   [inverse key]
 # changed:        [mandatory]  [multiple]   [ ]
 # source:         [mandatory]  [single]     [ ]
+# 
+# % This query was served by the APNIC Whois Service version 1.68.5 (WHOIS3)
 
-__PACKAGE__->attributes( 'primary',   ['key_cert'] );
+__PACKAGE__->attributes( 'primary',   [ 'key_cert' ] );
 __PACKAGE__->attributes( 'mandatory', [ 'key_cert', 'certif', 'mnt_by', 'changed', 'source' ] );
-__PACKAGE__->attributes( 'optional', [ 'method', 'owner', 'fingerpr', 'org', 'remarks', 'notify', 'admin_c', 'tech_c' ] );
-__PACKAGE__->attributes( 'single', [ 'key_cert', 'method', 'fingerpr', 'source' ] );
-__PACKAGE__->attributes( 'multiple', [ 'owner', 'certif', 'org', 'remarks', 'notify', 'admin_c', 'tech_c', 'mnt_by', 'changed' ] );
+__PACKAGE__->attributes( 'optional',  [ 'method', 'owner', 'fingerpr', 'org', 'remarks', 'notify', 'admin_c', 'tech_c' ] );
+__PACKAGE__->attributes( 'single',    [ 'key_cert', 'method', 'fingerpr', 'source' ] );
+__PACKAGE__->attributes( 'multiple',  [ 'owner', 'certif', 'org', 'remarks', 'notify', 'admin_c', 'tech_c', 'mnt_by', 'changed' ] );
 
 
 =head1 NAME
 
-Net::Whois::Object::KeyCert::AFRINIC - an object representation of the RPSL KeyCert block
+Net::Whois::Object::KeyCert::APNIC - an object representation of the RPSL KeyCert block
 
 =head1 DESCRIPTION
 

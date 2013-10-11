@@ -1,32 +1,34 @@
-package Net::Whois::Object::Poem;
+package Net::Whois::Object::Poem::APNIC;
 
 use base qw/Net::Whois::Object/;
 
-# http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-21
-# APNIC ??
-#
-# poem:         [mandatory]     [single]    [primary/look-up key]
-# descr:        [optional]      [multiple]  [ ]
-# form:         [mandatory]     [single]    [inverse key]
-# text:         [mandatory]     [multiple]  [ ]
-# admin-c:      [mandatory]     [multiple]  [inverse key]
-# author:       [mandatory]     [multiple]  [inverse key]
-# remarks:      [optional]      [multiple]  [ ]
-# notify:       [optional]      [multiple]  [inverse key]
-# mnt-by:       [mandatory]     [multiple]  [inverse key]
-# changed:      [mandatory]     [multiple]  [ ]
-# source:       [mandatory]     [single]    [ ]
-#
+# whois -h whois.apnic.net -t poem
+# % [whois.apnic.net]
+# % Whois data copyright terms    http://www.apnic.net/db/dbcopyright.html
+# 
+# poem:           [mandatory]  [single]     [primary/lookup key]
+# descr:          [optional]   [multiple]   [ ]
+# form:           [mandatory]  [single]     [inverse key]
+# text:           [mandatory]  [multiple]   [ ]
+# author:         [optional]   [multiple]   [inverse key]
+# remarks:        [optional]   [multiple]   [ ]
+# notify:         [optional]   [multiple]   [inverse key]
+# mnt-by:         [mandatory]  [single]     [inverse key]
+# changed:        [mandatory]  [multiple]   [ ]
+# source:         [mandatory]  [single]     [ ]
+# 
+# % This query was served by the APNIC Whois Service version 1.68.5 (WHOIS1)
+
 __PACKAGE__->attributes( 'primary',   [ 'poem' ] );
-__PACKAGE__->attributes( 'mandatory', [ 'poem', 'form', 'text', 'author', 'admin_c', 'mnt_by', 'changed', 'source' ] );
-__PACKAGE__->attributes( 'optional',  [ 'descr', 'remarks', 'notify' ] );
-__PACKAGE__->attributes( 'single',    [ 'poem',  'form', 'source' ] );
-__PACKAGE__->attributes( 'multiple',  [ 'descr', 'text', 'admin_c', 'author', 'remarks', 'notify', 'mnt_by', 'changed' ] );
+__PACKAGE__->attributes( 'mandatory', [ 'poem', 'form', 'text', 'mnt_by', 'changed', 'source' ] );
+__PACKAGE__->attributes( 'optional',  [ 'descr', 'author', 'remarks', 'notify' ] );
+__PACKAGE__->attributes( 'single',    [ 'poem',  'form', 'mnt_by', 'source' ] );
+__PACKAGE__->attributes( 'multiple',  [ 'descr', 'text', 'author', 'remarks', 'notify', 'changed' ] );
 
 
 =head1 NAME
 
-Net::Whois::Object::Poem - an object representation of the RPSL Poem block
+Net::Whois::Object::Poem::APNIC - an object representation of the RPSL Poem block
 
 =head1 DESCRIPTION
 
@@ -37,7 +39,7 @@ included in the database to show that engineers do have a sense of humour.
 
 =head2 B<new( %options )>
 
-Constructor for the Net::Whois::Object::Poem class
+Constructor for the Net::Whois::Object::Poem::APNIC class
 
 =cut
 
