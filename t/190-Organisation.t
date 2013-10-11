@@ -87,8 +87,9 @@ is( $object->language()->[2], 'ES', 'language properly added' );
 
 # Test 'abuse_c'
 $tested{'abuse_c'}++;
-$object->abuse_c('CPNY-ADM2');
-is( $object->abuse_c()->[0], 'CPNY-ADM2', 'abuse_c properly added' );
+is( $object->abuse_c(), 'abuse@somewhere.com', 'abuse_c properly parsed' );
+$object->abuse_c('abuse3@somewhere.com');
+is( $object->abuse_c(), 'abuse3@somewhere.com', 'abuse_c properly changed' );
 
 # Test 'admin_c'
 $tested{'admin_c'}++;
@@ -174,6 +175,7 @@ phone:          +33 1 75 75 75 01
 fax-no:         +33 1 75 75 75 91
 e-mail:         someone@somewhere.com
 geoloc:         OTHER
+abuse-c:        abuse@somewhere.com
 language:       FR
 language:       EN
 admin-c:        CPNY-ADM
