@@ -1,6 +1,9 @@
 Revision history for net-whois-ripe
 
             
+2.005002    2014-06-09
+            - Deprecate Net::Whois::Object->query() (Net::Whois::Generic->query() is now recommended)
+
 2.005001    2013-10-11
             - Add support for APNIC objects through Net::Whois::Generic
             - Simplify query options handling in Net::Whois::Generic
