@@ -1,5 +1,7 @@
+* check http://cpants.cpanauthors.org/dist/Net-Whois-RIPE errors
 * check abuse-c/abuse-mailbox status 
 * add option to query to get unfiltered data (-B on RIPE) and check for mail on aassad-ripe
  (make it default ?)
 * change hardcoded options on query to non RIPE sources (use RIPE model)
 * Add more usage examples
+* Add read/write of RIPE objects of each type on test DB to test for templates changes ('status' attribute on Aut-Num...)

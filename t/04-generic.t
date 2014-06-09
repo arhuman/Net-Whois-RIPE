@@ -4,9 +4,9 @@ use Test::More qw( no_plan );
 use Data::Dumper;
 
 # synchronizes the {error,standard} output of this test.
-use IO::Handle;
-STDOUT->autoflush(1);
-STDERR->autoflush(1);
+# use IO::Handle;
+# STDOUT->autoflush(1);
+# STDERR->autoflush(1);
 
 our $class;
 BEGIN { $class = 'Net::Whois::Generic'; use_ok $class; }
@@ -37,7 +37,6 @@ can_ok $class,
     my $c = $class->new( disconnected => 1 );
 
     # connect()
-    # TODO: implement a test that doesn't requires internet connection
     eval { $c->connect };
 
 SKIP: {
@@ -57,6 +56,7 @@ SKIP: {
     isa_ok $c->ios, 'IO::Select';
     ok $c->ios->count >= 1,
       q{There's at least one handle registered with the IO::Select object.};
+ diag('count='.$c->ios->count); 
 
     # socket()
     isa_ok $c->socket, 'IO::Socket';
@@ -86,4 +86,36 @@ SKIP: {
     ok !$c->is_connected, 'The client is not connected (anymore).';
 
     # DESTROY()
+}
+
+my @objects;
+
+eval { @objects = Net::Whois::Generic->query('AS30781', {attribute => 'remarks'}) };
+
+SKIP: {
+    skip "Network issue",14 if ( $@ =~ /IO::Socket::INET/ );
+
+    for my $object (@objects) {
+        ok(!ref($object), "query() : String returned for 'remarks' attribute filter")
+    }
+}
+
+eval {    @objects = Net::Whois::Generic->query('AS30781') };
+
+SKIP: {
+    skip "Network issue",14 if ( $@ =~ /IO::Socket::INET/ );
+    for my $object (@objects) {
+        ok(ref($object) =~ /Net::Whois::Object/ , "query() : Object ".ref($object)." returned for 'remarks' attribute filter")
+    }
+
+}
+
+eval {    @objects = Net::Whois::Generic->query('AS30781', {type => 'asblock', attribute => 'admin_c' })} ;
+
+SKIP: {
+    skip "Network issue",14 if ( $@ =~ /IO::Socket::INET/ );
+    for my $object (@objects) {
+        ok($object eq 'CREW-RIPE' , "query() : 'CREW-RIPE' returned for AsBlock and admin-c filter");
+        diag($object);
+    }
 }

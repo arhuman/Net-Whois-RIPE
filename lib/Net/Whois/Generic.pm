@@ -10,19 +10,19 @@ use Net::Whois::Object;
 use Data::Dumper;
 
 use constant {
-	SOON                    => 30,
-	END_OF_OBJECT_MARK      => "\n\n",
-	EOL                     => "\015\012",
-	QUERY_LIST_OBJECTS      => q{-qtypes },
+	SOON               => 30,
+	END_OF_OBJECT_MARK => "\n\n",
+	EOL                => "\015\012",
+	QUERY_LIST_OBJECTS => q{-qtypes },
 };
 
 # simplify if all servers happen to accept same options
 our %RIR = (
-	apnic   => { SERVER => 'whois.apnic.net',   QUERY_NON_RECURSIVE =>  q{-r }, QUERY_REFERRAL => q{-R }, QUERY_UNFILTERED => q{-B },},
-	ripe    => { SERVER => 'whois.ripe.net',    QUERY_NON_RECURSIVE =>  q{-r }, QUERY_REFERRAL => q{-R }, QUERY_UNFILTERED => q{-B },},
-	arin    => { SERVER => 'whois.arin.net',    QUERY_NON_RECURSIVE =>  q{-r }, QUERY_REFERRAL => q{-R }, QUERY_UNFILTERED => q{-B },},
-	lacnic  => { SERVER => 'whois.lacnic.net',  QUERY_NON_RECURSIVE =>  q{-r }, QUERY_REFERRAL => q{-R }, QUERY_UNFILTERED => q{-B },},
-	afrinic => { SERVER => 'whois.afrinic.net', QUERY_NON_RECURSIVE =>  q{-r }, QUERY_REFERRAL => q{-R }, QUERY_UNFILTERED => q{-B },},
+	apnic   => { SERVER => 'whois.apnic.net',   QUERY_NON_RECURSIVE => q{-r }, QUERY_REFERRAL => q{-R }, QUERY_UNFILTERED => q{-B }, },
+	ripe    => { SERVER => 'whois.ripe.net',    QUERY_NON_RECURSIVE => q{-r }, QUERY_REFERRAL => q{-R }, QUERY_UNFILTERED => q{-B }, },
+	arin    => { SERVER => 'whois.arin.net',    QUERY_NON_RECURSIVE => q{-r }, QUERY_REFERRAL => q{-R }, QUERY_UNFILTERED => q{-B }, },
+	lacnic  => { SERVER => 'whois.lacnic.net',  QUERY_NON_RECURSIVE => q{-r }, QUERY_REFERRAL => q{-R }, QUERY_UNFILTERED => q{-B }, },
+	afrinic => { SERVER => 'whois.afrinic.net', QUERY_NON_RECURSIVE => q{-r }, QUERY_REFERRAL => q{-R }, QUERY_UNFILTERED => q{-B }, },
 );
 
 =head1 NAME
@@ -149,7 +149,17 @@ connection to the RIPE Database service desired.
 
 	sub new
 	{
-		my ($class, %options) = @_;
+		my $class = shift;
+
+		# I wish I hadn't to maintain backward compatibility but 2 forms exist...
+		my %options;
+
+		if (ref($_[0]) =~ /HASH/i) {
+			%options = %{ $_[0] };
+		}
+		else {
+			%options = @_;
+		}
 		my %known_options;
 		$known_options{$_} = exists $options{$_} ? $options{$_} : $default_options{$_} foreach keys %default_options;
 
@@ -431,7 +441,7 @@ sub _find_rir
 	{
 		$rir = 'afrinic';
 	}
-	elsif (    (          $query =~ /^(23|34|50|64|64|65|66|67|68|69|70|71|72|73|74|75|76|96|97|98|9|100|104|107|108|135|136|142|147|162|166|172|173|174|184|192|198|199|204|205|206|207|208|209|216)/
+	elsif ( (          $query =~ /^(23|34|50|64|64|65|66|67|68|69|70|71|72|73|74|75|76|96|97|98|9|100|104|107|108|135|136|142|147|162|166|172|173|174|184|192|198|199|204|205|206|207|208|209|216)/
 			or ($query =~ /^(2001:0400|2001:1800|2001:4800:|2600|2610:0000):/i)
 			or $query =~ /ARIN/
 		)
@@ -440,7 +450,7 @@ sub _find_rir
 		$rir = 'arin';
 
 	}
-	elsif (    (          $query =~ /^(10|14|27|36|39|42|49|58|59|60|61|101|103|106|110|111|112|113|114|115|116|117|118|119|120|121|122|123|124|125|126|169\.208|175|180|182|183|202|203|210|211|218|219|220|221|222|223)\.\d+\.\d+/
+	elsif ( (          $query =~ /^(10|14|27|36|39|42|49|58|59|60|61|101|103|106|110|111|112|113|114|115|116|117|118|119|120|121|122|123|124|125|126|169\.208|175|180|182|183|202|203|210|211|218|219|220|221|222|223)\.\d+\.\d+/
 			or ($query =~ /^(2001:0200|2001:0C00|2001:0E00|2001:4400|2001:8000|2001:A000|2001:B000|2400:0000|2001:0DC0|2001:0DE8|2001:0DF0|2001:07FA|2001:0DE0|2001:0DB8):/i)
 			or $query =~ /APNIC/
 		)
@@ -488,18 +498,36 @@ sub adapt_query
 		$self->hostname($RIR{apnic}{SERVER});
 	}
 
-    my $parameters = "";
-    $parameters .= q{ } . $RIR{$rir}{QUERY_UNFILTERED} if $self->unfiltered;
-    $parameters .= q{ } . $RIR{$rir}{QUERY_NON_RECURSIVE} unless $self->recursive;
-    $parameters .= q{ } . $RIR{$rir}{QUERY_REFERRAL} if $self->referral;
-    $fullquery = $parameters . $query;
+	my $parameters = "";
+	$parameters .= q{ } . $RIR{$rir}{QUERY_UNFILTERED} if $self->unfiltered;
+	$parameters .= q{ } . $RIR{$rir}{QUERY_NON_RECURSIVE} unless $self->recursive;
+	$parameters .= q{ } . $RIR{$rir}{QUERY_REFERRAL} if $self->referral;
+	$fullquery = $parameters . $query;
 
 	return $fullquery;
 }
 
-=head2 B<query( $query_string )>
+=head2 B<query( $query, [\%options] )>
 
-Sends a query to the server. Returns an L<Iterator> object that will return one RPSL block at a time.
+ ******************************** EXPERIMENTAL ************************************
+   This method is a work in progress, the API and behaviour are subject to change
+ **********************************************************************************
+
+Query the the appropriate RIR database and return Net::Whois::Objects
+
+This method accepts 2 optional parameters
+
+'type' which is a regex used to filter the query result:
+Only the object whose type matches the 'type' parameter are returned
+
+'attribute' which is a regex used to filter the query result:
+Only the value of the attributes matching the 'attribute' parameter are
+returned
+
+Note that if 'attribute' is specified strings are returned, instead of
+Net::Whois::Objects
+
+Net::Whois:Generic->query() deprecates  Net::Whois::Object->query() since release 2.005 of Net::Whois::RIPE
 
 =cut
 
@@ -520,8 +548,14 @@ sub query
 		}
 	}
 
+	if (!ref $self) {
+
+		# $self is the class
+		$self = $self->new($options);
+	}
+
 	$query = $self->adapt_query($query);
-	my $iterator  = $self->__query($query);
+	my $iterator = $self->__query($query);
 
 	my @objects = Net::Whois::Object->new($iterator);
 
@@ -608,13 +642,13 @@ Process a response (error code, error message...)
 
 sub _process_response
 {
-    my $self = shift;
+	my $self     = shift;
 	my $response = shift;
 	my $code;
 	my $msg;
 
-    eval { $response->comment };
-    die "Dump : ".Dumper $response    if $@; 
+	eval { $response->comment };
+	die "Dump : " . Dumper $response if $@;
 
 	if ($response->response =~ /ERROR.*:.*?(\d+)/) {
 		$code = $1;
@@ -708,3 +742,5 @@ This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 
 =cut
+
+1;

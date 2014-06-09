@@ -4,6 +4,8 @@ use Test::More;
 use Net::Whois::RIPE;
 use Net::Whois::Object;
 
+use Data::Dumper;
+
 our $LWP;
 
 BEGIN {
@@ -65,6 +67,17 @@ $iterator = $whois->query($person_id);
 ($person) = grep { $_->class() eq 'Response' } Net::Whois::Object->new($iterator);
 
 like( $person->response, qr/ERROR:101:/, 'Deleted Person not found' );
+
+$iterator = $whois->query("-B AS1");
+
+
+#print STDERR grep { ( $_->class() eq 'AutNum' ) } Net::Whois::Object->new($iterator);
+for my $o (Net::Whois::Object->new($iterator)) {
+    print STDERR "$o\n";
+    print STDERR $o->dump;
+}
+
+print STDERR  Net::Whois::Object->new($iterator);
 
 __DATA__
 person: Joh Doe
