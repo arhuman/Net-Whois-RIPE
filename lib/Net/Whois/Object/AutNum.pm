@@ -2,7 +2,8 @@ package Net::Whois::Object::AutNum;
 
 use base qw/Net::Whois::Object/;
 
-# from: whois -t aut-num
+#  whois -t aut-num
+#
 # % This is the RIPE Database query service.
 # % The objects are in RPSL format.
 # %
@@ -13,16 +14,20 @@ use base qw/Net::Whois::Object/;
 # as-name:        [mandatory]  [single]     [ ]
 # descr:          [mandatory]  [multiple]   [ ]
 # member-of:      [optional]   [multiple]   [inverse key]
+# import-via:     [optional]   [multiple]   [ ]
 # import:         [optional]   [multiple]   [ ]
 # mp-import:      [optional]   [multiple]   [ ]
+# export-via:     [optional]   [multiple]   [ ]
 # export:         [optional]   [multiple]   [ ]
 # mp-export:      [optional]   [multiple]   [ ]
 # default:        [optional]   [multiple]   [ ]
 # mp-default:     [optional]   [multiple]   [ ]
 # remarks:        [optional]   [multiple]   [ ]
 # org:            [optional]   [single]     [inverse key]
+# sponsoring-org: [generated]  [single]     [ ]
 # admin-c:        [mandatory]  [multiple]   [inverse key]
 # tech-c:         [mandatory]  [multiple]   [inverse key]
+# status:         [generated]  [single]     [ ]
 # notify:         [optional]   [multiple]   [inverse key]
 # mnt-lower:      [optional]   [multiple]   [inverse key]
 # mnt-routes:     [optional]   [multiple]   [inverse key]
@@ -30,12 +35,12 @@ use base qw/Net::Whois::Object/;
 # changed:        [mandatory]  [multiple]   [ ]
 # source:         [mandatory]  [single]     [ ]
 # 
-# % This query was served by the RIPE Database Query Service version 1.38 (WHOIS1)
+# % This query was served by the RIPE Database Query Service version 1.73.1 (DBC-WHOIS1)
 
 __PACKAGE__->attributes( 'primary',   ['aut_num'] );
 __PACKAGE__->attributes( 'mandatory', [ 'aut_num', 'as_name', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
-__PACKAGE__->attributes( 'optional', [ 'member_of', 'import', 'mp_import', 'export', 'mp_export', 'default', 'mp_default', 'remarks', 'org', 'notify', 'mnt_lower', 'mnt_routes', 'abuse_c'  ] );
-__PACKAGE__->attributes( 'single', [ 'aut_num', 'as_name', 'org', 'source', 'abuse_c' ] );
+__PACKAGE__->attributes( 'optional', [ 'member_of', 'import', 'mp_import', 'export', 'mp_export', 'default', 'mp_default', 'remarks', 'org', 'notify', 'mnt_lower', 'mnt_routes' ] );
+__PACKAGE__->attributes( 'single', [ 'aut_num', 'as_name', 'org', 'sponsoring_org', 'status', 'source' ] );
 __PACKAGE__->attributes( 'multiple', [ 'descr', 'member_of', 'import', 'mp_import', 'export', 'mp_export', 'default', 'mp_default', 'remarks', 'admin_c', 'tech_c', 'notify', 'mnt_lower', 'mnt_routes', 'mnt_by', 'changed' ] );
 
 

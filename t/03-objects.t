@@ -96,30 +96,8 @@ like($full_clone->dump,qr/as-block:\s+AS30720 - AS30895\ndescr:\s+RIPE NCC ASN b
 
 my @objects;
 eval { @objects = Net::Whois::Object->query('AS30781', {attribute => 'remarks'}) };
+like($@ ,qr/deprecated/i, "Deprecation warning for Net::Whois::Object->query()");
 
-SKIP: {
-    skip "Network issue",14 if ( $@ =~ /IO::Socket::INET/ );
-
-    for my $object (@objects) {
-        ok(!ref($object), "query() : String returned for 'remarks' attribute filter")
-    }
-}
-
-eval {    @objects = Net::Whois::Object->query('AS30781') };
-SKIP: {
-    skip "Network issue",14 if ( $@ =~ /IO::Socket::INET/ );
-    for my $object (@objects) {
-        ok(ref($object) =~ /Net::Whois::Object/ , "query() : Object ".ref($object)." returned for 'remarks' attribute filter")
-    }
-
-}
-eval {    @objects = Net::Whois::Object->query('AS30781', {type => 'asblock', attribute => 'admin_c' })} ;
-SKIP: {
-    skip "Network issue",14 if ( $@ =~ /IO::Socket::INET/ );
-    for my $object (@objects) {
-        ok($object eq 'CREW-RIPE' , "query() : 'CREW-RIPE' returned for AsBlock and admin-c filter")
-    }
-}
 __DATA__
 % This is the RIPE Database query service.
 % The objects are in RPSL format.

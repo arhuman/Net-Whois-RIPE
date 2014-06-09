@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use Getopt::Long;
-use Net::Whois::Object;
+use Net::Whois::Generic;
 use Data::Dumper;
 
 ####################################################################################
@@ -60,11 +60,11 @@ if ($KEY) {
 }
 
 if ($DEBUG) {
-    print "QUERY=($QUERY)";
-    print "OTIONS=", Dumper \%QUERY_OPTIONS;
+    print "QUERY=($QUERY)\n";
+    print "OPTIONS=", Dumper \%QUERY_OPTIONS;
 }
 
-my @objects = Net::Whois::Object->query( $QUERY, \%QUERY_OPTIONS );
+my @objects = Net::Whois::Generic->query( $QUERY, \%QUERY_OPTIONS );
 
 # And manipulate the object the OO ways
 for my $object (@objects) {
@@ -102,8 +102,8 @@ SYNOPSIS
 
     $0 [options] [query ...]
 
-    # Get objects whose maintener is MNT-JAGN
-    $0 --key mnt-by MNT-JAGN
+    # Get objects whose maintener is JAGUAR-MNT
+    $0 --key mnt-by JAGUAR-MNT
 
     # Get objects about ASN 30781
     $0 AS30781

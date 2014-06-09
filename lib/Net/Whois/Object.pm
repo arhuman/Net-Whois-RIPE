@@ -616,59 +616,17 @@ sub syncupdates_create {
 
 =head2 B<query( $query, [\%options] )>
 
- ******************************** EXPERIMENTAL ************************************
-   This method is a work in progress, the API and behaviour are subject to change
- **********************************************************************************
+This method is deprecated since release 2.005 of Net::Whois::RIPE
 
-Query the RIPE database and return Net::Whois::Objects
-
-This method accepts 2 optional parameters
-
-'type' which is a regex used to filter the query result:
-Only the object whose type matches the 'type' parameter are returned
-
-'attribute' which is a regex used to filter the query result:
-Only the value of the attributes matching the 'attribute' parameter are
-returned
-
-Note that if 'attribute' is specified strings are returned, instead of
-Net::Whois::Objects
+Please use Net::Whois::Generic->query() instead.
 
 =cut
 
-# sub query {
-#     my ( $class, $query, $options ) = @_;
-#
-#     my $attribute;
-#     my $type;
-#
-#     for my $opt ( keys %$options ) {
-#         if ( $opt =~ /^attribute$/i ) {
-#             $attribute = $options->{$opt};
-#         } elsif ( $opt =~ /^type$/i ) {
-#             $type = $options->{$opt};
-#         }
-#     }
-#
-#     my $whois    = Net::Whois::Generic->new(%$options);
-#     my $iterator = $whois->query($query);
-#
-#     my @objects = Net::Whois::Object->new($iterator);
-#
-#     if ($type) {
-#         @objects = grep { ref($_) =~ /$type/i } @objects;
-#     }
-#
-#     if ($attribute) {
-#         return grep {defined} map {
-#             my $r;
-#             eval { $r = $_->$attribute };
-#             $@ ? undef : ref($r) eq 'ARRAY' ? @$r : $r
-#         } @objects;
-#     } else {
-#         return grep {defined} @objects;
-#     }
-# }
+sub query {
+
+    croak "This method is deprecated since release 2.005 of Net::Whois::RIPE\nPlease use Net::Whois::Generic->query() instead\n";
+
+}
 
 =begin UNDOCUMENTED
 
