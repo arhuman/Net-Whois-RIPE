@@ -29,14 +29,6 @@ our %RIR = (
 
 Net::Whois::Generic - a pure-Perl implementation of a multi source Whois client.
 
-=head1 VERSION
-
-Version 2.005001
-
-=cut
-
-our $VERSION = 2.005001;
-
 =head1 SYNOPSIS
 
 Net::Whois::Generic is my first attempt to unify Whois information from different sources.
