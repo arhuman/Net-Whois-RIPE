@@ -1,7 +1,6 @@
 use strict;
 use warnings;
 use Test::More qw( no_plan );
-use Data::Dumper;
 
 # synchronizes the {error,standard} output of this test.
 # use IO::Handle;
