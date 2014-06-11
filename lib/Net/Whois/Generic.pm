@@ -40,13 +40,10 @@ various sources (RIPE, but also AFRINIC, APNIC...)
 The current implementation is barely a proof of concept, AFRINIC and APNIC are the only other sources implemented,
 but I expect to turn it into a generic/robust implementation based on the users feedback.
 
-Usage is very similar to the Net::Whois::Object :
-
     my $c = Net::Whois::Generic->new( disconnected => 1, unfiltered => 1 );
 
     my ($org) = $c->query( 'ORG-AFNC1-AFRINIC', { type => 'organisation' } );
     # $org is a 'Net::Whois::Object::Organisation::AFRINIC' object;
-    
     
     my @o = $c->query('101.0.0.0/8');
     # @o contains various Net::Whois::Object:Inetnum::APNIC, and Net::Whois::Object::Information objects
