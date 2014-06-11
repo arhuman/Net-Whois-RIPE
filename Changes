@@ -1,6 +1,12 @@
 Revision history for net-whois-ripe
 
             
+2.005003    2014-06-11
+            - Remove extra VERSION in Net::Whois::Generic
+            - Load Net::Whois::Generic with Net::Whois::RIPE (experimental)
+            - Clean tests (remove unneeded 'use Data::Dumper')
+            - Fix doc (to remove Net::Whois::Object->query() examples)
+
 2.005002    2014-06-09
             - Deprecate Net::Whois::Object->query() (Net::Whois::Generic->query() is now recommended)
 

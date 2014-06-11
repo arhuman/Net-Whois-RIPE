@@ -23,10 +23,8 @@ Net::Whois::Object - Object encapsulating RPSL data returned by Whois queries
 =head1 SYNOPSIS
 
     use Net::Whois::RIPE;
-    use Net::Whois::Object;
 
-    my @objects = Net::Whois::Object->query('AS30781');
-
+    my @objects = Net::Whois::Generic->query('AS30781');
 
     # Or you can use the previous way
 
@@ -55,13 +53,13 @@ Before you had to filter objects using the class() method.
     # Then to only get the Person object (and ignore Information objects)
     my ($person) = grep {$_->class() eq 'Person'} Net::Whois::Object->new($iterator);
 
-But now the query() method allows you to filter more easily
+But now the query() from Net::Whois::Generic method allows you to filter more easily
 
-    my ($person) = Net::Whois::Object->query('POLK-RIPE', { type => 'person' });
+    my ($person) = Net::Whois::Generic->query('POLK-RIPE', { type => 'person' });
 
 You can even use the query() filtering capabilities a little further
 
-    my @emails = Net::Whois::Object->query('POLK-RIPE', { type => 'person', attribute => 'e_mail' });
+    my @emails = Net::Whois::Generic->query('POLK-RIPE', { type => 'person', attribute => 'e_mail' });
 
 Please note, that as soon as you use the attribute filter, the values returned
 are strings and no more Net::Whois::Objects.
