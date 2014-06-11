@@ -1,4 +1,5 @@
 * check http://cpants.cpanauthors.org/dist/Net-Whois-RIPE errors
+* use strict; use warnings; everywhere...
 * check abuse-c/abuse-mailbox status 
 * add option to query to get unfiltered data (-B on RIPE) and check for mail on aassad-ripe
  (make it default ?)
