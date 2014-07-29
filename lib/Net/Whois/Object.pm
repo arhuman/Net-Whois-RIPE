@@ -416,7 +416,7 @@ sub attribute_is {
     return defined $self->_TYPE()->{$type}{$attribute} ? 1 : 0;
 }
 
-=head2 B<hidden_attributes( $attribute )>
+=head2 B<filtered_attributes( $attribute )>
 
 Accessor to the filtered_attributes attribute (attributes to be hidden)
 Accepts an optional attribute to be added to the filtered_attributes array,

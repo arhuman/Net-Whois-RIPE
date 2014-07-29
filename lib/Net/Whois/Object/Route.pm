@@ -3,9 +3,11 @@ package Net::Whois::Object::Route;
 use base qw/Net::Whois::Object/;
 
 # http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-25
-# http://www.apnic.net/apnic-info/whois_search/using-whois/guide/route
+
 #
-# From: whois -t route
+# % This query was served by the RIPE Database Query Service version 1.38 (WHOIS4)
+
+# whois -t route
 # % This is the RIPE Database query service.
 # % The objects are in RPSL format.
 # %
@@ -32,15 +34,14 @@ use base qw/Net::Whois::Object/;
 # mnt-by:         [mandatory]  [multiple]   [inverse key]
 # changed:        [mandatory]  [multiple]   [ ]
 # source:         [mandatory]  [single]     [ ]
-#
-# % This query was served by the RIPE Database Query Service version 1.38 (WHOIS4)
+# 
+# % This query was served by the RIPE Database Query Service version 1.74.1 (DB-4)
 
-
-__PACKAGE__->attributes( 'primary',   ['route'] );
-__PACKAGE__->attributes( 'mandatory', [ 'route', 'origin', 'descr', 'mnt_by', 'changed', 'source' ] );
-__PACKAGE__->attributes( 'optional', [ 'pingable', 'ping_hdl', 'holes', 'org', 'member_of', 'inject', 'aggr_mtd', 'aggr_bndry', 'export_comps', 'components', 'remarks', 'cross_mnt', 'cross_nfy', 'notify', 'mnt_lower', 'mnt_routes', 'country' ] );
-__PACKAGE__->attributes( 'single', [ 'route', 'origin', 'aggr_mtd', 'aggr_bndry', 'export_comps', 'components', 'source', 'country' ] );
-__PACKAGE__->attributes( 'multiple', [ 'descr', 'mnt_by', 'changed','pingable', 'ping_hdl', 'holes', 'org', 'member_of', 'inject', 'remarks', 'cross_mnt', 'cross_nfy', 'notify', 'mnt_lower', 'mnt_routes' ] );
+__PACKAGE__->attributes( 'primary',     [ 'route' ] );
+__PACKAGE__->attributes( 'mandatory',   [ 'route', 'descr', 'origin', 'mnt_by', 'changed', 'source' ] );
+__PACKAGE__->attributes( 'optional',    [ 'pingable', 'ping_hdl', 'holes', 'org', 'member_of', 'inject', 'aggr_mtd', 'aggr_bndry', 'export_comps', 'components', 'remarks', 'notify', 'mnt_lower', 'mnt_routes' ] );
+__PACKAGE__->attributes( 'single',      [ 'route', 'origin', 'aggr_mtd', 'aggr_bndry', 'export_comps', 'components', 'source' ] );
+__PACKAGE__->attributes( 'multiple',    [ 'descr', 'pingable', 'ping_hdl', 'holes', 'org', 'member_of', 'inject', 'remarks', 'notify', 'mnt_lower', 'mnt_routes', 'mnt_by', 'changed' ] );
 
 =head1 NAME
 

@@ -3,26 +3,36 @@ package Net::Whois::Object::KeyCert;
 use base qw/Net::Whois::Object/;
 
 # http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-16
-# http://www.apnic.net/apnic-info/whois_search/using-whois/guide/key-cert
-#
-# key-cert:      [mandatory]  [single]     [primary/look-up key]
-# method:        [generated]  [single]     [ ]
-# owner:         [generated]  [multiple]   [ ]
-# fingerpr:      [generated]  [single]     [ ]
-# certif:        [mandatory]  [multiple]   [ ]
-# org:           [optional]   [multiple]   [inverse key]
-# remarks:       [optional]   [multiple]   [ ]
-# notify:        [optional]   [multiple]   [inverse key]
-# admin-c:       [optional]   [multiple]   [inverse key]
-# tech-c:        [optional]   [multiple]   [inverse key]
-# mnt-by:        [mandatory]  [multiple]   [inverse key]
-# changed:       [mandatory]  [multiple]   [ ]
-# source:        [mandatory]  [single]     [ ]
-__PACKAGE__->attributes( 'primary',   ['key_cert'] );
-__PACKAGE__->attributes( 'mandatory', [ 'key_cert', 'certif', 'mnt_by', 'changed', 'source' ] );
-__PACKAGE__->attributes( 'optional', [ 'org', 'remarks', 'notify', 'admin_c', 'tech_c' ] );
-__PACKAGE__->attributes( 'single', [ 'key_cert', 'method', 'fingerpr', 'source' ] );
-__PACKAGE__->attributes( 'multiple', [ 'owner', 'certif', 'org', 'remarks', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'changed' ] );
+
+# whois -t key-cert
+# % This is the RIPE Database query service.
+# % The objects are in RPSL format.
+# %
+# % The RIPE Database is subject to Terms and Conditions.
+# % See http://www.ripe.net/db/support/db-terms-conditions.pdf
+# 
+# key-cert:       [mandatory]  [single]     [primary/lookup key]
+# method:         [generated]  [single]     [ ]
+# owner:          [generated]  [multiple]   [ ]
+# fingerpr:       [generated]  [single]     [inverse key]
+# certif:         [mandatory]  [multiple]   [ ]
+# org:            [optional]   [multiple]   [inverse key]
+# remarks:        [optional]   [multiple]   [ ]
+# notify:         [optional]   [multiple]   [inverse key]
+# admin-c:        [optional]   [multiple]   [inverse key]
+# tech-c:         [optional]   [multiple]   [inverse key]
+# mnt-by:         [mandatory]  [multiple]   [inverse key]
+# changed:        [mandatory]  [multiple]   [ ]
+# source:         [mandatory]  [single]     [ ]
+# 
+# % This query was served by the RIPE Database Query Service version 1.74.1 (DB-4)
+
+
+__PACKAGE__->attributes( 'primary',     [ 'key_cert' ] );
+__PACKAGE__->attributes( 'mandatory',   [ 'key_cert', 'certif', 'mnt_by', 'changed', 'source' ] );
+__PACKAGE__->attributes( 'optional',    [ 'fingerpr', 'org', 'remarks', 'notify', 'admin_c', 'tech_c' ] );
+__PACKAGE__->attributes( 'single',      [ 'key_cert', 'method', 'fingerpr', 'source' ] );
+__PACKAGE__->attributes( 'multiple',    [ 'owner', 'certif', 'org', 'remarks', 'notify', 'admin_c', 'tech_c', 'mnt_by', 'changed' ] );
 
 
 =head1 NAME
