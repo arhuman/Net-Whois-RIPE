@@ -1,3 +1,4 @@
+* Use Test::Pod::Content to check that each attribute has a pod section
 * check http://cpants.cpanauthors.org/dist/Net-Whois-RIPE errors
 * use strict; use warnings; everywhere...
 * check abuse-c/abuse-mailbox status 
