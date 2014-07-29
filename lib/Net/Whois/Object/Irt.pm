@@ -3,14 +3,20 @@ package Net::Whois::Object::Irt;
 use base qw/Net::Whois::Object/;
 
 # http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-15
-# http://www.apnic.net/apnic-info/whois_search/using-whois/guide/irt
-#
+
+#  whois -t irt
+# % This is the RIPE Database query service.
+# % The objects are in RPSL format.
+# %
+# % The RIPE Database is subject to Terms and Conditions.
+# % See http://www.ripe.net/db/support/db-terms-conditions.pdf
+# 
 # irt:            [mandatory]  [single]     [primary/lookup key]
 # address:        [mandatory]  [multiple]   [ ]
 # phone:          [optional]   [multiple]   [ ]
 # fax-no:         [optional]   [multiple]   [ ]
 # e-mail:         [mandatory]  [multiple]   [lookup key]
-# abuse-mailbox:  [mandatory]  [multiple]   [inverse key]
+# abuse-mailbox:  [optional]   [multiple]   [inverse key]
 # signature:      [optional]   [multiple]   [ ]
 # encryption:     [optional]   [multiple]   [ ]
 # org:            [optional]   [multiple]   [inverse key]
@@ -23,11 +29,14 @@ use base qw/Net::Whois::Object/;
 # mnt-by:         [mandatory]  [multiple]   [inverse key]
 # changed:        [mandatory]  [multiple]   [ ]
 # source:         [mandatory]  [single]     [ ]
-__PACKAGE__->attributes( 'primary', ['irt'] );
-__PACKAGE__->attributes( 'mandatory', [ 'irt', 'address', 'e_mail', 'abuse_mailbox', 'tech_c', 'admin_c', 'auth', 'mnt_by', 'changed', 'source' ] );
-__PACKAGE__->attributes( 'optional', [ 'phone', 'fax_no', 'signature', 'encryption', 'org', 'remarks', 'irt_nfy', 'notify' ] );
-__PACKAGE__->attributes( 'single', [ 'irt', 'source' ] );
-__PACKAGE__->attributes( 'multiple', [ 'address', 'phone', 'fax_no', 'e_mail', 'abuse_mailbox', 'signature', 'encryption', 'org', 'auth', 'remarks', 'tech_c', 'admin_c', 'irt_nfy', 'notify', 'mnt_by', 'changed' ] );
+# 
+# % This query was served by the RIPE Database Query Service version 1.74.1 (DB-4)
+
+__PACKAGE__->attributes( 'primary',     [ 'irt' ] );
+__PACKAGE__->attributes( 'mandatory',   [ 'irt', 'address', 'e_mail', 'admin_c', 'tech_c', 'auth', 'mnt_by', 'changed', 'source' ] );
+__PACKAGE__->attributes( 'optional',    [ 'phone', 'fax_no', 'abuse_mailbox', 'signature', 'encryption', 'org', 'remarks', 'irt_nfy', 'notify' ] );
+__PACKAGE__->attributes( 'single',      [ 'irt', 'source' ] );
+__PACKAGE__->attributes( 'multiple',    [ 'address', 'phone', 'fax_no', 'e_mail', 'abuse_mailbox', 'signature', 'encryption', 'org', 'admin_c', 'tech_c', 'auth', 'remarks', 'irt_nfy', 'notify', 'mnt_by', 'changed' ] );
 
 =head1 NAME
 

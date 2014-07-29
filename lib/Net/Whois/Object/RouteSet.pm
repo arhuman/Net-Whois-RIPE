@@ -3,9 +3,8 @@ package Net::Whois::Object::RouteSet;
 use base qw/Net::Whois::Object/;
 
 # http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-26
-# http://www.apnic.net/apnic-info/whois_search/using-whois/guide/route-set
-#
-# From: whois -t route-set
+ 
+# whois -t route-set
 # % This is the RIPE Database query service.
 # % The objects are in RPSL format.
 # %
@@ -27,13 +26,14 @@ use base qw/Net::Whois::Object/;
 # changed:        [mandatory]  [multiple]   [ ]
 # source:         [mandatory]  [single]     [ ]
 # 
-# % This query was served by the RIPE Database Query Service version 1.38 (WHOIS2)
+# % This query was served by the RIPE Database Query Service version 1.74.1 (DB-4)
 
-__PACKAGE__->attributes( 'primary', ['route_set'] );
-__PACKAGE__->attributes( 'mandatory', [ 'route_set', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
-__PACKAGE__->attributes( 'optional', [ 'members', 'mbrs_by_ref', 'remarks', 'org', 'notify', 'mp_members', 'mnt_lower' ] );
-__PACKAGE__->attributes( 'single', [ 'route_set', 'source' ] );
-__PACKAGE__->attributes( 'multiple', [ 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'members', 'mbrs_by_ref', 'remarks', 'org', 'notify', 'mp_members', 'mnt_lower' ] );
+
+__PACKAGE__->attributes( 'primary',     [ 'route_set' ] );
+__PACKAGE__->attributes( 'mandatory',   [ 'route_set', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
+__PACKAGE__->attributes( 'optional',    [ 'members', 'mp_members', 'mbrs_by_ref', 'remarks', 'org', 'notify', 'mnt_lower' ] );
+__PACKAGE__->attributes( 'single',      [ 'route_set', 'source' ] );
+__PACKAGE__->attributes( 'multiple',    [ 'descr', 'members', 'mp_members', 'mbrs_by_ref', 'remarks', 'org', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'mnt_lower', 'changed' ] );
 
 =head1 NAME
 

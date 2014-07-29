@@ -3,30 +3,36 @@ package Net::Whois::Object::Domain;
 use base qw/Net::Whois::Object/;
 
 # http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-10
-# http://www.apnic.net/apnic-info/whois_search/using-whois/guide/domain
-#
-# domain:        [mandatory]  [single]     [primary/look-up key]
-# descr:         [mandatory]  [multiple]   [ ]
-# org:           [optional]   [multiple]   [ ]
-# admin-c:       [mandatory]  [multiple]   [inverse key]
-# tech-c:        [mandatory]  [multiple]   [inverse key]
-# zone-c:        [mandatory]  [multiple]   [inverse key]
-# nserver:       [optional]   [multiple]   [inverse key]
-# ds-rdata:      [optional]   [multiple]   [inverse key]
-# sub-dom:       [optional]   [multiple]   [inverse key]
-# dom-net:       [optional]   [multiple]   [ ]
-# remarks:       [optional]   [multiple]   [ ]
-# notify:        [optional]   [multiple]   [inverse key]
-# mnt-by:        [optional]   [multiple]   [inverse key]
-# mnt-lower:     [optional]   [multiple]   [inverse key]
-# refer:         [optional]   [single]     [ ]
-# changed:       [mandatory]  [multiple]   [ ]
-# source:        [mandatory]  [single]     [ ]
-__PACKAGE__->attributes( 'primary',   ['domain'] );
-__PACKAGE__->attributes( 'mandatory', [ 'domain', 'descr', 'tech_c', 'admin_c', 'zone_c', 'changed', 'source' ] );
-__PACKAGE__->attributes( 'optional', [ 'org', 'nserver', 'ds_rdata', 'sub_dom', 'dom_net', 'remarks', 'notify', 'mnt_by', 'mnt_lower', 'refer' ] );
-__PACKAGE__->attributes( 'single', [ 'domain', 'refer', 'source' ] );
-__PACKAGE__->attributes( 'multiple', [ 'descr', 'org', 'admin_c', 'tech_c', 'zone_c', 'nserver', 'ds_rdata', 'sub_dom', 'dom_net', 'remarks', 'notify', 'mnt_by', 'mnt_lower', 'changed' ] );
+
+# whois -t domain
+# % This is the RIPE Database query service.
+# % The objects are in RPSL format.
+# %
+# % The RIPE Database is subject to Terms and Conditions.
+# % See http://www.ripe.net/db/support/db-terms-conditions.pdf
+# 
+# domain:         [mandatory]  [single]     [primary/lookup key]
+# descr:          [mandatory]  [multiple]   [ ]
+# org:            [optional]   [multiple]   [inverse key]
+# admin-c:        [mandatory]  [multiple]   [inverse key]
+# tech-c:         [mandatory]  [multiple]   [inverse key]
+# zone-c:         [mandatory]  [multiple]   [inverse key]
+# nserver:        [mandatory]  [multiple]   [inverse key]
+# ds-rdata:       [optional]   [multiple]   [inverse key]
+# remarks:        [optional]   [multiple]   [ ]
+# notify:         [optional]   [multiple]   [inverse key]
+# mnt-by:         [mandatory]  [multiple]   [inverse key]
+# changed:        [mandatory]  [multiple]   [ ]
+# source:         [mandatory]  [single]     [ ]
+# 
+# % This query was served by the RIPE Database Query Service version 1.74.1 (DB-3)
+
+
+__PACKAGE__->attributes( 'primary',     [ 'domain' ] );
+__PACKAGE__->attributes( 'mandatory',   [ 'domain', 'descr', 'admin_c', 'tech_c', 'zone_c', 'nserver', 'mnt_by', 'changed', 'source' ] );
+__PACKAGE__->attributes( 'optional',    [ 'org', 'ds_rdata', 'remarks', 'notify' ] );
+__PACKAGE__->attributes( 'single',      [ 'domain', 'source' ] );
+__PACKAGE__->attributes( 'multiple',    [ 'descr', 'org', 'admin_c', 'tech_c', 'zone_c', 'nserver', 'ds_rdata', 'remarks', 'notify', 'mnt_by', 'changed' ] );
 
 
 =head1 NAME

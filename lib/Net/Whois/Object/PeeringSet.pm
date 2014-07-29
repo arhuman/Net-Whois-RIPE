@@ -3,9 +3,8 @@ package Net::Whois::Object::PeeringSet;
 use base qw/Net::Whois::Object/;
 
 # http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-19
-# http://www.apnic.net/apnic-info/whois_search/using-whois/guide/peering-set
-#
-# From: whois -t peering-set 
+
+# whois -t peering-set
 # % This is the RIPE Database query service.
 # % The objects are in RPSL format.
 # %
@@ -26,14 +25,13 @@ use base qw/Net::Whois::Object/;
 # changed:        [mandatory]  [multiple]   [ ]
 # source:         [mandatory]  [single]     [ ]
 # 
-# % This query was served by the RIPE Database Query Service version 1.38 (WHOIS2)
+# % This query was served by the RIPE Database Query Service version 1.74.1 (DB-4)
 
-
-__PACKAGE__->attributes( 'primary', ['peering_set'] );
-__PACKAGE__->attributes( 'mandatory', [ 'peering_set', 'descr', 'peering', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
-__PACKAGE__->attributes( 'optional', [ 'remarks', 'org', 'notify', 'mp_peering', 'mnt_lower' ] );
-__PACKAGE__->attributes( 'single',    [ 'peering_set', 'source' ] );
-__PACKAGE__->attributes( 'multiple',  [ 'descr', 'peering', 'mp_peering', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'remarks', 'org', 'notify', 'mnt_lower' ] );
+__PACKAGE__->attributes( 'primary',     [ 'peering_set'] );
+__PACKAGE__->attributes( 'mandatory',   [ 'peering_set', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
+__PACKAGE__->attributes( 'optional',    [ 'peering', 'mp_peering', 'remarks', 'org', 'notify', 'mnt_lower' ] );
+__PACKAGE__->attributes( 'single',      [ 'peering_set', 'source' ] );
+__PACKAGE__->attributes( 'multiple',    [ 'descr', 'peering', 'mp_peering', 'remarks', 'org', 'tech_c', 'admin_c', 'notify', 'mnt_by', 'mnt_lower', 'changed' ] );
 
 
 =head1 NAME
