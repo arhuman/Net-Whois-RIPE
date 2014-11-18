@@ -3,23 +3,30 @@ package Net::Whois::Object::PoeticForm;
 use base qw/Net::Whois::Object/;
 
 # http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-22
-# APNIC ??
-#
-#
-# poetic-form:  [mandatory]     [single]    [primary/look-up key]
-# descr:        [optional]      [multiple]  [ ]
-# admin-c:      [mandatory]     [multiple]  [inverse key]
-# remarks:      [optional]      [multiple]  [ ]
-# notify:       [optional]      [multiple]  [inverse key]
-# mnt-by:       [mandatory]     [multiple]  [inverse key]
-# changed:      [mandatory]     [multiple]  [ ]
-# source:       [mandatory]     [single]    [ ]
-#
-__PACKAGE__->attributes( 'primary', ['poetic_form'] );
-__PACKAGE__->attributes( 'mandatory', [ 'poetic_form', 'admin_c', 'mnt_by', 'changed', 'source' ] );
-__PACKAGE__->attributes( 'optional', [ 'descr', 'remarks', 'notify' ] );
-__PACKAGE__->attributes( 'single', [ 'poetic_form', 'source' ] );
-__PACKAGE__->attributes( 'multiple', [ 'descr', 'admin_c', 'remarks', 'notify', 'mnt_by', 'changed' ] );
+
+# whois -t poetic-form
+# % This is the RIPE Database query service.
+# % The objects are in RPSL format.
+# %
+# % The RIPE Database is subject to Terms and Conditions.
+# % See http://www.ripe.net/db/support/db-terms-conditions.pdf
+# 
+# poetic-form:    [mandatory]  [single]     [primary/lookup key]
+# descr:          [optional]   [multiple]   [ ]
+# admin-c:        [mandatory]  [multiple]   [inverse key]
+# remarks:        [optional]   [multiple]   [ ]
+# notify:         [optional]   [multiple]   [inverse key]
+# mnt-by:         [mandatory]  [multiple]   [inverse key]
+# changed:        [mandatory]  [multiple]   [ ]
+# source:         [mandatory]  [single]     [ ]
+# 
+# % This query was served by the RIPE Database Query Service version 1.74.1 (DB-4)
+
+__PACKAGE__->attributes( 'primary',     [ 'poetic_form'] );
+__PACKAGE__->attributes( 'mandatory',   [ 'poetic_form', 'admin_c', 'mnt_by', 'changed', 'source' ] );
+__PACKAGE__->attributes( 'optional',    [ 'descr', 'remarks', 'notify' ] );
+__PACKAGE__->attributes( 'single',      [ 'poetic_form', 'source' ] );
+__PACKAGE__->attributes( 'multiple',    [ 'descr', 'admin_c', 'remarks', 'notify', 'mnt_by', 'changed' ] );
 
 =head1 NAME
 

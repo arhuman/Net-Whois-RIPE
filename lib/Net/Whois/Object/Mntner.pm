@@ -3,29 +3,38 @@ package Net::Whois::Object::Mntner;
 use base qw/Net::Whois::Object/;
 
 # http://www.ripe.net/data-tools/support/documentation/update-ref-manual#section-17
-# http://www.apnic.net/apnic-info/whois_search/using-whois/guide/mntner
-#
-# mntner:        [mandatory]  [single]     [primary/look-up key]
-# descr:         [mandatory]  [multiple]   [ ]
-# org:           [optional]   [multiple]   [inverse key]
-# admin-c:       [mandatory]  [multiple]   [inverse key]
-# tech-c:        [optional]   [multiple]   [inverse key]
-# upd-to:        [mandatory]  [multiple]   [inverse key]
-# mnt-nfy:       [optional]   [multiple]   [inverse key]
-# auth:          [mandatory]  [multiple]   [ ]
-# remarks:       [optional]   [multiple]   [ ]
-# notify:        [optional]   [multiple]   [inverse key]
-# abuse-mailbox: [optional]   [multiple]   [inverse key]
-# mnt-by:        [mandatory]  [multiple]   [inverse key]
-# auth-override: [optional]   [single]     [ ]
-# referral-by:   [mandatory]  [single]     [inverse key]
-# changed:       [mandatory]  [multiple]   [ ]
-# source:        [mandatory]  [single]     [ ]
-__PACKAGE__->attributes( 'primary', ['mntner'] );
-__PACKAGE__->attributes( 'mandatory', [ 'mntner', 'descr', 'admin_c', 'auth', 'mnt_by', 'referral_by', 'changed', 'source', 'upd_to' ] );
-__PACKAGE__->attributes( 'optional', [ 'org', 'country', 'tech_c', 'mnt_nfy', 'remarks', 'notify', 'abuse_mailbox', 'auth_override' ] );
-__PACKAGE__->attributes( 'single', [ 'mntner', 'auth_override', 'country', 'referral_by', 'source' ] );
-__PACKAGE__->attributes( 'multiple', [ 'auth', 'descr', 'admin_c', 'mnt_by', 'changed', 'org', 'tech_c', 'mnt_nfy', 'remarks', 'notify', 'abuse_mailbox', 'upd_to' ] );
+
+# whois -t mntner
+# % This is the RIPE Database query service.
+# % The objects are in RPSL format.
+# %
+# % The RIPE Database is subject to Terms and Conditions.
+# % See http://www.ripe.net/db/support/db-terms-conditions.pdf
+# 
+# mntner:         [mandatory]  [single]     [primary/lookup key]
+# descr:          [mandatory]  [multiple]   [ ]
+# org:            [optional]   [multiple]   [inverse key]
+# admin-c:        [mandatory]  [multiple]   [inverse key]
+# tech-c:         [optional]   [multiple]   [inverse key]
+# upd-to:         [mandatory]  [multiple]   [inverse key]
+# mnt-nfy:        [optional]   [multiple]   [inverse key]
+# auth:           [mandatory]  [multiple]   [inverse key]
+# remarks:        [optional]   [multiple]   [ ]
+# notify:         [optional]   [multiple]   [inverse key]
+# abuse-mailbox:  [optional]   [multiple]   [inverse key]
+# mnt-by:         [mandatory]  [multiple]   [inverse key]
+# referral-by:    [mandatory]  [single]     [ ]
+# changed:        [mandatory]  [multiple]   [ ]
+# source:         [mandatory]  [single]     [ ]
+# 
+# % This query was served by the RIPE Database Query Service version 1.74.1 (DB-3)
+
+
+__PACKAGE__->attributes( 'primary',     [ 'mntner' ] );
+__PACKAGE__->attributes( 'mandatory',   [ 'mntner', 'descr', 'admin_c', 'upd_to', 'auth', 'mnt_by', 'referral_by', 'changed', 'source' ] );
+__PACKAGE__->attributes( 'optional',    [ 'org', 'tech_c', 'mnt_nfy', 'remarks', 'notify', 'abuse_mailbox'  ] );
+__PACKAGE__->attributes( 'single',      [ 'mntner', 'referral_by', 'source' ] );
+__PACKAGE__->attributes( 'multiple',    [ 'descr', 'org', 'admin_c', 'tech_c', 'upd_to', 'mnt_nfy', 'auth', 'remarks', 'notify', 'abuse_mailbox', 'mnt_by', 'changed' ] );
 
 =head1 NAME
 

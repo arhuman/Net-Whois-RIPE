@@ -55,7 +55,8 @@ SKIP: {
     isa_ok $c->ios, 'IO::Select';
     ok $c->ios->count >= 1,
       q{There's at least one handle registered with the IO::Select object.};
- diag('count='.$c->ios->count); 
+    # Test here
+    #diag('count='.$c->ios->count); 
 
     # socket()
     isa_ok $c->socket, 'IO::Socket';

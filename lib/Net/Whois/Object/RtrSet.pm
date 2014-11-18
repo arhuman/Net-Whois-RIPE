@@ -29,12 +29,11 @@ use base qw/Net::Whois::Object/;
 #
 # % This query was served by the RIPE Database Query Service version 1.38 (WHOIS2)
 
-
-__PACKAGE__->attributes( 'primary', ['rtr_set'] );
-__PACKAGE__->attributes( 'mandatory', [ 'rtr_set', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
-__PACKAGE__->attributes( 'optional', [ 'members', 'mbrs_by_ref', 'remarks', 'org', 'notify', 'mp_members' ] );
-__PACKAGE__->attributes( 'single', [ 'rtr_set', 'source' ] );
-__PACKAGE__->attributes( 'multiple', [ 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'members', 'mbrs_by_ref', 'remarks', 'org', 'notify', 'mp_members' ] );
+__PACKAGE__->attributes( 'primary',     [ 'rtr_set' ] );
+__PACKAGE__->attributes( 'mandatory',   [ 'rtr_set', 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'source' ] );
+__PACKAGE__->attributes( 'optional',    [ 'members', 'mbrs_by_ref', 'remarks', 'org', 'notify', 'mp_members' ] );
+__PACKAGE__->attributes( 'single',      [ 'rtr_set', 'source' ] );
+__PACKAGE__->attributes( 'multiple',    [ 'descr', 'tech_c', 'admin_c', 'mnt_by', 'changed', 'members', 'mbrs_by_ref', 'remarks', 'org', 'notify', 'mp_members' ] );
 
 =head1 NAME
 

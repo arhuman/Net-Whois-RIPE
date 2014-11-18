@@ -11,6 +11,13 @@ use base qw/Net::Whois::Object/;
 # %
 # % The RIPE Database is subject to Terms and Conditions.
 # % See http://www.ripe.net/db/support/db-terms-conditions.pdf
+
+# whois -t inet6num
+# % This is the RIPE Database query service.
+# % The objects are in RPSL format.
+# %
+# % The RIPE Database is subject to Terms and Conditions.
+# % See http://www.ripe.net/db/support/db-terms-conditions.pdf
 # 
 # inet6num:       [mandatory]  [single]     [primary/lookup key]
 # netname:        [mandatory]  [single]     [lookup key]
@@ -19,6 +26,7 @@ use base qw/Net::Whois::Object/;
 # geoloc:         [optional]   [single]     [ ]
 # language:       [optional]   [multiple]   [ ]
 # org:            [optional]   [single]     [inverse key]
+# sponsoring-org: [generated]  [single]     [ ]
 # admin-c:        [mandatory]  [multiple]   [inverse key]
 # tech-c:         [mandatory]  [multiple]   [inverse key]
 # status:         [mandatory]  [single]     [ ]
@@ -33,15 +41,13 @@ use base qw/Net::Whois::Object/;
 # changed:        [mandatory]  [multiple]   [ ]
 # source:         [mandatory]  [single]     [ ]
 # 
-# % This query was served by the RIPE Database Query Service version 1.38 (WHOIS4)
+# % This query was served by the RIPE Database Query Service version 1.74.1 (DB-4)
 
-#
-# mnt-irt:       [mandatory]  [single]     [inverse key]
-__PACKAGE__->attributes( 'primary',   ['inet6num'] );
-__PACKAGE__->attributes( 'mandatory', [ 'inet6num', 'netname', 'status', 'source' ] );
-__PACKAGE__->attributes( 'optional', ['geoloc', 'language', 'org', 'remarks', 'notify', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt', 'assignment_size' ] );
-__PACKAGE__->attributes( 'single', [ 'inet6num', 'netname', 'geoloc', 'org', 'status', 'source', 'assignment_size' ] );
-__PACKAGE__->attributes( 'multiple', [ 'descr', 'country','language', 'tech_c', 'admin_c', 'remarks', 'notify', 'mnt_by', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt', 'changed' ] );
+__PACKAGE__->attributes( 'primary',     [ 'inet6num' ] );
+__PACKAGE__->attributes( 'mandatory',   [ 'inet6num', 'netname', 'descr', 'country', 'admin_c', 'tech_c', 'status', 'mnt_by', 'changed', 'source' ] );
+__PACKAGE__->attributes( 'optional',    [ 'geoloc', 'language', 'org', 'sponsoring_org', 'assignment_size', 'remarks', 'notify', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt' ] );
+__PACKAGE__->attributes( 'single',      [ 'inet6num', 'netname', 'geoloc', 'org', 'sponsoring_org', 'status', 'assignment_size', 'source' ] );
+__PACKAGE__->attributes( 'multiple',    [ 'descr', 'country','language', 'admin_c', 'tech_c', 'remarks', 'notify', 'mnt_by', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt', 'changed' ] );
 
 =head1 NAME
 
