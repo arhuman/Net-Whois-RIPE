@@ -1,6 +1,9 @@
 Revision history for net-whois-ripe
 
             
+2.005004    2014-06-29
+            - Modify Objects to match RIPE database version 1.74.1
+
 2.005003    2014-06-11
             - Remove extra VERSION in Net::Whois::Generic
             - Load Net::Whois::Generic with Net::Whois::RIPE (experimental)
