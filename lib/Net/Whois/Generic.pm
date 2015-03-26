@@ -125,7 +125,7 @@ connection to the RIPE Database service desired.
 
 {
 	my %default_options = (
-		hostname     => 'whois.ripe.net',
+		# hostname     => 'whois.ripe.net',
 		port         => '43',
 		timeout      => 5,
 		referral     => 0,
@@ -289,7 +289,7 @@ sub connect
 	my %connection = (
 		Proto      => 'tcp',
 		Type       => SOCK_STREAM,
-		PeerAddr   => $self->hostname,
+		PeerAddr   => $self->hostname || 'whois.ripe.net',
 		PeerPort   => $self->port,
 		Timeout    => $self->timeout,
 		Domain     => AF_INET,
@@ -470,21 +470,23 @@ sub adapt_query
 	# determine RIR unless $rir;
 	$rir = $self->_find_rir($query) unless $rir;
 
-	if ($rir eq 'ripe') {
-		$self->hostname($RIR{ripe}{SERVER});
-	}
-	elsif ($rir eq 'afrinic') {
-		$fullquery = '-V Md5.0 ' . $query;
-		$self->hostname($RIR{afrinic}{SERVER});
-	}
-	elsif ($rir eq 'arin') {
-		$self->hostname($RIR{arin}{SERVER});
-	}
-	elsif ($rir eq 'lacnic') {
-		$self->hostname($RIR{lacnic}{SERVER});
-	}
-	elsif ($rir eq 'apnic') {
-		$self->hostname($RIR{apnic}{SERVER});
+	if (!$self->hostname) {
+		if ($rir eq 'ripe') {
+			$self->hostname($RIR{ripe}{SERVER});
+		}
+		elsif ($rir eq 'afrinic') {
+			$fullquery = '-V Md5.0 ' . $query;
+			$self->hostname($RIR{afrinic}{SERVER});
+		}
+		elsif ($rir eq 'arin') {
+			$self->hostname($RIR{arin}{SERVER});
+		}
+		elsif ($rir eq 'lacnic') {
+			$self->hostname($RIR{lacnic}{SERVER});
+		}
+		elsif ($rir eq 'apnic') {
+			$self->hostname($RIR{apnic}{SERVER});
+		}
 	}
 
 	my $parameters = "";

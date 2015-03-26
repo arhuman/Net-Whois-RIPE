@@ -1,5 +1,9 @@
 Revision history for net-whois-ripe
 
+2.005005    2015-03-26
+	    - Fix to make Net::Whois::Generic use 'hostname' parameter
+              (reported by Stanislav Sinyagin)
+	    - Fix on Net::Whois::Object::AutNum to accept lowecase AutNum name
             
 2.005004    2014-06-29
             - Modify Objects to match RIPE database version 1.74.1

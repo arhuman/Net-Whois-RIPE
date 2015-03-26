@@ -90,7 +90,7 @@ database software.
 sub aut_num {
     my ( $self, $aut_num ) = @_;
 
-    if ( $aut_num and $aut_num !~ /^AS\d+/ ) {
+    if ( $aut_num and $aut_num !~ /^AS\d+/i ) {
         warn "Illegal aut-num ($aut_num) : should be ASn, n being a 32 bit number with no leading 0";
     }
 
