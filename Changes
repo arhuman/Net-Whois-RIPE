@@ -1,5 +1,7 @@
 Revision history for net-whois-ripe
 
+	    - Fix to make Net::Whois::Generic use 'hostname' parameter
+              (reported by Stanislav Sinyagin)
             
 2.005004    2014-06-29
             - Modify Objects to match RIPE database version 1.74.1
