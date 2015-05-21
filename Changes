@@ -1,5 +1,8 @@
 Revision history for net-whois-ripe
 
+2.006000    2015-05-23
+	    -  Fix bug in attribute autogeneration which affected Inet6Num.pm
+
 2.005006    2015-05-23
             - Add helper scripts to automatically cope with RIPE database modification
             - Modify Objects to match RIPE database version 1.79.2
