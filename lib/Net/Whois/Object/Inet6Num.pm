@@ -35,13 +35,13 @@ use base qw/Net::Whois::Object/;
 # last-modified:  [generated]  [single]     [ ]
 # source:         [mandatory]  [single]     [ ]
 # 
-# % This query was served by the RIPE Database Query Service version 1.79.2 (DB-4)
+# % This query was served by the RIPE Database Query Service version 1.79.2 (DB-1)
 # 
 # 
 __PACKAGE__->attributes( 'primary',     [ 'inet6num' ] );
 __PACKAGE__->attributes( 'mandatory',   [ 'inet6num', 'netname', 'descr', 'country', 'admin_c', 'tech_c', 'status', 'mnt_by', 'changed', 'source' ] );
-__PACKAGE__->attributes( 'optional',    [ 'geoloc', 'language', 'org', 'sponsoring_org', 'remarks', 'notify', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt', 'created', 'last_modified' ] );
-__PACKAGE__->attributes( 'single',      [ 'inet6num', 'netname', 'geoloc', 'org', 'sponsoring_org', 'status', 'created', 'last_modified', 'source' ] );
+__PACKAGE__->attributes( 'optional',    [ 'geoloc', 'language', 'org', 'sponsoring_org', 'assignment_size', 'remarks', 'notify', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt', 'created', 'last_modified' ] );
+__PACKAGE__->attributes( 'single',      [ 'inet6num', 'netname', 'geoloc', 'org', 'sponsoring_org', 'status', 'assignment_size', 'created', 'last_modified', 'source' ] );
 __PACKAGE__->attributes( 'multiple',    [ 'descr', 'country', 'language', 'admin_c', 'tech_c', 'remarks', 'notify', 'mnt_by', 'mnt_lower', 'mnt_routes', 'mnt_domains', 'mnt_irt', 'changed' ] );
 
 # End of auto-generated lines

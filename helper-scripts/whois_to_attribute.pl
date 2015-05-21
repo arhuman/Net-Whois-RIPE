@@ -39,7 +39,7 @@ my @whois_data = `whois -t $object{$target}`;
 my (@mandatories, @optionals, @singles, @multiples);
 
 for my $line (@whois_data) {
-	if ($line =~ /(.*?):\s+\[(.*?)\]\s+\[(.*?)\]\s+\[(.*?)\]/) {
+	if ($line =~ /(.*?):\s*\[(.*?)\]\s*\[(.*?)\]\s*\[(.*?)\]/) {
 		my $attribute_name = lc $1;
 		my $mandatory      = lc $2;
 		my $cardinality    = lc $3;
