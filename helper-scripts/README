@@ -1,0 +1,7 @@
+To update Objects attribute run
+1) sh helper_scripts/add_whois_attribute_data.sh
+2) vi lib/Net/Whois/Object/*.pm
+     For each file replace begining of file with block at end of file
+
+
+
