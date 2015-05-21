@@ -1,5 +1,10 @@
 Revision history for net-whois-ripe
 
+2.005006    2015-05-23
+            - Add helper scripts to automatically cope with RIPE database modification
+            - Modify Objects to match RIPE database version 1.79.2
+	    - Fix to make Net::Whois::Object now emit warning instead of dieing on unknwon attribute
+
 2.005005    2015-03-26
 	    - Fix to make Net::Whois::Generic use 'hostname' parameter
               (reported by Stanislav Sinyagin)

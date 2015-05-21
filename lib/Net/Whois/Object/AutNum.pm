@@ -2,7 +2,7 @@ package Net::Whois::Object::AutNum;
 
 use base qw/Net::Whois::Object/;
 
-# whois -t aut-num
+
 # % This is the RIPE Database query service.
 # % The objects are in RPSL format.
 # %
@@ -32,16 +32,21 @@ use base qw/Net::Whois::Object/;
 # mnt-routes:     [optional]   [multiple]   [inverse key]
 # mnt-by:         [mandatory]  [multiple]   [inverse key]
 # changed:        [mandatory]  [multiple]   [ ]
+# created:        [generated]  [single]     [ ]
+# last-modified:  [generated]  [single]     [ ]
 # source:         [mandatory]  [single]     [ ]
 # 
-# % This query was served by the RIPE Database Query Service version 1.74.1 (DB-3)
-
+# % This query was served by the RIPE Database Query Service version 1.79.2 (DB-1)
+# 
+# 
 __PACKAGE__->attributes( 'primary',     [ 'aut_num' ] );
 __PACKAGE__->attributes( 'mandatory',   [ 'aut_num', 'as_name', 'descr', 'admin_c', 'tech_c', 'mnt_by', 'changed', 'source' ] );
-__PACKAGE__->attributes( 'optional',    [ 'member_of', 'import_via', 'import', 'mp_import', 'export_via', 'export', 'mp_export', 'default', 'mp_default', 'remarks', 'org', 'sponsoring_org', 'notify', 'mnt_lower', 'mnt_routes' ] );
-__PACKAGE__->attributes( 'single',      [ 'aut_num', 'as_name', 'org', 'sponsoring_org', 'status', 'source' ] );
-__PACKAGE__->attributes( 'multiple',    [ 'descr', 'member_of', 'import_via','import', 'mp_import', 'export_via', 'export', 'mp_export', 'default', 'mp_default', 'remarks', 'admin_c', 'tech_c', 'notify', 'mnt_lower', 'mnt_routes', 'mnt_by', 'changed' ] );
+__PACKAGE__->attributes( 'optional',    [ 'member_of', 'import_via', 'import', 'mp_import', 'export_via', 'export', 'mp_export', 'default', 'mp_default', 'remarks', 'org', 'sponsoring_org', 'status', 'notify', 'mnt_lower', 'mnt_routes', 'created', 'last_modified' ] );
+__PACKAGE__->attributes( 'single',      [ 'aut_num', 'as_name', 'org', 'sponsoring_org', 'status', 'created', 'last_modified', 'source' ] );
+__PACKAGE__->attributes( 'multiple',    [ 'descr', 'member_of', 'import_via', 'import', 'mp_import', 'export_via', 'export', 'mp_export', 'default', 'mp_default', 'remarks', 'admin_c', 'tech_c', 'notify', 'mnt_lower', 'mnt_routes', 'mnt_by', 'changed' ] );
 
+# End of auto-generated lines
+#######################################################################################
 
 =head1 NAME
 

@@ -701,7 +701,11 @@ sub _object_factory {
     if ( $object->{attributes} ) {
         for my $a ( @{ $object->{attributes} } ) {
             my $method = $a->[0];
-            $object_returned->$method( $a->[1] );
+	    if( my $ref = eval { $object_returned->can( $method ) } ) {
+		$object_returned->$ref( $a->[1] );
+	    } else {
+		carp "Unknown method '$method' for object $class (Did the Database schema changed ?)"
+	    }
         }
     }
 
