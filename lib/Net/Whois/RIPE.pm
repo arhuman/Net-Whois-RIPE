@@ -593,7 +593,7 @@ L<http://cpanratings.perl.org/d/net-whois-ripe>
 
 =item * Search CPAN
 
-L<http://search.cpan.org/dist/net-whois-ripe>
+L<http://search.cpan.org/dist/Net-Whois-RIPE>
 
 =back
 
