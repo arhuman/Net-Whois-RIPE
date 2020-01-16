@@ -19,7 +19,7 @@ isa_ok $object, $class;
 
 # Non-inherited methods
 can_ok $object, qw( inet6num netname descr country admin_c tech_c
-    status remarks notify mnt_by mnt_lower mnt_routes mnt_domains mnt_irt changed source);
+    status remarks notify mnt_by mnt_lower mnt_routes mnt_domains mnt_irt source);
 can_ok $object, qw( mnt_irt );
 
 # Check if typed attributes are correct
@@ -121,12 +121,6 @@ $tested{'mnt_domains'}++;
 is_deeply( $object->mnt_domains(), ['MAINT-EXAMPLENET-AP'], 'mnt_domains properly parsed' );
 $object->mnt_domains('MAINT2-EXAMPLENET-AP');
 is( $object->mnt_domains()->[1], 'MAINT2-EXAMPLENET-AP', 'mnt_domains properly added' );
-
-# Test 'changed'
-$tested{'changed'}++;
-is_deeply( $object->changed(), ['abc@examplenet.com 20101231'], 'changed properly parsed' );
-$object->changed('abc@examplenet.com 20121231');
-is( $object->changed()->[1], 'abc@examplenet.com 20121231', 'changed properly added' );
 
 # Test 'source'
 $tested{'source'}++;

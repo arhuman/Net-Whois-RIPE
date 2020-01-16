@@ -239,7 +239,7 @@ sub new {
             $attribute = 'response';
             $value     = $1;
 
-        } elsif ( $line =~ /^(\S+):\s+(.*)/ ) {
+        } elsif ( $line =~ /^(\S+):\s*(.*)/ ) {
 
             # Attribute line
             $attribute = $1;
