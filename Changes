@@ -1,6 +1,9 @@
 Revision history for net-whois-ripe
 
-2.006001    2015-05-23
+2.007000    2020-01-16
+            - Version BUMP to allow an upload on PAUSE
+
+2.006001    2020-01-16
             - Fix bug issue # 26 reported by Moritz Lenz on github
                (Bad parsing when `assignment-size` is in response)
             - Update some objects attribute (changed -> last-modified...)
