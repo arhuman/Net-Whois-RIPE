@@ -1,5 +1,6 @@
 package Net::Whois::Object::Role::AFRINIC;
 
+use strict;
 use base qw/Net::Whois::Object/;
 
 # whois -t role -h whois.afrinic.net

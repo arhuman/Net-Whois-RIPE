@@ -1,5 +1,6 @@
 package Net::Whois::Object::Irt::APNIC;
 
+use strict;
 use base qw/Net::Whois::Object/;
 
 # whois -t irt -h whois.afrinic.net

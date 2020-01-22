@@ -1,5 +1,6 @@
 package Net::Whois::Object::Organisation::AFRINIC;
 
+use strict;
 use base qw/Net::Whois::Object::Organisation/;
 
 # whois -h whois.afrinic.net -t organisation

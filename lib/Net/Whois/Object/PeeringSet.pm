@@ -1,5 +1,6 @@
 package Net::Whois::Object::PeeringSet;
 
+use strict;
 use base qw/Net::Whois::Object/;
 
 #######################################################################################

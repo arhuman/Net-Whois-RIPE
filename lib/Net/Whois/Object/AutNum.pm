@@ -1,5 +1,6 @@
 package Net::Whois::Object::AutNum;
 
+use strict;
 use base qw/Net::Whois::Object/;
 
 
@@ -59,7 +60,7 @@ for Autonomous Systems.
 
 The aut-num object specifies routing policies. It refers to a group of IP
 networks that have a single and clearly defined external routing policy,
-operated by one or more network operators – an Autonomous System (AS).
+operated by one or more network operators, an Autonomous System (AS).
 
 =head1 METHODS
 

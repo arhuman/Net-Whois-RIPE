@@ -1,5 +1,6 @@
 package Net::Whois::Object::Route6;
 
+use strict;
 use base qw/Net::Whois::Object/;
 
 #######################################################################################

@@ -1,5 +1,6 @@
 package Net::Whois::Object::Inet6Num;
 
+use strict;
 use base qw/Net::Whois::Object/;
 
 #######################################################################################

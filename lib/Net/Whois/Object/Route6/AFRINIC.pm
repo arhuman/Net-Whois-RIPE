@@ -1,5 +1,6 @@
 package Net::Whois::Object::Route6::AFRINIC;
 
+use strict;
 use base qw/Net::Whois::Object/;
 
 # whois -t route6 -h whois.afrinic.net

@@ -1,5 +1,6 @@
 package Net::Whois::Object::Limerick;
 
+use strict;
 use base qw/Net::Whois::Object/;
 
 # RIPE: Deprecated

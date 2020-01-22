@@ -1,5 +1,6 @@
 package Net::Whois::Object::Domain::AFRINIC;
 
+use strict;
 use base qw/Net::Whois::Object/;
 
 # whois -t domain -h whois.afrinic.net

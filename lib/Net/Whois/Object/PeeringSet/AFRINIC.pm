@@ -1,5 +1,6 @@
 package Net::Whois::Object::PeeringSet::AFRINIC;
 
+use strict;
 use base qw/Net::Whois::Object/;
 
 # whois -t peering-set -h whois.afrinic.net

@@ -1,5 +1,6 @@
 package Net::Whois::Object::Limerick::AFRINIC;
 
+use strict;
 use base qw/Net::Whois::Object/;
 
 # whois -t limerick -h whois.afrinic.net

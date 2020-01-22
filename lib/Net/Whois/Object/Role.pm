@@ -1,5 +1,6 @@
 package Net::Whois::Object::Role;
 
+use strict;
 use base qw/Net::Whois::Object/;
 
 #######################################################################################

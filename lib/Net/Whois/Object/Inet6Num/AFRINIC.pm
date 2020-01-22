@@ -1,5 +1,6 @@
 package Net::Whois::Object::Inet6Num::AFRINIC;
 
+use strict;
 use base qw/Net::Whois::Object/;
 
 # whois -t inet6num -h whois.afrinic.net

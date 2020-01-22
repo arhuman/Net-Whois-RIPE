@@ -1,5 +1,6 @@
 package Net::Whois::Object::Organisation;
 
+use strict;
 use base qw/Net::Whois::Object/;
 
 #######################################################################################

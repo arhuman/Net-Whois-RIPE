@@ -1,5 +1,6 @@
 package Net::Whois::Object::Mntner::AFRINIC;
 
+use strict;
 use base qw/Net::Whois::Object/;
 
 # whois -t mntner -h whois.afrinic.net

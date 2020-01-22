@@ -1,5 +1,6 @@
 package Net::Whois::Object::Organisation::APNIC;
 
+use strict;
 use base qw/Net::Whois::Object::Organisation/;
 
 # whois -h whois.apnic.net -t organisation

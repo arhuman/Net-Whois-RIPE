@@ -1,5 +1,6 @@
 package Net::Whois::Object::PeeringSet::APNIC;
 
+use strict;
 use base qw/Net::Whois::Object/;
 
 # whois -h whois.apnic.net -t peering-set

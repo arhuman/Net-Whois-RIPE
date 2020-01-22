@@ -1,5 +1,6 @@
 package Net::Whois::Object::Information;
 
+use strict;
 use base qw/Net::Whois::Object/;
 
 __PACKAGE__->attributes( 'mandatory', ['comment'] );
