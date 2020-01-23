@@ -1,6 +1,10 @@
 Revision history for net-whois-ripe
 
-2.007001    2020-01-16
+2.007002    2020-01-23
+            - Minor improvement to fix Kwalitee issues (use warnings, License information in META files)
+            - Fix bogus test (Inet6Num)
+
+2.007001    2020-01-22
             - Minor improvement to fix Kwalitee issues (use strict, non ASCII characters in POD)
 
 2.007000    2020-01-16
