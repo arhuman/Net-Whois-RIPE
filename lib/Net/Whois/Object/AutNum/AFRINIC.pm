@@ -1,6 +1,7 @@
 package Net::Whois::Object::AutNum::AFRINIC;
 
 use strict;
+use warnings;
 use base qw/Net::Whois::Object/;
 
 # whois -t aut-num -h whois.afrinic.net

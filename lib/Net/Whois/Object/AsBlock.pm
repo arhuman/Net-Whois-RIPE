@@ -1,6 +1,7 @@
 package Net::Whois::Object::AsBlock;
 
 use strict;
+use warnings;
 use base qw/Net::Whois::Object/;
 
 #######################################################################################

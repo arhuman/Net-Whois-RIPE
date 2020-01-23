@@ -1,6 +1,7 @@
 package Net::Whois::Object::FilterSet::APNIC;
 
 use strict;
+use warnings;
 use base qw/Net::Whois::Object/;
 
 # whois -h whois.apnic.net -t filter-set

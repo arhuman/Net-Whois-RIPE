@@ -1,6 +1,7 @@
 package Net::Whois::Object::AutNum;
 
 use strict;
+use warnings;
 use base qw/Net::Whois::Object/;
 
 
