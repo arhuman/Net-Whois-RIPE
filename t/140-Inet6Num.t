@@ -156,6 +156,5 @@ mnt-lower:   MAINT-EXAMPLENET-AP
 mnt-routes:  MAINT-EXAMPLENET-AP
 mnt-domains: MAINT-EXAMPLENET-AP
 mnt-irt:     IRT-EXAMPLENET-AP
-changed:     abc@examplenet.com 20101231
 source:      RIPE
 
