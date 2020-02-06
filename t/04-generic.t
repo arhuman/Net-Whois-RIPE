@@ -64,7 +64,7 @@ SKIP: {
     # query() RIPE
     {
         my $as_set;
-        eval { ($as_set) = $c->query('AS-JAGUAR', {type => 'AsSet'}) };
+        eval { ($as_set) = $c->query('AS-AFNIC', {type => 'AsSet'}) };
         ok !$@, q{Client performs queries without dying $@};
         isa_ok $as_set, 'Net::Whois::Object::AsSet';
     }
