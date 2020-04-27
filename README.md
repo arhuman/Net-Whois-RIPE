@@ -35,7 +35,8 @@ You can also look for information at:
 
 ## COPYRIGHT AND LICENCE
 
-Copyright (C) 2010 Luis Motta Campos
+Copyright 2012-2020 Arnaud Assad
+Copyright 2010 Luis Motta Campos
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
